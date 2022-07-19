@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { base } from '$app/paths';
     let altName = "Zzang";
     let name = "";
     let isValid = false;
@@ -61,7 +62,7 @@
     <!-- 2 videos for smooth transitions -->
     <div class="video-background">
         <video
-            src='/idle.webm'
+            src={`${base}/idle.webm`}
             type='video/webm'
             autoplay
             loop
@@ -70,7 +71,7 @@
             class="freedeo"
             class:show={isFree} 
             bind:this={freeVideo}
-            src='/free.webm'
+            src={`${base}/free.webm`}
             type='video/webm'
         />
     </div> 
@@ -82,7 +83,7 @@
         <input type="text" bind:value={name} on:input={() => isGuessing = true} autofocus />
     </div>
     <div class:disabled={name.length===0} class="button" on:click={checkName}>IS IT ZZANG?</div>
-    <img class:faded={isGuessing} class={isValid ? "correct" : "incorrect"} src="/thumbsup.png" />
+    <img class:faded={isGuessing} class={isValid ? "correct" : "incorrect"} src={`${base}/thumbsup.png`} />
 </main>
 
 <style>
