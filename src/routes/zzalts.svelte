@@ -35,7 +35,7 @@
 
     function checkName() {
         isGuessing = false;
-        const regex = new RegExp("^(z{1,2}|s{1,2})(a{1,2}|e{1,2}|i{1,2}|o{1,2}|u{1,2}|y{1,2})(n)(g{1,2})$");
+        const regex = new RegExp("^(z{1,3}|s{1,3})(a{1,3}|e{1,3}|i{1,3}|o{1,3}|u{1,3}|y{1,3})(n)(g{1,3})$");
         isValid = regex.test(name);
 
         if (isValid) {
@@ -141,8 +141,8 @@
         font-family: 'Lato', sans-serif;
         text-align: center;
         border: 3px solid rgba(255,255,255,0.8);
-        color: rgba(255,255,255,0.7);
-        background-color: none;
+        color: rgba(0,0,0,0.7);
+        background-color: rgba(255,255,255,0.7);
         border-radius: 6px;
         padding: 0.5rem;
         width: 8rem;
@@ -154,13 +154,15 @@
     .button:hover {
         cursor: pointer;
         user-select: none;
-        color: white;
+        color: black;
         border-color: white;
-        background-color: rgba(255,255,255,0.1)
+        background-color: rgba(255,255,255,0.9)
     }
     
     .input-area {
+        background: none;
         display: flex;
+        margin-left: 4rem;
     }
     .input-area input {
         margin: 0;
@@ -170,7 +172,7 @@
         background: none;
         caret-color: white;
         color: white;
-        width: 15rem;
+        width: 14rem;
     }
     .input-area input:focus {
         outline: none;
