@@ -38,7 +38,7 @@
         const regex = new RegExp("^(z{1,3}|s{1,3})(a{1,3}|e{1,3}|i{1,3}|o{1,3}|u{1,3}|y{1,3})(n)(g{1,3})$");
         isValid = regex.test(name);
 
-        if (isValid) {
+        if (isValid && !isFree) {
             isFree = true;
             freeVideo.play();
 
@@ -47,7 +47,7 @@
                     isFree = false;
                     freeVideo.pause();
                 }
-            , 4000);
+            , 3000);
 
             freeVideo.currentTime = 0;
         }
@@ -82,7 +82,7 @@
         <h1>#FREE</h1>
         <input type="text" bind:value={name} on:input={() => isGuessing = true} autofocus />
     </div>
-    <div class:disabled={name.length===0} class="button" on:click={checkName}>IS IT ZZANG?</div>
+    <div class:disabled={name.length===0} class="button" on:click={checkName}>{name.toUpperCase() === "ZZANG" ? "DUH" : "IS IT ZZANG?"}</div>
     <img class:faded={isGuessing} class={isValid ? "correct" : "incorrect"} src={`${base}/thumbsup.png`} />
 </main>
 
