@@ -41,7 +41,7 @@
 
     function checkName() {
         isGuessing = false;
-        const regex = new RegExp("^(z{1,3}|s{1,3})(a{1,3}|e{1,3}|i{1,3}|o{1,3}|u{1,3}|y{1,3})(n)(g{1,3})$");
+        const regex = new RegExp("^(z{2,3}|s{2,3})(a{1,3}|e{1,3}|i{1,3}|o{1,3}|u{1,3}|y{1,3})(n)(g{1,3})$");
         isValid = regex.test(name);
 
         if (isValid && !isFree) {
