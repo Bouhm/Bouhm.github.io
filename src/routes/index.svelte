@@ -5,10 +5,10 @@
   <title>Hey, you. You're finally awake!</title>
 </svelte:head>
 <main>
-	<h1>collection of silly, spontaneous stuff</h1>
+	<h1>collection of stupid, spontaneous stuff</h1>
 </main>
 
-<style lang="postcss">
+<style>
 	@import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
 
 	main {

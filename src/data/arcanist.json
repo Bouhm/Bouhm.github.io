@@ -1,0 +1,154 @@
+{
+    "cards": [
+        {
+            "name": "3-Head",
+            "img": "",
+            "effects": [
+                "Increased stacking",
+                "Increased damage"
+            ],
+            "description": "Basic Attack changes into 3 directions for 16s. On hit, earn 1 stack. Damage to foes +100%. Damage to Challenge or lower monsters +400%."
+        },
+        {
+            "name": "Mayhem",
+            "img": "",
+            "effects": [
+                "Increased attack speed"
+            ],
+            "description": "For 30s, Atk. Speed +3% for 4s every time skills are used, up to 15%."
+        },
+        {
+            "name": "Twisted Fate",
+            "img": "",
+            "effects": [
+                "Chance of increased damage"
+            ],
+            "description": "For 4s, your skill Damage either stays the same or increases by 40%."
+        },
+        {
+            "name": "Corrosion",
+            "img": "",
+            "effects": [
+                "Chance of debuff for increased damage"
+            ],
+            "description": "For 30s, gain a 30% chance of +10% Damage to the foe for 5s."
+        },
+        {
+            "name": "Ghost",
+            "img": "",
+            "effects": [
+                "Increased movement speed",
+                "Damage reduction"
+            ],
+            "description": "Ignore collision with monsters. Move Speed +20% and Damage from foes -50% for 3 hits for 16s."
+        },
+        {
+            "name": "Cull",
+            "img": "",
+            "effects": [
+                "Increased crit chance and crit damage"
+            ],
+            "description": "For 4s, Crit Rate for all skill attacks 100% and Crit Damage +50% when they hit 1 foe."
+        },
+        {
+            "name": "Balance",
+            "img": "",
+            "effects": [
+                "Increased stacking"
+            ],
+            "description": "For 30s, your Stacking skills are enhanced and grant you 1 more stack with each hit."
+        },
+        {
+            "name": "Judgment",
+            "img": "",
+            "effects": [
+                "Full stacks on Ruin skill"
+            ],
+            "description": "For 4s, Ruin skills always trigger the 4 stack effect, regardless of the actual number of stacks cast upon foes."
+        },
+        {
+            "name": "Moon",
+            "img": "",
+            "effects": [
+                "Cooldown reduction",
+                "Increased mana regeneration"
+            ],
+            "description": "Cooldown -10% and MP Recovery Speed increase +20% for 30s."
+        },
+        {
+            "name": "Star",
+            "img": "",
+            "effects": [
+                "Mana recovery",
+                "Cooldown reduction"
+            ],
+            "description": "Recovers 100% MP. Remaining skills Cooldown -15% except for Awakening, Movement, and Stand Up skills."
+        },
+        {
+            "name": "Royal",
+            "img": "",
+            "effects": [
+                "Gain Tarot cards"
+            ],
+            "description": "Instantly gain two Tarot cards."
+        },
+        {
+            "name": "Wheel of Fortune",
+            "img": "",
+            "effects": [
+                "No cooldown on next skill"
+            ],
+            "description": "The Cooldown of the next skill decreases by 100%."
+        }
+    ],
+    "skills": [
+        {
+            "name": "Call of Destiny",
+            "img": "",
+            "type": "Normal",
+            "description": "Throw a card at the target location to inflict damage and launch foes into the air."
+        },
+        {
+            "name": "Return",
+            "img": "",
+            "type": "Normal",
+            "description": "Throw a card toward the target location to inflict damage and counter. Use the skill again to slam foes into the ground and inflict damage."
+        },
+        {
+            "name": "Quadra Accelerate",
+            "img": "",
+            "type": "Stacking",
+            "description": "Throw cards at the target location 4 times to inflict damage."
+        },
+        {
+            "name": "Scratch Dealer",
+            "img": "",
+            "type": "Stacking",
+            "description": "Dash toward the target location and inflict damage. Use the skill again to strike downward and inflict damage."
+        },
+        {
+            "name": "Spiral Edge",
+            "img": "",
+            "type": "Stacking",
+            "description": "Leap toward the the target location while throwing a card to inflict damage."
+        },
+        {
+            "name": "Celestial Rain",
+            "img": "",
+            "type": "Ruin",
+            "description": "Call down a rain of cards at the target location to inflict damage. Airborne foes recieve additional damage and are slammed onto the ground."
+        },
+        {
+            "name": "Serendipity",
+            "img": "",
+            "type": "Ruin",
+            "description": "Fan out cards at the target location twice to inflict damage and knock foes away. "
+        },
+        {
+            "name": "Secret Garden",
+            "img": "",
+            "type": "Ruin",
+            "description": "Instantly inflict damage to nearby foes. Foes with 4 stacks are slammed onto the ground."
+        }
+    ]
+}

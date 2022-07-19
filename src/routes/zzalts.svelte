@@ -42,7 +42,7 @@
     function checkName() {
         isGuessing = false;
         const regex = new RegExp("^(z{2,3}|s{2,3})(a{1,3}|e{1,3}|i{1,3}|o{1,3}|u{1,3}|y{1,3})(n)(g{1,3})$");
-        isValid = regex.test(name);
+        isValid = regex.test(name.toLowerCase());
 
         if (isValid && !isFree) {
             isFree = true;
@@ -68,7 +68,7 @@
     <!-- 2 videos for smooth transitions -->
     <div class="video-background">
         <video
-            src={`${base}/idle.webm`}
+            src={`${base}/zzalts/idle.webm`}
             type='video/webm'
             autoplay
             loop
@@ -77,7 +77,7 @@
             class="freedeo"
             class:show={isFree} 
             bind:this={freeVideo}
-            src={`${base}/free.webm`}
+            src={`${base}/zzalts/free.webm`}
             type='video/webm'
         />
     </div> 
@@ -89,7 +89,7 @@
         <input type="text" bind:value={name} on:keypress={handleKeyPress} on:input={() => isGuessing = true} autofocus />
     </div>
     <div class:disabled={name.length===0} class="button" on:click={checkName}>{name.toUpperCase() === "ZZANG" ? "DUH" : "IS IT ZZANG?"}</div>
-    <img class:faded={isGuessing} class={isValid ? "correct" : "incorrect"} src={`${base}/thumbsup.png`} />
+    <img class:faded={isGuessing} class={isValid ? "correct" : "incorrect"} src={`${base}/zzalts/thumbsup.png`} />
 </main>
 
 <style>
