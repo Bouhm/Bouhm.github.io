@@ -15,7 +15,7 @@ const config = {
 			fallback: null,
 		}),
 		paths: {
-			base: prod ? '/bouhm.github.io' : ''
+			base: prod ? '/bouhm.github.io' : '',	
 		},
 		prerender: {
 			default: true
