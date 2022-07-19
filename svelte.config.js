@@ -1,4 +1,5 @@
-import adapter from '@sveltejs/adapter-static';
+// import adapter from '@sveltejs/adapter-static';
+import adapter from '@sveltejs/adapter-cloudflare';
 import preprocess from 'svelte-preprocess';
 
 const prod = process.env.NODE_ENV === 'production';
@@ -9,14 +10,14 @@ const config = {
 	// for more information about preprocessors
 	preprocess: preprocess(),
 	kit: {
-		adapter: adapter({
-			pages: "docs",
-			assets: "docs",
-			fallback: null,
-		}),
-		paths: {
-			base: prod ? '/bouhm.github.io' : '',	
-		},
+		adapter: adapter(),
+		// adapter: adapter({
+		// 	pages: "docs",
+		// 	assets: "docs",
+		// }),
+		// paths: {
+		// 	base: prod ? '/bouhm.github.io' : '',	
+		// },
 		prerender: {
 			default: true
 		}

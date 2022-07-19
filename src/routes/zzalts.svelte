@@ -100,24 +100,24 @@
         overflow: hidden;
     }
     .video-background video {
-            z-index: -2;
-            min-width: 100%;
-            min-height: 100%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            object-fit: cover;
-            filter: brightness(70%);
+        z-index: -2;
+        min-width: 100%;
+        min-height: 100%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        object-fit: cover;
+        filter: brightness(70%);
     }
-    .video-background videoh1deo {
+    .video-background .freedeo {
         z-index: -1;
         visibility: hidden;
         opacity: 0;
         transition-property: visibility;
         transition: visibility 0s 1.5s, opacity 1.5s linear;
     }
-    .video-background video.show { 
+    .video-background .freedeo.show { 
         visibility: visible;
         opacity: 1;
         transition-property: visibility;
