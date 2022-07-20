@@ -1,0 +1,171 @@
+[
+    {
+        "id": 500,
+        "cards": [101],
+        "rotations": [101]
+    },
+    {
+        "id": 501,
+        "cards": [104],
+        "rotations": [104]
+    },
+    {
+        "id": 502,
+        "cards": [103],
+        "rotations": [103]
+    },
+    {
+        "id": 503,
+        "cards": [110],
+        "rotations": [110]
+    },
+    {
+        "id": 504,
+        "cards": [106],
+        "rotations": [
+            [106, 210, 211],
+            [106, 211, 210]
+        ],
+        "notes": "Use Quadra Accelerate and Scratch Dealer to maximize stacks."
+    },
+    {
+        "id": 505,
+        "cards": [108],
+        "rotations": [
+            [108, 300],
+            [108, 223]
+        ],
+        "notes": "Use within 30s of next awakening to refresh cooldown, otherwise before using Celestial Rain."
+    },
+    {
+        "id": 506,
+        "cards": [109],
+        "rotations": [
+            [108, 300],
+            [108, 223]
+        ],
+        "notes": "Use after Rain. If in Endless Mana state, use before Celestial Rain falls but after its cooldown."
+    },
+    {
+        "id": 600,
+        "cards": [100],
+        "rotations": [
+            [100, 210, 401, 401, 211, 401, 401],
+            [100, 211, 401, 401, 210, 401, 401]
+        ],
+        "notes": "Use Quadra Accelerate and Scratch Dealer as main stacking skills while weaving in autoattacks to maximize stacks."
+    },
+    {
+        "id": 601,
+        "cards": [102],
+        "rotations": [
+            [211, 210, 202, 102, 223, 212, 212, 226]
+        ]
+    },
+    {
+        "id": 602,
+        "cards": [105],
+        "rotations": [
+            [211, 210, 202, 105, 223, 212, 212, 225]
+        ]
+    },
+    {
+        "id": 603,
+        "cards": [107],
+        "rotations": [
+            [202, 107, 225, 223, 226]
+        ]
+    },
+    {
+        "id": 604,
+        "cards": [111],
+        "rotations": [
+            [211, 210, 111, 300, 223, 212, 212, 223],
+            [211, 210, 202, 105, 223, 212, 212, 223]
+        ]
+    },
+    {
+        "id": 700,
+        "cards": [105, 107],
+        "rotations": [
+            [202, 105, 107, 223, 223, 226, 225]
+        ]
+    },
+    {
+        "id": 701,
+        "cards": [105, 102],
+        "rotations": [
+            [211, 210, 202, 105, 111, 223, 212, 212, 225]
+        ]
+    },
+    {
+        "id": 702,
+        "cards": [105, 111],
+        "rotations": [
+            [211, 210, 202, 105, 111, 223, 212, 212, 223]
+        ]
+    },
+    {
+        "id": 703,
+        "cards": [105, 106],
+        "rotations": [
+            [212, 212, 202, 105, 223, 106, 211, 225, 226]
+        ]
+    },
+    {
+        "id": 704,
+        "cards": [105, 100],
+        "rotations": [
+            [212, 212, 202, 105, 223, 100, 211, 401, 401, 225]
+        ]
+    },
+    {
+        "id": 705,
+        "cards": [105, 109],
+        "rotations": [
+            [211, 210, 202, 105, 223, 212, 212, 225, 109]
+        ]
+    },
+    {
+        "id": 706,
+        "cards": [107, 102],
+        "rotations": [
+            [202, 107, 102, 225, 223, 226]
+        ]
+    },
+    {
+        "id": 707,
+        "cards": [107, 111],
+        "rotations": [
+            [202, 107, 111, 225, 223, 226, 223, 226]
+        ]
+    },
+    {
+        "id": 708,
+        "cards": [107, 109],
+        "rotations": [
+            [202, 107, 102, 225, 223, 109]
+        ]
+    },
+    {
+        "id": 709,
+        "cards": [102, 106],
+        "rotations": [
+            [212, 212, 202, 102, 223, 106, 211, 226, 210, 225]
+        ]
+    },
+    {
+        "id": 710,
+        "cards": [102, 100],
+        "rotations": [
+            [212, 212, 202, 102, 223, 100, 211, 401, 401, 226]
+        ]
+    },
+    {
+        "id": 711,
+        "cards": [102, 111],
+        "rotations": [
+            [211, 210, 202, 102, 111, 223, 212, 212, 223]
+        ]
+    }
+]

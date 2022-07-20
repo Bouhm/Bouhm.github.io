@@ -2,7 +2,7 @@
     "cards": [
         {
             "id": 100,
-            "name": "3-Head",
+            "name": "3Head",
             "effects": [
                 "Increased stacking",
                 "Increased damage"
@@ -154,81 +154,117 @@
         },
         {
             "id": 206,
+            "name": "Normal",
+            "type": "Normal",
+            "description": ""
+        },
+        {
+            "id": 210,
             "name": "Quadra Accelerate",
             "type": "Stacking",
             "description": "Throw cards at the target location 4 times to inflict damage."
         },
         {
-            "id": 207,
+            "id": 211,
             "name": "Scratch Dealer",
             "type": "Stacking",
             "description": "Dash toward the target location and inflict damage. Use the skill again to strike downward and inflict damage."
         },
         {
-            "id": 208,
+            "id": 212,
             "name": "Spiral Edge",
             "type": "Stacking",
             "description": "Leap toward the the target location while throwing a card to inflict damage."
         },
         {
-            "id": 209,
+            "id": 213,
             "name": "Dance of Spineflower",
             "type": "Stacking",
             "description": "Throw a flurry of cards while moving towards the target, inflicting damage. Use the skill again to return to your original position."
         },
         {
-            "id": 210,
+            "id": 214,
             "name": "Checkmate",
             "type": "Stacking",
             "description": "Quickly throw cards toward the target location, inflicting damage."
         },
         {
-            "id": 211,
+            "id": 215,
             "name": "Stream of Edge",
             "type": "Stacking",
             "description": "Open two portal gates at the target location, inflicting damage on all foes in between."
         },
         {
-            "id": 212,
+            "id": 216,
             "name": "Infinity Shower",
             "type": "Stacking",
             "description": "Throw cards down at the target location, inflicting damage."
         },
         {
-            "id": 213,
+            "id": 217,
+            "name": "Stacking",
+            "type": "Stacking",
+            "description": ""
+        },
+        {
+            "id": 223,
             "name": "Celestial Rain",
             "type": "Ruin",
             "description": "Call down a rain of cards at the target location to inflict damage. Airborne foes recieve additional damage and are slammed onto the ground."
         },
         {
-            "id": 214,
+            "id": 224,
             "name": "Four of a Kind",
             "type": "Ruin",
             "description": "Throw four cards at the target location, inflicting damage and knocking back foes."
         },
         {
-            "id": 215,
+            "id": 225,
             "name": "Serendipity",
             "type": "Ruin",
             "description": "Fan out cards at the target location twice to inflict damage and knock foes away. "
         },
         {
-            "id": 216,
+            "id": 226,
             "name": "Secret Garden",
             "type": "Ruin",
             "description": "Instantly inflict damage to nearby foes. Foes with 4 stacks are slammed onto the ground."
         },
         {
+            "id": 226,
+            "name": "Ruin",
+            "type": "Ruin",
+            "description": ""
+        },
+        {
             "id": 300,
+            "name": "Awakening Skill",
+            "type": "Awakening",
+            "description": ""
+        },
+        {
+            "id": 301,
             "name": "Deathbound",
             "type": "Awakening",
             "description": "Summon the Card of Death, inflicting damage and knocking foes away. Damage increases based on number of stacks."
         },
         {
-            "id": 301,
+            "id": 302,
             "name": "Prismatic Mirror",
             "type": "Awakening",
             "description": "Summon a stack of enormous cards at the target location, inflicting damage. The cards then explode and knock back foes, inflicting damage."
+        },
+        {
+            "id": 400,
+            "name": "Spacebar",
+            "type": "Spacebar",
+            "description": ""
+        },
+        {
+            "id": 401,
+            "name": "Autoattack",
+            "type": "Autoattack",
+            "description": ""
         }
     ]
 }
