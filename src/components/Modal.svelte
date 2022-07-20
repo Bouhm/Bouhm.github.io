@@ -1,13 +1,21 @@
 <script lang="ts">
     export let title: string;
+    export let onClose: ()=>void;
+
+    function handleKeyPress(e: KeyboardEvent) {
+        e.preventDefault();
+        if (e.code === "Escape") {
+            onClose();
+        }
+    }
 </script>
 
-<div class="modal-backdrop">
-
-</div>
+<svelte:window on:keydown={handleKeyPress}/>
+<div class="modal-backdrop" />
 <div class="modal-container">
     <div class="modal-title">
         {title}
+        <div class="modal-close" on:click={onClose}>✖</div>
     </div>
     <div class="modal-content">
         <slot></slot>
@@ -29,16 +37,33 @@
         position: fixed;
         left: 50%;
         top: 50%;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -70%);
         z-index: 99;
         display: flex;
         flex-flow: column;
-        border-radius: 6px;
+        border-radius: 8px;
+        padding: 1rem;
+        background-color: #191328;
+    }
+    .modal-title {
+        position: relative;
+        text-transform: uppercase;
+        font-weight: 700;
+        padding-bottom: 1rem;
+        font-size: 1.3em;
+    }
+    .modal-close {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .modal-close:hover {
+        cursor: pointer;
     }
     .modal-container .modal-title {
         border-bottom: 2px solid white;
     }
-    .modal-container .modal-content {
-
+    .modal-content {
+        padding: 1rem;
     }
 </style>
