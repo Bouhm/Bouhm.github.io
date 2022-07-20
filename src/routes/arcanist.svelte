@@ -1,12 +1,12 @@
 <script lang="ts">
   import { base } from '$app/paths';
-  import type { Combo, Skill } from '../data/types';
-  import arcanistDb from '../data/arcanist.json';
-  import combosDb from '../data/combos.json';
+  import type { Combo, Skill } from '../arcanist/data/types';
+  import arcanistDb from '../data/arcanist/arcanist.json';
+  import combosDb from '../data/arcanist/combos.json';
   import { clone, uniq, filter, find, flatten, shuffle, indexOf, map, max } from 'lodash';
-  import Modal from '../components/Modal.svelte';
-  import ComboRow from 'src/components/ComboRow.svelte';
-  import SkillKey from 'src/components/SkillKey.svelte';
+  import Modal from '../components/arcanist/Modal.svelte';
+  import ComboRow from '../components/arcanist/ComboRow.svelte';
+  import SkillKey from '../components/arcanist/SkillKey.svelte';
 
   const cardKeys = ["Z", "X"];
   const awakeningId = 300;
