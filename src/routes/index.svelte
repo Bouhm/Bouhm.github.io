@@ -9,8 +9,6 @@
 </main>
 
 <style>
-	@import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
-
 	main {
 		text-align: center;
 		padding: 1em;

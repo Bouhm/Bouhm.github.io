@@ -1,270 +1,278 @@
-{
-    "cards": [
-        {
-            "id": 100,
-            "name": "3Head",
-            "effects": [
-                "Increased stacking",
-                "Increased damage"
-            ],
-            "combos":  [],
-            "description": "Basic Attack changes into 3 directions for 16s. On hit, earn 1 stack. Damage to foes +100%. Damage to Challenge or lower monsters +400%."
-        },
-        {
-            "id": 101,
-            "name": "Mayhem",
-            "effects": [
-                "Increased attack speed"
-            ],
-            "combos":  [],
-            "description": "For 30s, Atk. Speed +3% for 4s every time skills are used, up to 15%."
-        },
-        {
-            "id": 102,
-            "name": "Twisted Fate",
-            "effects": [
-                "Chance of increased damage"
-            ],
-            "description": "For 4s, your skill Damage either stays the same or increases by 40%."
-        },
-        {
-            "id": 103,
-            "name": "Corrosion",
-            "effects": [
-                "Chance of debuff for increased damage"
-            ],
-            "description": "For 30s, gain a 30% chance of +10% Damage to the foe for 5s."
-        },
-        {
-            "id": 104,
-            "name": "Ghost",
-            "effects": [
-                "Increased movement speed",
-                "Damage reduction"
-            ],
-            "description": "Ignore collision with monsters. Move Speed +20% and Damage from foes -50% for 3 hits for 16s."
-        },
-        {
-            "id": 105,
-            "name": "Cull",
-            "effects": [
-                "Increased crit chance and crit damage"
-            ],
-            "description": "For 4s, Crit Rate for all skill attacks 100% and Crit Damage +50% when they hit 1 foe."
-        },
-        {
-            "id": 106,
-            "name": "Balance",
-            "effects": [
-                "Increased stacking"
-            ],
-            "description": "For 30s, your Stacking skills are enhanced and grant you 1 more stack with each hit."
-        },
-        {
-            "id": 107,
-            "name": "Judgment",
-            "effects": [
-                "Full stacks on Ruin skill"
-            ],
-            "description": "For 4s, Ruin skills always trigger the 4 stack effect, regardless of the actual number of stacks cast upon foes."
-        },
-        {
-            "id": 108,
-            "name": "Moon",
-            "effects": [
-                "Cooldown reduction",
-                "Increased mana regeneration"
-            ],
-            "description": "Cooldown -10% and MP Recovery Speed increase +20% for 30s."
-        },
-        {
-            "id": 109,
-            "name": "Star",
-            "effects": [
-                "Mana recovery",
-                "Cooldown reduction"
-            ],
-            "description": "Recovers 100% MP. Remaining skills Cooldown -15% except for Awakening, Movement, and Stand Up skills."
-        },
-        {
-            "id": 110,
-            "name": "Royal",
-            "effects": [
-                "Gain Tarot cards"
-            ],
-            "description": "Instantly gain two Tarot cards."
-        },
-        {
-            "id": 111,
-            "name": "Wheel of Fortune",
-            "effects": [
-                "No cooldown on next skill"
-            ],
-            "description": "The Cooldown of the next skill decreases by 100%."
-        },
-        {
-            "id": 112,
-            "name": "Emperor",
-            "effects": [],
-            "description": ""
-        },
-        {
-            "id": 113,
-            "name": "Empress",
-            "effects": [],
-            "description": ""
-        }
-    ],
-    "skills": [
-        {
-            "id": 200,
-            "name": "Call of Destiny",
-            "type": "Normal",
-            "description": "Throw a card at the target location to inflict damage and launch foes into the air."
-        },
-        {
-            "id": 201,
-            "name": "Unlimited Shuffle",
-            "type": "Normal",
-            "description": "Throw a stack of cards at the target location to inflict damage and launch foes into the air. The foes are then slammed onto the ground, inflicting damage."
-        },
-        {
-            "id": 202,
-            "name": "Return",
-            "type": "Normal",
-            "description": "Throw a card toward the target location to inflict damage and counter. Use the skill again to slam foes into the ground and inflict damage."
-        },
-        {
-            "id": 203,
-            "name": "Mysterious Stampede",
-            "type": "Normal",
-            "description": "Quickly move left and return, inflicting damage both times."
-        },
-        {
-            "id": 204,
-            "name": "Dark Resurrection",
-            "type": "Normal",
-            "description": "Throw cards at the target location and summon a Demon that inflicts damage."
-        },
-        {
-            "id": 205,
-            "name": "Evoke",
-            "type": "Normal",
-            "description": "Cast a magick circle at the target location. Use the skill again to inflict damage to foes."
-        },
-        {
-            "id": 206,
-            "name": "Normal",
-            "type": "Normal",
-            "description": ""
-        },
-        {
-            "id": 210,
-            "name": "Quadra Accelerate",
-            "type": "Stacking",
-            "description": "Throw cards at the target location 4 times to inflict damage."
-        },
-        {
-            "id": 211,
-            "name": "Scratch Dealer",
-            "type": "Stacking",
-            "description": "Dash toward the target location and inflict damage. Use the skill again to strike downward and inflict damage."
-        },
-        {
-            "id": 212,
-            "name": "Spiral Edge",
-            "type": "Stacking",
-            "description": "Leap toward the the target location while throwing a card to inflict damage."
-        },
-        {
-            "id": 213,
-            "name": "Dance of Spineflower",
-            "type": "Stacking",
-            "description": "Throw a flurry of cards while moving towards the target, inflicting damage. Use the skill again to return to your original position."
-        },
-        {
-            "id": 214,
-            "name": "Checkmate",
-            "type": "Stacking",
-            "description": "Quickly throw cards toward the target location, inflicting damage."
-        },
-        {
-            "id": 215,
-            "name": "Stream of Edge",
-            "type": "Stacking",
-            "description": "Open two portal gates at the target location, inflicting damage on all foes in between."
-        },
-        {
-            "id": 216,
-            "name": "Infinity Shower",
-            "type": "Stacking",
-            "description": "Throw cards down at the target location, inflicting damage."
-        },
-        {
-            "id": 217,
-            "name": "Stacking",
-            "type": "Stacking",
-            "description": ""
-        },
-        {
-            "id": 223,
-            "name": "Celestial Rain",
-            "type": "Ruin",
-            "description": "Call down a rain of cards at the target location to inflict damage. Airborne foes recieve additional damage and are slammed onto the ground."
-        },
-        {
-            "id": 224,
-            "name": "Four of a Kind",
-            "type": "Ruin",
-            "description": "Throw four cards at the target location, inflicting damage and knocking back foes."
-        },
-        {
-            "id": 225,
-            "name": "Serendipity",
-            "type": "Ruin",
-            "description": "Fan out cards at the target location twice to inflict damage and knock foes away. "
-        },
-        {
-            "id": 226,
-            "name": "Secret Garden",
-            "type": "Ruin",
-            "description": "Instantly inflict damage to nearby foes. Foes with 4 stacks are slammed onto the ground."
-        },
-        {
-            "id": 226,
-            "name": "Ruin",
-            "type": "Ruin",
-            "description": ""
-        },
-        {
-            "id": 300,
-            "name": "Awakening Skill",
-            "type": "Awakening",
-            "description": ""
-        },
-        {
-            "id": 301,
-            "name": "Deathbound",
-            "type": "Awakening",
-            "description": "Summon the Card of Death, inflicting damage and knocking foes away. Damage increases based on number of stacks."
-        },
-        {
-            "id": 302,
-            "name": "Prismatic Mirror",
-            "type": "Awakening",
-            "description": "Summon a stack of enormous cards at the target location, inflicting damage. The cards then explode and knock back foes, inflicting damage."
-        },
-        {
-            "id": 400,
-            "name": "Spacebar",
-            "type": "Spacebar",
-            "description": ""
-        },
-        {
-            "id": 401,
-            "name": "Autoattack",
-            "type": "Autoattack",
-            "description": ""
-        }
-    ]
-}
+[
+    {
+        "id": 100,
+        "name": "3Head",
+        "effects": [
+            "Increased stacking",
+            "Increased damage"
+        ],
+        "type": "Card",
+        "description": "Basic Attack changes into 3 directions for 16s. On hit, earn 1 stack. Damage to foes +100%. Damage to Challenge or lower monsters +400%."
+    },
+    {
+        "id": 101,
+        "name": "Mayhem",
+        "effects": [
+            "Increased attack speed"
+        ],
+        "type": "Card",
+        "description": "For 30s, Atk. Speed +3% for 4s every time skills are used, up to 15%."
+    },
+    {
+        "id": 102,
+        "name": "Twisted Fate",
+        "effects": [
+            "Chance of increased damage"
+        ],
+        "type": "Card",
+        "description": "For 4s, your skill Damage either stays the same or increases by 40%."
+    },
+    {
+        "id": 103,
+        "name": "Corrosion",
+        "effects": [
+            "Chance of debuff for increased damage"
+        ],
+        "type": "Card",
+        "description": "For 30s, gain a 30% chance of +10% Damage to the foe for 5s."
+    },
+    {
+        "id": 104,
+        "name": "Ghost",
+        "effects": [
+            "Increased movement speed",
+            "Damage reduction"
+        ],
+        "type": "Card",
+        "description": "Ignore collision with monsters. Move Speed +20% and Damage from foes -50% for 3 hits for 16s."
+    },
+    {
+        "id": 105,
+        "name": "Cull",
+        "effects": [
+            "Increased crit chance and crit damage"
+        ],
+        "type": "Card",
+        "description": "For 4s, Crit Rate for all skill attacks 100% and Crit Damage +50% when they hit 1 foe."
+    },
+    {
+        "id": 106,
+        "name": "Balance",
+        "effects": [
+            "Increased stacking"
+        ],
+        "type": "Card",
+        "description": "For 30s, your Stacking skills are enhanced and grant you 1 more stack with each hit."
+    },
+    {
+        "id": 107,
+        "name": "Judgment",
+        "effects": [
+            "Full stacks on Ruin skill"
+        ],
+        "type": "Card",
+        "description": "For 4s, Ruin skills always trigger the 4 stack effect, regardless of the actual number of stacks cast upon foes."
+    },
+    {
+        "id": 108,
+        "name": "Moon",
+        "effects": [
+            "Cooldown reduction",
+            "Increased mana regeneration"
+        ],
+        "type": "Card",
+        "description": "Cooldown -10% and MP Recovery Speed increase +20% for 30s."
+    },
+    {
+        "id": 109,
+        "name": "Star",
+        "effects": [
+            "Mana recovery",
+            "Cooldown reduction"
+        ],
+        "type": "Card",
+        "description": "Recovers 100% MP. Remaining skills Cooldown -15% except for Awakening, Movement, and Stand Up skills."
+    },
+    {
+        "id": 110,
+        "name": "Royal",
+        "effects": [
+            "Gain Tarot cards"
+        ],
+        "type": "Card",
+        "description": "Instantly gain two Tarot cards."
+    },
+    {
+        "id": 111,
+        "name": "Wheel of Fortune",
+        "effects": [
+            "No cooldown on next skill"
+        ],
+        "type": "Card",
+        "description": "The Cooldown of the next skill decreases by 100%."
+    },
+    {
+        "id": 112,
+        "name": "Emperor",
+        "effects": [],
+        "type": "Card",
+        "description": ""
+    },
+    {
+        "id": 113,
+        "name": "Empress",
+        "effects": [],
+        "type": "Card",
+        "description": ""
+    },
+    {
+        "id": 200,
+        "name": "Call of Destiny",
+        "type": "Normal",
+        "description": "Throw a card at the target location to inflict damage and launch foes into the air."
+    },
+    {
+        "id": 201,
+        "name": "Unlimited Shuffle",
+        "type": "Normal",
+        "description": "Throw a stack of cards at the target location to inflict damage and launch foes into the air. The foes are then slammed onto the ground, inflicting damage."
+    },
+    {
+        "id": 202,
+        "name": "Return",
+        "type": "Normal",
+        "description": "Throw a card toward the target location to inflict damage and counter. Use the skill again to slam foes into the ground and inflict damage."
+    },
+    {
+        "id": 203,
+        "name": "Mysterious Stampede",
+        "type": "Normal",
+        "description": "Quickly move left and return, inflicting damage both times."
+    },
+    {
+        "id": 204,
+        "name": "Dark Resurrection",
+        "type": "Normal",
+        "description": "Throw cards at the target location and summon a Demon that inflicts damage."
+    },
+    {
+        "id": 205,
+        "name": "Evoke",
+        "type": "Normal",
+        "description": "Cast a magick circle at the target location. Use the skill again to inflict damage to foes."
+    },
+    {
+        "id": 206,
+        "name": "Normal",
+        "type": "Normal",
+        "description": ""
+    },
+    {
+        "id": 210,
+        "name": "Quadra Accelerate",
+        "type": "Stacking",
+        "description": "Throw cards at the target location 4 times to inflict damage."
+    },
+    {
+        "id": 211,
+        "name": "Scratch Dealer",
+        "type": "Stacking",
+        "description": "Dash toward the target location and inflict damage. Use the skill again to strike downward and inflict damage."
+    },
+    {
+        "id": 212,
+        "name": "Spiral Edge",
+        "type": "Stacking",
+        "description": "Leap toward the the target location while throwing a card to inflict damage."
+    },
+    {
+        "id": 213,
+        "name": "Dance of Spineflower",
+        "type": "Stacking",
+        "description": "Throw a flurry of cards while moving towards the target, inflicting damage. Use the skill again to return to your original position."
+    },
+    {
+        "id": 214,
+        "name": "Checkmate",
+        "type": "Stacking",
+        "description": "Quickly throw cards toward the target location, inflicting damage."
+    },
+    {
+        "id": 215,
+        "name": "Stream of Edge",
+        "type": "Stacking",
+        "description": "Open two portal gates at the target location, inflicting damage on all foes in between."
+    },
+    {
+        "id": 216,
+        "name": "Infinity Shower",
+        "type": "Stacking",
+        "description": "Throw cards down at the target location, inflicting damage."
+    },
+    {
+        "id": 217,
+        "name": "Stacking",
+        "type": "Stacking",
+        "description": ""
+    },
+    {
+        "id": 223,
+        "name": "Celestial Rain",
+        "type": "Ruin",
+        "description": "Call down a rain of cards at the target location to inflict damage. Airborne foes recieve additional damage and are slammed onto the ground."
+    },
+    {
+        "id": 224,
+        "name": "Four of a Kind",
+        "type": "Ruin",
+        "description": "Throw four cards at the target location, inflicting damage and knocking back foes."
+    },
+    {
+        "id": 225,
+        "name": "Serendipity",
+        "type": "Ruin",
+        "description": "Fan out cards at the target location twice to inflict damage and knock foes away. "
+    },
+    {
+        "id": 226,
+        "name": "Secret Garden",
+        "type": "Ruin",
+        "description": "Instantly inflict damage to nearby foes. Foes with 4 stacks are slammed onto the ground."
+    },
+    {
+        "id": 226,
+        "name": "Ruin",
+        "type": "Ruin",
+        "description": ""
+    },
+    {
+        "id": 300,
+        "name": "Awakening Skill",
+        "type": "Awakening",
+        "description": ""
+    },
+    {
+        "id": 301,
+        "name": "Deathbound",
+        "type": "Awakening",
+        "description": "Summon the Card of Death, inflicting damage and knocking foes away. Damage increases based on number of stacks."
+    },
+    {
+        "id": 302,
+        "name": "Prismatic Mirror",
+        "type": "Awakening",
+        "description": "Summon a stack of enormous cards at the target location, inflicting damage. The cards then explode and knock back foes, inflicting damage."
+    },
+    {
+        "id": 400,
+        "name": "Spacebar",
+        "type": "Spacebar",
+        "description": ""
+    },
+    {
+        "id": 401,
+        "name": "Autoattack",
+        "type": "Autoattack",
+        "description": ""
+    }
+]

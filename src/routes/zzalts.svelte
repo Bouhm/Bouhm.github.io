@@ -1,37 +1,11 @@
 <script lang="ts">
     import { base } from '$app/paths';
-    let altName = "Zzang";
     let name = "";
     let isValid = false;
     let isFree = false;
     // let idleVideo: HTMLVideoElement;
     let freeVideo: HTMLVideoElement;
     let isGuessing = true;
-
-    // function getRandomItem(arr: string[]) {
-    //     return arr[Math.floor(Math.random()*arr.length)]
-    // }
-
-    // function randomRepeatedChar(char: string, min: number, max: number) {
-    //     const size = Math.floor(Math.random() * (max - min) + min);
-    //     return Array(size).fill(char).map(_ => char);
-    // }
-
-    // function handleGenerateName() {
-    //     // Because I dislike regex
-    //     const prefixes = ['z', 's'];
-    //     const vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
-    //     const ends = ['g'];
-
-    //     const newName = [
-    //         ...randomRepeatedChar(getRandomItem(prefixes), 2, 3),
-    //         ...randomRepeatedChar(getRandomItem(vowels), 1, 3),
-    //         ...['N'],
-    //         ...randomRepeatedChar(getRandomItem(ends), 1, 3)
-    //     ].join('')
-
-    //     altName = newName;
-    // }
 
     function handleKeyPress(e: KeyboardEvent) {
         if (e.code === "Enter") {
@@ -81,9 +55,6 @@
             type='video/webm'
         />
     </div> 
-	<!-- <h1>#FREE<span>{altName}</span></h1> -->
-    <!-- <div class="button" on:click={handleGenerateName}>NEW ALT</div> -->
-
     <div class="input-area">
         <h1>#FREE</h1>
         <input type="text" bind:value={name} on:keypress={handleKeyPress} on:input={() => isGuessing = true} autofocus />
@@ -93,8 +64,6 @@
 </main>
 
 <style>
-	@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
-
     .video-background {
         z-index: -3;
         position: absolute;
