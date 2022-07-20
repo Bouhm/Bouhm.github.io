@@ -3,8 +3,10 @@
   import type { Combo, Skill } from '../data/types';
   import arcanistDb from '../data/arcanist.json';
   import combosDb from '../data/combos.json';
-  import { uniq, filter, find, flatten, shuffle, indexOf, sum, max } from 'lodash';
+  import { clone, uniq, filter, find, flatten, shuffle, indexOf, map, max } from 'lodash';
   import Modal from '../components/Modal.svelte';
+  import ComboRow from 'src/components/ComboRow.svelte';
+  import SkillKey from 'src/components/SkillKey.svelte';
 
   const cardKeys = ["Z", "X"];
   const awakeningId = 300;
@@ -12,7 +14,6 @@
   const autoattackId = 401;
   const difficulties = ["EASY", "MEDIUM", "HARD", "INFERNO"];
 
-  let hoveredSkill: Skill|null; 
   let selectedSkillIds: number[] = [];
   // Used to display correctness of each skill where
   // 0 = wrong 
@@ -33,10 +34,18 @@
     []
   )).sort();
  
-  const combosList: Combo[] = shuffle(combosDb as Combo[])
+  let filteredCardIds = map(filter(arcanistDb, skill => skill.type === "Card"), card => card.id);
+  $: combosList = shuffle(filter(combosDb, combo => combo)) as Combo[]
+
   let currentIdx = 0;
   $: currentCombo = combosList[currentIdx];
   $: currentRotations = currentCombo.rotations[0] || [];
+
+  function handleSelectSkill(id: number) {
+    if (selectedSkillIds.length < currentRotations.length) {
+      selectedSkillIds = [...selectedSkillIds, id]
+    }
+  }
 
   function handleKeyPress(e: KeyboardEvent) {
     let pressedSkillId = -1;
@@ -71,7 +80,7 @@
         // Remove last selected skill
         case "Backspace":
           if (selectedSkillIds.length > 0) {
-            selectedSkillIds = selectedSkillIds.slice(0, selectedSkillIds.length-1);
+            handleRemoveSkill(selectedSkillIds.length-1);
           }
           break;
         default:
@@ -79,22 +88,16 @@
       }
     }
 
-    if (pressedSkillId > -1 && selectedSkillIds.length < currentRotations.length) {
-      selectedSkillIds = [...selectedSkillIds, pressedSkillId]
-    }
+    if (pressedSkillId > -1) handleSelectSkill(pressedSkillId);
   }
 
-  function handleRemoveSkill(id: number) {
-    selectedSkillIds = filter(selectedSkillIds, skillId => skillId !== id)
-  }
-
-  function handleClickCard(id: number) {
-    const skill = find((arcanistDb as Skill[]), skill => skill.id === id) as Skill;
-    hoveredSkill = skill;
+  function handleRemoveSkill(idx: number) {
+    let removedSelected = [...selectedSkillIds];
+    removedSelected.splice(idx, 1);
+    selectedSkillIds = removedSelected;
   }
 
   function handleCloseModal() {
-    hoveredSkill = null;
   }
 
   function handleSubmit() {
@@ -151,52 +154,27 @@
 </svelte:head>
 <svelte:window on:keypress={handleKeyPress}/>
 <main>
-  {#if hoveredSkill}
-    <Modal title={hoveredSkill.name} onClose={handleCloseModal} >
-      <div class="skill-detail">
-        <img src={`${base}/arcanist/${hoveredSkill.id}.webp`} />
-        {#if hoveredSkill.description}
-          <div>{hoveredSkill.description}</div>
-        {/if}
+  {#if gameState === 2}
+    <Modal title={`${currentCombo.cards.join(' + ')} Combos`} onClose={handleCloseModal} >
+      <div class="combo-answers">
+        {#each currentCombo.rotations as rotation}
+          <ComboRow rotation={rotation} />
+        {/each}
       </div>
+      <ComboRow rotation={selectedSkillIds} />
     </Modal>
   {/if}
   <section class="cards">
     {#each currentCombo.cards as cardId, i}
-      <div class="card">
-        <img src={`${base}/arcanist/${cardId}.webp`} on:click={() => handleClickCard(cardId)}/>
-        <div class="skill-key">{cardKeys[i]}</div>
-      </div>
+      <SkillKey id={cardId} key={cardKeys[i]} onClick={handleSelectSkill} />
     {/each}
   </section>
   <section class="applied-effects">
     <div class="effects"></div>
     <div class="stacks"></div>
   </section>
-  <section class="combo-answers">
-    {#each currentCombo.rotations as rotation}
-      <div class="skill-row">
-        {#each rotation as skillId} 
-          <div class="skill-box">
-            <img src={`${base}/arcanist/${skillId}.webp`} />
-          </div>
-        {/each}
-      </div>
-    {/each}
-  </section>
   <section class="input-area">
-    <div class="input-skills">
-      {#each selectedSkillIds as skillId}
-        <div class="skill-box">
-          <img src={`${base}/arcanist/${skillId}.webp`} />
-        </div>
-      {/each}
-      {#if currentRotations.length > selectedSkillIds.length}
-        {#each Array(currentRotations.length - selectedSkillIds.length) as _}
-          <div class="skill-box" />
-        {/each}
-      {/if}
-    </div>
+    <ComboRow rotation={selectedSkillIds} max={currentRotations.length} />
     {#if gameState === 1}
       <div class="submit button" on:click={handleSubmit}>Submit</div>
     {:else if gameState === 2}
@@ -206,27 +184,15 @@
   <section class="skills">
     <div class="special-skills">
       <!-- Spacebar -->  
-      <div class="skill-icon">
-        <img src={`${base}/arcanist/${spacebarId}.webp`} />
-        <div class="skill-key">Spacebar</div>
-      </div>
+      <SkillKey id={spacebarId} key="Spacebar" onClick={handleSelectSkill} />
       <!-- Autoattack -->
-      <div class="skill-icon">
-        <img src={`${base}/arcanist/${autoattackId}.webp`} />
-        <div class="skill-key">C</div>
-      </div>
+      <SkillKey id={autoattackId} key="C" onClick={handleSelectSkill} />
       <!-- Awakening -->
-      <div class="skill-icon">
-        <img src={`${base}/arcanist/${awakeningId}.webp`} />
-        <div class="skill-key">V</div>
-      </div>
+      <SkillKey id={awakeningId} key="V" onClick={handleSelectSkill} />
     </div>
     <div class="normal-skills">
       {#each skillIds as skillId, i}
-        <div class="skill-icon">
-          <img src={`${base}/arcanist/${skillId}.webp`} />
-          <div class="skill-key">{i+1}</div>
-        </div>
+        <SkillKey id={skillId} key={(i+1)+""} onClick={handleSelectSkill} />
       {/each}
     </div>
   </section>
@@ -266,16 +232,7 @@
   .special-skills {
     margin-right: 2rem;
   }
-  .skill-icon {
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    margin: 0.5rem;
-  }
-  .skill-icon img {
-    width: 64px;
-    height: auto;
-  }
+ 
   .skill-detail {
     display: flex;
     flex-flow: column;
