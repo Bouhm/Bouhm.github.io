@@ -7,6 +7,7 @@
   import Modal from '../components/arcanist/Modal.svelte';
   import ComboRow from '../components/arcanist/ComboRow.svelte';
   import SkillKey from '../components/arcanist/SkillKey.svelte';
+import Glossary from 'src/arcanist/views/Glossary.svelte';
 
   const cardKeys = ["Z", "X"];
   const awakeningId = 300;
@@ -27,6 +28,7 @@
   // 2 = Round Submitted (self-explanatory)
   // 3 = Ended (all rounds completed)
   let gameState = 1;
+  let showGlossary = false;
 
   // All skill ids used in ALL the combos
   const skillIds: number[] = uniq((combosDb as Combo[]).reduce(
@@ -164,6 +166,10 @@
       <ComboRow rotation={selectedSkillIds} />
     </Modal>
   {/if}
+  {#if showGlossary}
+    <Glossary db={arcanistDb} combos={combosDb} onClose={() => showGlossary = false} />
+  {/if}
+  <div class="glossary-button" onClick={() => showGlossary = true}>i</div>
   <section class="cards">
     {#each currentCombo.cards as cardId, i}
       <SkillKey id={cardId} key={cardKeys[i]} onClick={handleSelectSkill} />
