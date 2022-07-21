@@ -46,12 +46,15 @@
   $: currentRotations = currentCombo.rotations[0] || [];
 
   function handleSelectSkill(id: number) {
+    // console.log("select skill=",id)
     if (selectedSkillIds.length < currentRotations.length) {
       selectedSkillIds = [...selectedSkillIds, id]
     }
   }
 
   function handleKeyPress(e: KeyboardEvent) {
+    if (gameState === 2) return;
+
     let pressedSkillId = -1;
 
     if (parseInt(e.key)) {
@@ -99,30 +102,37 @@
     selectedSkillIds = removedSelected;
   }
 
+  function nextRound() {
+    gameState = 1;
+    currentIdx++;
+    selectedSkillIds = [];
+  }
+
   function handleCloseModal() {
+    nextRound();
   }
 
   function handleSubmit() {
     // Check correctness for every rotation
-    let correctedSkillsArr: number[][] = [];
+    let correctedSkillsArr = currentCombo.rotations.map((rotations) => new Array(rotations.length).fill(0));
 
     // Check every rotation
-    for (let i = 0; i < currentCombo.rotations.length - 1; i++) {
-      // Skip if they're not the same length (this should never be the case and combos.json needs to be fixed)
-      if (currentCombo.rotations[i].length === selectedSkillIds.length) {
-        for (let j = 0; j < currentCombo.rotations[i].length -1; j++) {
-          const currentSkillId = currentCombo.rotations[i][j];
-          const selectedSkillId = selectedSkillIds[j] ? selectedSkillIds[j] : -1;
-          const selectedSkill = find(arcanistDb, skill => skill.id === selectedSkillId);
-          const currentSkill = find(arcanistDb, skill => skill.id === currentSkillId);
-
-          if (currentSkillId === selectedSkillId) {
-            correctedSkillsArr[i][j] = 2;
-          } else if (selectedSkill && currentSkill && selectedSkill.type === currentSkill.type) {
-            correctedSkillsArr[i][j] = 1;
-          } else {
-            correctedSkillsArr[i][j] = 0;
-          }
+    for (let i = 0; i < currentCombo.rotations.length; i++) {
+      for (let j = 0; j < currentCombo.rotations[i].length; j++) {
+        const currentSkillId = currentCombo.rotations[i][j];
+        const selectedSkillId = selectedSkillIds[j] ? selectedSkillIds[j] : -1;
+        const selectedSkill = find(arcanistDb, skill => skill.id === selectedSkillId);
+        const currentSkill = find(arcanistDb, skill => skill.id === currentSkillId);
+        
+        if (currentSkillId === selectedSkillId) {
+          console.log(2)
+          correctedSkillsArr[i][j] = 2;
+        } else if (selectedSkill && currentSkill && selectedSkill.type === currentSkill.type) {
+          console.log(1)
+          correctedSkillsArr[i][j] = 1;
+        } else {
+          console.log(0)
+          correctedSkillsArr[i][j] = 0;
         }
       }
     }
@@ -149,12 +159,15 @@
   function endGame() {
     gameState = 3;
   }
+
+  // $: console.log("selected=", selectedSkillIds)
+  $: console.log('c',correctness)
 </script>
 
 <svelte:head>
   <title>Arcanist</title>
 </svelte:head>
-<svelte:window on:keypress={handleKeyPress}/>
+<svelte:window on:keyup={handleKeyPress}/>
 <main>
   {#if gameState === 2}
     <Modal title={`${currentCombo.cards.join(' + ')} Combos`} onClose={handleCloseModal} >
