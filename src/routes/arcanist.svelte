@@ -1,6 +1,6 @@
 <script lang="ts">
   import { base } from '$app/paths';
-  import type { Combo, Skill } from '../arcanist/data/types';
+  import type { Combo, Skill } from '../data/arcanist/types';
   import arcanistDb from '../data/arcanist/arcanist.json';
   import combosDb from '../data/arcanist/combos.json';
   import { clone, uniq, filter, find, flatten, shuffle, indexOf, map, max } from 'lodash';
@@ -14,6 +14,8 @@
   const spacebarId = 400;
   const autoattackId = 401;
   const difficulties = ["EASY", "MEDIUM", "HARD", "INFERNO"];
+  const comboData = combosDb as Combo[];
+  const arcanistData = arcanistDb as Skill[];
 
   let selectedSkillIds: number[] = [];
   // Used to display correctness of each skill where
@@ -31,13 +33,13 @@
   let showGlossary = false;
 
   // All skill ids used in ALL the combos
-  const skillIds: number[] = uniq((combosDb as Combo[]).reduce(
+  const skillIds: number[] = uniq(comboData.reduce(
     (ids: number[], combo: Combo) => ([...ids, ...filter(flatten(combo.rotations), id => id > 199 && id < 300)]),
     []
   )).sort();
  
-  let filteredCardIds = map(filter(arcanistDb, skill => skill.type === "Card"), card => card.id);
-  $: combosList = shuffle(filter(combosDb, combo => combo)) as Combo[]
+  let filteredCardIds = map(filter(arcanistData, skill => skill.type === "Card"), card => card.id);
+  $: combosList = shuffle(filter(comboData, combo => combo)) as Combo[];
 
   let currentIdx = 0;
   $: currentCombo = combosList[currentIdx];
@@ -75,15 +77,12 @@
           break;
         // Submit
         case "Enter":
-          if (selectedSkillIds.length === currentRotations.length) {
-            handleSubmit();
-          }
+          if (selectedSkillIds.length === currentRotations.length) handleSubmit();
           break;
         // Remove last selected skill
         case "Backspace":
-          if (selectedSkillIds.length > 0) {
-            handleRemoveSkill(selectedSkillIds.length-1);
-          }
+          console.log("backspace")
+          if (selectedSkillIds.length > 0) handleRemoveSkill(selectedSkillIds.length-1);
           break;
         default:
           break;
@@ -96,6 +95,7 @@
   function handleRemoveSkill(idx: number) {
     let removedSelected = [...selectedSkillIds];
     removedSelected.splice(idx, 1);
+    console.log(removedSelected);
     selectedSkillIds = removedSelected;
   }
 
@@ -167,7 +167,7 @@
     </Modal>
   {/if}
   {#if showGlossary}
-    <Glossary db={arcanistDb} combos={combosDb} onClose={() => showGlossary = false} />
+    <Glossary db={arcanistData} combos={comboData} onClose={() => showGlossary = false} />
   {/if}
   <div class="glossary-button" onClick={() => showGlossary = true}>i</div>
   <section class="cards">
