@@ -1,6 +1,7 @@
 <script lang="ts">
     import { base } from '$app/paths';
     export let rotation: number[];
+    export let correctness: number[] = [];
     export let max = -1;
     export let onClick: ((idx: number)=>void) | null = null;
 
@@ -11,7 +12,10 @@
 
 <div class="combo-row">
     {#each rotation as skillId, i} 
-        <div class="skill-box" on:click={() => handleClick(i)}>
+        <div 
+            class={`skill-box c${correctness[i] || ''}`} 
+            on:click={() => handleClick(i)}
+        >
             <img src={`${base}/arcanist/${skillId}.webp`} />
         </div>
     {/each}
@@ -30,5 +34,20 @@
 
     .skill-box {
 
+    }
+ 
+    .skillbox.c0:after {
+        content:'';
+        background-color: rgba();
+    }
+
+    .skillbox.c1{
+        content:'';
+        background-color: rgba();
+    }
+
+    .skillbox.c2{
+        content:'';
+        background-color: rgba();
     }
 </style>

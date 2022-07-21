@@ -7,7 +7,7 @@
   import Modal from '../components/arcanist/Modal.svelte';
   import ComboRow from '../components/arcanist/ComboRow.svelte';
   import SkillKey from '../components/arcanist/SkillKey.svelte';
-import Glossary from 'src/arcanist/views/Glossary.svelte';
+  import Glossary from '../components/arcanist/Glossary.svelte';
 
   const cardKeys = ["Z", "X"];
   const awakeningId = 300;
@@ -163,7 +163,7 @@ import Glossary from 'src/arcanist/views/Glossary.svelte';
           <ComboRow rotation={rotation} />
         {/each}
       </div>
-      <ComboRow rotation={selectedSkillIds} />
+      <ComboRow rotation={selectedSkillIds} correctness={correctness} />
     </Modal>
   {/if}
   {#if showGlossary}
