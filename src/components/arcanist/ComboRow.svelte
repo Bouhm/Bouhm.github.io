@@ -12,11 +12,13 @@
 
 <div class="combo-row">
     {#each rotation as skillId, i} 
-        <div 
-            class={`skill-box c${correctness[i]}`} 
-            on:click={() => handleClick(i)}
-            style="background-image: url('{`${base}/arcanist/${skillId}.webp`}')"
-        />
+        <div class={`wrapper c${correctness[i]}`}>
+            <div 
+                class={`skill-box`} 
+                on:click={() => handleClick(i)}
+                style="background-image: url('{`${base}/arcanist/${skillId}.webp`}')"
+            />
+        </div>
     {/each}
     <!-- Empty slots when guessing -->
     {#if max && max > rotation.length}
@@ -32,34 +34,41 @@
     }
 
     .skill-box {
-        position: relative;
+        width: 64px;
+        height: 64px;
         border-width: 2px 1px 2px 1px;
         border-color: #FFB200;
         border-style: solid;
-        width: 64px;
-        height: 64px;
         background-size: cover;
         background-position: left center;
     }
- 
-    .skill-box.c0::after, .skill-box.c1::after, .skill-box.c2::after {
-        content:'';
+
+    .wrapper {
+        position: relative;
+    }
+
+    .wrapper.c0 > .skill-box, .wrapper.c1 > .skill-box, .wrapper.c2 > .skill-box {
+        filter: grayscale(1);
+    }
+
+    .wrapper.c0::after, .wrapper.c1::after, .wrapper.c2::after {
+        content: '';
         position: absolute;
         top: 0;
-        right: 0;
         left: 0;
+        right: 0;
         bottom: 0;
     }
 
-    .skill-box.c0::after {
-        background-color: rgba(193, 0, 13, 0.55);
+    .wrapper.c0::after {
+        background-color: rgba(193,0,13,0.55);
     }
 
-    .skill-box.c1::after{
-        background-color: rgba(255, 208, 0, 0.55);
+    .wrapper.c1::after{
+        background-color: rgba(255,208,0,0.55);
     }
 
-    .skill-box.c2::after{
-        background-color: rgba(49, 188, 58, 0.55);
+    .wrapper.c2::after{
+        background-color: rgba(49,188,58,0.55);
     }
 </style>
