@@ -49,7 +49,6 @@
   // 2 = Round Submitted (self-explanatory)
   // 3 = Ended (all rounds completed)
   let gameStage = 1;
-  let guessIdx = 0;
   let guessStates = [defaultGuessState]
   let roundIdx = 0;
   let selectedSkillIds: number[] = [];
@@ -59,13 +58,13 @@
   $: combosList = shuffle(filter(comboData, combo => combo)) as Combo[];
   $: roundCombo = combosList[roundIdx];
   $: roundRotation = roundCombo.rotations[0] || [];
-  $: currentState = guessStates[guessIdx];
+  $: currentState = guessStates[guessStates.length-1];
   $: lastSelectedSkillId = selectedSkillIds[selectedSkillIds.length-1];
   $: selectedSkill = find(skillData, skill => skill.id === selectedSkillIds[selectedSkillIds.length-1]) as Skill;
   $: skillsOnCd = filter(selectedSkillIds, id => isOnCd(id));
 
   function isOnCd(id: number, idx?: number) {
-    return !(currentState.cdResetNextSkill && lastSelectedSkillId === id) &&
+    return !(currentState && currentState.cdResetNextSkill && lastSelectedSkillId === id) &&
       id !== autoattackId &&
       selectedSkillIds.includes(id);
   }
@@ -75,7 +74,7 @@
 
     selectedSkillIds = [...selectedSkillIds, id];
 
-    let newState = clone(guessStates[guessIdx]);
+    let newState = clone(guessStates[guessStates.length-1]);
     let stackInc = 2;
     
     switch (id) {
@@ -160,7 +159,7 @@
 
   function handleRemoveSkill() {
     selectedSkillIds = selectedSkillIds.slice(0, selectedSkillIds.length-1);
-    guessIdx--;
+    guessStates = guessStates.slice(0, guessStates.length-1);
   }
 
   function nextRound() {
@@ -168,7 +167,6 @@
     roundIdx++;
     selectedSkillIds = [];
     guessStates = [defaultGuessState];
-    guessIdx = 0;
   }
 
   function handleCloseModal() {
@@ -260,7 +258,7 @@
         </ul>
       {/if}
       <div class="stacks">
-        {#each Array(currentState.stacks) as _}
+        {#each Array(currentState.stacks || 0) as _}
           <div class="stack-card" />
         {/each}
       </div>
@@ -306,7 +304,7 @@
 
 <style>
   :global(body) {
-    background-color: #110C1C;
+    background-color: #150F23;
   }
 
   main {
