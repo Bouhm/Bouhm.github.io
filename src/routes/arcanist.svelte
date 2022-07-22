@@ -13,17 +13,28 @@
   const awakeningId = 300;
   const spacebarId = 400;
   const autoattackId = 401;
+  const judgmentId = 107;
+  const threeHeadId = 100;
+  const balanceId = 106;
+  const wheelId = 111;
+
   const difficulties = ["EASY", "MEDIUM", "HARD", "INFERNO"];
   const comboData = combosDb as Combo[];
   const skillData = arcanistDb as Skill[];
+  // All skill ids used in ALL the combos
+  const skillIds: number[] = uniq(comboData.reduce(
+    (ids: number[], combo: Combo) => ([...ids, ...filter(flatten(combo.rotations), id => id > 199 && id < 300)]),
+    []
+  )).sort();
   const defaultGuessState = {
+    consumeStacks: true,
     cdResetNextSkill: false,
-    shouldAutosStack: false,
+    stackOnAuto: false,
+    increasedStacks: false,
     stacks: 0,
-    stackInc: 2,
   };
 
-  let selectedSkillIds: number[] = [];
+  let showGlossary = false;
   // Used to display correctness of each skill where
   // 0 = wrong 
   // 1 = wrong skill but correct skill type
@@ -36,41 +47,54 @@
   // 2 = Round Submitted (self-explanatory)
   // 3 = Ended (all rounds completed)
   let gameStage = 1;
-  let showGlossary = false;
   let guessIdx = 0;
   let guessStates = [defaultGuessState]
-
-  // All skill ids used in ALL the combos
-  const skillIds: number[] = uniq(comboData.reduce(
-    (ids: number[], combo: Combo) => ([...ids, ...filter(flatten(combo.rotations), id => id > 199 && id < 300)]),
-    []
-  )).sort();
- 
+  let roundIdx = 0;
+  let selectedSkillIds: number[] = [];
   let filteredCardIds = map(filter(skillData, skill => skill.type === "Card"), card => card.id);
   $: combosList = shuffle(filter(comboData, combo => combo)) as Combo[];
-
-  let currentIdx = 0;
-  $: currentCombo = combosList[currentIdx];
-  $: currentRotations = currentCombo.rotations[0] || [];
+  $: roundCombo = combosList[roundIdx];
+  $: roundRotations = roundCombo.rotations[0] || [];
   $: currentState = guessStates[guessIdx];
+  $: selectedSkill = find(skillData, skill => skill.id === selectedSkillIds[selectedSkillIds.length-1]) as Skill;
 
   function handleSelectSkill(id: number) {
-    if (selectedSkillIds.length >= currentRotations.length) return;
+    if (selectedSkillIds.length >= roundRotations.length) return;
     let newState = clone(guessStates[guessIdx]);
     selectedSkillIds = [...selectedSkillIds, id];
+    let stackInc = 2;
+    
+    switch (id) {
+      // Skills usable twice
+      case 211:
+      case 212:
+        if (newState.increasedStacks) stackInc = 4;
+        break;
+      case 210:
+      default: 
+        if (newState.increasedStacks) stackInc++;
+        break;
+    }
 
     if (id > 209 && id < 220) {
       // Stacking skill used, increase stacks
-      newState.stacks += newState.stackInc;
-    } else if (id === ) {
-      // Next skill cd should be reset
-    
-    } else if (id === 100) {
-      // When Three-Headed Snake is used, autos apply stacks
-      newState.shouldAutosStack = true;
-    } else if (id === autoattackId && newState.shouldAutosStack) {
-      newState.stacks++;
+      newState.stacks += stackInc;
+    if (id > 219 && id < 230 && newState.consumeStacks) {
+      // Consume stacks on Ruin skill
+      newState.stacks = 0;
     }
+    } else if (id === wheelId) {
+      // Next skill cd should be reset
+      newState.cdResetNextSkill = true;
+    } else if (id === threeHeadId) {
+      // When Three-Headed Snake is used, autos apply stacks
+      newState.stackOnAuto = true;
+    } else if (id === judgmentId) {
+      // When Three-Headed Snake is used, autos apply stacks
+      newState.consumeStacks = false;
+    } else if (id === autoattackId && newState.stackOnAuto) {
+      newState.stacks++;
+    } 
 
     guessStates.push(newState);
   }
@@ -87,7 +111,7 @@
         // Card skill
         case "KeyZ":
         case "KeyX":
-          pressedSkillId = currentCombo.cards[indexOf(cardKeys, e.key.toUpperCase())];
+          pressedSkillId = roundCombo.cards[indexOf(cardKeys, e.key.toUpperCase())];
           break;
         // Spacebar skill
         case "Space":
@@ -103,7 +127,7 @@
           break;
         // Submit
         case "Enter":
-          if (selectedSkillIds.length === currentRotations.length) handleSubmit();
+          if (selectedSkillIds.length === roundRotations.length) handleSubmit();
           break;
         // Remove last selected skill
         case "Backspace":
@@ -124,9 +148,10 @@
 
   function nextRound() {
     gameStage = 1;
-    currentIdx++;
+    roundIdx++;
     selectedSkillIds = [];
     guessStates = [defaultGuessState];
+    guessIdx = 0;
   }
 
   function handleCloseModal() {
@@ -135,24 +160,21 @@
 
   function handleSubmit() {
     // Check correctness for every rotation
-    let correctedSkillsArr = currentCombo.rotations.map((rotations) => new Array(rotations.length).fill(0));
+    let correctedSkillsArr = roundCombo.rotations.map((rotations) => new Array(rotations.length).fill(0));
 
     // Check every rotation
-    for (let i = 0; i < currentCombo.rotations.length; i++) {
-      for (let j = 0; j < currentCombo.rotations[i].length; j++) {
-        const currentSkillId = currentCombo.rotations[i][j];
+    for (let i = 0; i < roundCombo.rotations.length; i++) {
+      for (let j = 0; j < roundCombo.rotations[i].length; j++) {
+        const currentSkillId = roundCombo.rotations[i][j];
         const selectedSkillId = selectedSkillIds[j] ? selectedSkillIds[j] : -1;
         const selectedSkill = find(arcanistDb, skill => skill.id === selectedSkillId);
         const currentSkill = find(arcanistDb, skill => skill.id === currentSkillId);
         
         if (currentSkillId === selectedSkillId) {
-          console.log(2)
           correctedSkillsArr[i][j] = 2;
         } else if (selectedSkill && currentSkill && selectedSkill.type === currentSkill.type) {
-          console.log(1)
           correctedSkillsArr[i][j] = 1;
         } else {
-          console.log(0)
           correctedSkillsArr[i][j] = 0;
         }
       }
@@ -165,15 +187,15 @@
     gameStage = 2;
 
     // 100% correct
-    if (maxCorrectness === 2 * currentRotations.length) numCorrect++;
+    if (maxCorrectness === 2 * roundRotations.length) numCorrect++;
 
-    if (currentIdx > currentRotations.length-1) {
+    if (roundIdx > roundRotations.length-1) {
       endGame();
     }
   }
 
   function handleNextRound() {
-    currentIdx++;
+    roundIdx++;
     gameStage = 2;
   }
   
@@ -182,7 +204,7 @@
   }
 
   // $: console.log("selected=", selectedSkillIds)
-  $: console.log('c',correctness)
+  $: console.log('c',correctness);
 </script>
 
 <svelte:head>
@@ -194,9 +216,9 @@
     <div>Loading...</div> 
   {:else}
     {#if gameStage === 2}
-      <Modal title={`${currentCombo.cards.join(' + ')} Combos`} onClose={handleCloseModal} >
+      <Modal title={`${roundCombo.cards.join(' + ')} Combos`} onClose={handleCloseModal} >
         <div class="combo-answers">
-          {#each currentCombo.rotations as rotation}
+          {#each roundCombo.rotations as rotation}
             <ComboRow rotation={rotation} />
           {/each}
         </div>
@@ -206,14 +228,20 @@
     {#if showGlossary}
       <Glossary db={skillData} combos={comboData} onClose={() => showGlossary = false} />
     {/if}
-    <div class="glossary-button" onClick={() => showGlossary = true}>i</div>
+    <div class="glossary-button" on:click={() => showGlossary = true}>i</div>
     <section class="cards">
-      {#each currentCombo.cards as cardId, i}
+      {#each roundCombo.cards as cardId, i}
         <SkillKey id={cardId} key={cardKeys[i]} onClick={handleSelectSkill} />
       {/each}
     </section>
     <section class="applied-effects">
-      <div class="effects"></div>
+      {#if selectedSkill && selectedSkill.effects}
+        <ul class="effects">
+          {#each selectedSkill.effects as effect}
+            <li>{effect}</li>
+          {/each}
+        </ul>
+      {/if}
       <div class="stacks">
         {#each Array(currentState.stacks) as _}
           <div class="stack-card" />
@@ -221,7 +249,7 @@
       </div>
     </section>
     <section class="input-area">
-      <ComboRow rotation={selectedSkillIds} max={currentRotations.length} />
+      <ComboRow rotation={selectedSkillIds} max={roundRotations.length} />
       {#if gameStage === 1}
         <div class="submit button" on:click={handleSubmit}>Submit</div>
       {:else if gameStage === 2}

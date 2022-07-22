@@ -4,13 +4,13 @@
     export let skill: Skill;
 </script>
 
-<div class="skill-detail">
-    <div class="skill-detail">
+<tr class="skill-detail">
+    <td class="skill-detail">
         <img src={`${base}/arcanist/${skill.id}.webp`} />
         <div class="skill-name">{skill.name}</div>
-    </div>
-    <div class="skill-description">{skill.description}</div>
-</div>
+    </td>
+    <td class="skill-description">{skill.description}</td>
+</tr>
 
 <style>
     .skill-info {

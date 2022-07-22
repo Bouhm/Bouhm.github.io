@@ -2,22 +2,22 @@
     {
         "id": 500,
         "cards": [101],
-        "rotations": [101]
+        "rotations": [[101]]
     },
     {
         "id": 501,
         "cards": [104],
-        "rotations": [104]
+        "rotations": [[104]]
     },
     {
         "id": 502,
         "cards": [103],
-        "rotations": [103]
+        "rotations": [[103]]
     },
     {
         "id": 503,
         "cards": [110],
-        "rotations": [110]
+        "rotations": [[110]]
     },
     {
         "id": 504,
