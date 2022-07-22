@@ -36,9 +36,6 @@
     .skill-box {
         width: 64px;
         height: 64px;
-        border-width: 2px 1px 2px 1px;
-        border-color: #FFB200;
-        border-style: solid;
         background-size: cover;
         background-position: left center;
     }

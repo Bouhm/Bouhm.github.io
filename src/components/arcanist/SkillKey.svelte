@@ -3,13 +3,16 @@
     export let id: number;
     export let key: string;
     export let onClick: (id: number) => void;
+    export let isOnCd = false;
+    export let isCard = false;
 
     function handleClick() {
         onClick(id);
     }
+    $: console.log(isOnCd)
 </script>
 
-<div class="skill-icon" on:click={handleClick}>
+<div class:onCd={isOnCd} class="skill-icon" on:click={handleClick}>
     <img src={`${base}/arcanist/${id}.webp`} />
     <div class="skill-key">{key}</div>
 </div>
@@ -24,5 +27,8 @@
     .skill-icon img {
         width: 64px;
         height: auto;
+    }
+    .skill-icon.onCd {
+        filter: grayscale(1) brightness(0.5);
     }
 </style>

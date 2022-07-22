@@ -1,9 +1,11 @@
 <script lang="ts">
   import { base } from '$app/paths';
+  import { clone, uniq, filter, find, flatten, shuffle, indexOf, map, max, includes } from 'lodash';
+  import { tick } from "svelte";
+
   import type { Combo, Skill } from '../data/arcanist/types';
   import arcanistDb from '../data/arcanist/arcanist.json';
   import combosDb from '../data/arcanist/combos.json';
-  import { clone, uniq, filter, find, flatten, shuffle, indexOf, map, max } from 'lodash';
   import Modal from '../components/arcanist/Modal.svelte';
   import ComboRow from '../components/arcanist/ComboRow.svelte';
   import SkillKey from '../components/arcanist/SkillKey.svelte';
@@ -52,23 +54,36 @@
   let roundIdx = 0;
   let selectedSkillIds: number[] = [];
   let filteredCardIds = map(filter(skillData, skill => skill.type === "Card"), card => card.id);
+  let shouldUpdate = false;
+
   $: combosList = shuffle(filter(comboData, combo => combo)) as Combo[];
   $: roundCombo = combosList[roundIdx];
-  $: roundRotations = roundCombo.rotations[0] || [];
+  $: roundRotation = roundCombo.rotations[0] || [];
   $: currentState = guessStates[guessIdx];
+  $: lastSelectedSkillId = selectedSkillIds[selectedSkillIds.length-1];
   $: selectedSkill = find(skillData, skill => skill.id === selectedSkillIds[selectedSkillIds.length-1]) as Skill;
+  $: skillsOnCd = filter(selectedSkillIds, id => isOnCd(id));
+
+  function isOnCd(id: number, idx?: number) {
+    return !(currentState.cdResetNextSkill && lastSelectedSkillId === id) &&
+      id !== autoattackId &&
+      selectedSkillIds.includes(id);
+  }
 
   function handleSelectSkill(id: number) {
-    if (selectedSkillIds.length >= roundRotations.length) return;
-    let newState = clone(guessStates[guessIdx]);
+    if (selectedSkillIds.length >= roundRotation.length || skillsOnCd.includes(id)) return;
+
     selectedSkillIds = [...selectedSkillIds, id];
+
+    let newState = clone(guessStates[guessIdx]);
     let stackInc = 2;
     
     switch (id) {
       // Skills usable twice
       case 211:
-      case 212:
         if (newState.increasedStacks) stackInc = 4;
+      case 212:
+        stackInc = 4;
         break;
       case 210:
       default: 
@@ -83,6 +98,7 @@
       // Consume stacks on Ruin skill
       newState.stacks = 0;
     }
+
     } else if (id === wheelId) {
       // Next skill cd should be reset
       newState.cdResetNextSkill = true;
@@ -96,6 +112,7 @@
       newState.stacks++;
     } 
 
+    if (newState.stacks > 4) newState.stacks = 4;
     guessStates.push(newState);
   }
 
@@ -127,7 +144,7 @@
           break;
         // Submit
         case "Enter":
-          if (selectedSkillIds.length === roundRotations.length) handleSubmit();
+          if (selectedSkillIds.length === roundRotation.length) handleSubmit();
           break;
         // Remove last selected skill
         case "Backspace":
@@ -187,9 +204,9 @@
     gameStage = 2;
 
     // 100% correct
-    if (maxCorrectness === 2 * roundRotations.length) numCorrect++;
+    if (maxCorrectness === 2 * roundRotation.length) numCorrect++;
 
-    if (roundIdx > roundRotations.length-1) {
+    if (roundIdx > roundRotation.length-1) {
       endGame();
     }
   }
@@ -231,7 +248,7 @@
     <div class="glossary-button" on:click={() => showGlossary = true}>i</div>
     <section class="cards">
       {#each roundCombo.cards as cardId, i}
-        <SkillKey id={cardId} key={cardKeys[i]} onClick={handleSelectSkill} />
+        <SkillKey bind:id={cardId} key={cardKeys[i]} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(cardId)} isCard={true} />
       {/each}
     </section>
     <section class="applied-effects">
@@ -249,7 +266,20 @@
       </div>
     </section>
     <section class="input-area">
-      <ComboRow rotation={selectedSkillIds} max={roundRotations.length} />
+      <div class="input-skills">
+        {#each selectedSkillIds as skillId, i} 
+          <div 
+              class={`skill-box`} 
+              style="background-image: url('{`${base}/arcanist/${skillId}.webp`}')"
+          />
+        {/each}
+        <!-- Empty slots when guessing -->
+        {#if roundRotation.length > selectedSkillIds.length}
+            {#each Array(roundRotation.length - selectedSkillIds.length) as _}
+                <div class="skill-box" />
+            {/each}
+        {/if}
+      </div>
       {#if gameStage === 1}
         <div class="submit button" on:click={handleSubmit}>Submit</div>
       {:else if gameStage === 2}
@@ -259,15 +289,15 @@
     <section class="skills">
       <div class="special-skills">
         <!-- Spacebar -->  
-        <SkillKey id={spacebarId} key="Spacebar" onClick={handleSelectSkill} />
+        <SkillKey id={spacebarId} key="Spacebar" onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(spacebarId)} />
         <!-- Autoattack -->
         <SkillKey id={autoattackId} key="C" onClick={handleSelectSkill} />
         <!-- Awakening -->
-        <SkillKey id={awakeningId} key="V" onClick={handleSelectSkill} />
+        <SkillKey id={awakeningId} key="V" onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(awakeningId)} />
       </div>
       <div class="normal-skills">
         {#each skillIds as skillId, i}
-          <SkillKey id={skillId} key={(i+1)+""} onClick={handleSelectSkill} />
+          <SkillKey id={skillId} key={(i+1)+""} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(skillId)} />
         {/each}
       </div>
     </section>
@@ -327,6 +357,19 @@
     transform: rotate(45deg);
     left: 60px;
     top: 10px;
+  }
+
+  .input-area .input-skills {
+    display: flex;
+  }
+  .input-area .input-skills .skill-box{
+    width: 64px;
+    height: 64px;
+    border-width: 2px 1px 2px 1px;
+    border-color: #FFB200;
+    border-style: solid;
+    background-size: cover;
+    background-position: left center;
   }
 
   .skills {
