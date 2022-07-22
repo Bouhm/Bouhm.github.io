@@ -9,7 +9,6 @@
     function handleClick() {
         onClick(id);
     }
-    $: console.log(isOnCd)
 </script>
 
 <div class:onCd={isOnCd} class="skill-icon" on:click={handleClick}>

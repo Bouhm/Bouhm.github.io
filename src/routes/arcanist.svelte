@@ -53,7 +53,6 @@
   let roundIdx = 0;
   let selectedSkillIds: number[] = [];
   let filteredCardIds = map(filter(skillData, skill => skill.type === "Card"), card => card.id);
-  let shouldUpdate = false;
 
   $: combosList = shuffle(filter(comboData, combo => combo)) as Combo[];
   $: roundCombo = combosList[roundIdx];
@@ -62,11 +61,19 @@
   $: lastSelectedSkillId = selectedSkillIds[selectedSkillIds.length-1];
   $: selectedSkill = find(skillData, skill => skill.id === selectedSkillIds[selectedSkillIds.length-1]) as Skill;
   $: skillsOnCd = filter(selectedSkillIds, id => isOnCd(id));
+  $: console.log(currentState); 
 
   function isOnCd(id: number, idx?: number) {
     return !(currentState && currentState.cdResetNextSkill && lastSelectedSkillId === id) &&
       id !== autoattackId &&
       selectedSkillIds.includes(id);
+  }
+
+  function getCardNames(ids: number[]) {
+    return ids.map(id => {
+      const card = find(skillData, skill => skill.id === id)
+      return card ? card.name : ""
+    })
   }
 
   function handleSelectSkill(id: number) {
@@ -112,7 +119,7 @@
     } 
 
     if (newState.stacks > 4) newState.stacks = 4;
-    guessStates.push(newState);
+    guessStates = [...guessStates, newState];
   }
 
   function handleKeyPress(e: KeyboardEvent) {
@@ -218,8 +225,6 @@
     gameStage = 3;
   }
 
-  // $: console.log("selected=", selectedSkillIds)
-  $: console.log('c',correctness);
 </script>
 
 <svelte:head>
@@ -231,7 +236,7 @@
     <div>Loading...</div> 
   {:else}
     {#if gameStage === 2}
-      <Modal title={`${roundCombo.cards.join(' + ')} Combos`} onClose={handleCloseModal} >
+      <Modal title={`${getCardNames(roundCombo.cards).join(' + ')} Combos`} onClose={handleCloseModal} >
         <div class="combo-answers">
           {#each roundCombo.rotations as rotation}
             <ComboRow rotation={rotation} />
@@ -327,6 +332,11 @@
   }
 
   .applied-effects {
+    display: flex;
+    height: 4rem;
+  }
+
+  .applied-effects .stacks{
     position: relative;
   }
   
