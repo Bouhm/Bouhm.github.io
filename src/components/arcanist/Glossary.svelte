@@ -79,8 +79,8 @@
     .glossary {
         position: absolute;
         top: 0;
-        right: 20rem;
-        left: 20rem;
+        right: 15%;
+        left: 15%;
         bottom: 0;
         z-index: 1;
         background-color: #191328;

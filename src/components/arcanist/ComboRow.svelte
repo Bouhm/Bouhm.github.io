@@ -4,13 +4,14 @@
     export let correctness: number[] = [];
     export let max = -1;
     export let onClick: ((idx: number)=>void) | null = null;
+    export let centered = false;
 
     function handleClick(i: number) {
         onClick && onClick(i);
     }
 </script>
 
-<div class="combo-row">
+<div class="combo-row" class:centered={centered}>
     {#each rotation as skillId, i} 
         <div class={`wrapper c${correctness[i]}`}>
             <div 
@@ -31,6 +32,8 @@
 <style>
     .combo-row {
         display: flex;
+    }
+    .combo-row-centered{
         justify-content: center;
     }
 

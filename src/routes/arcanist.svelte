@@ -54,7 +54,7 @@
   let selectedSkillIds: number[] = [];
   let filteredCardIds = map(filter(skillData, skill => skill.type === "Card"), card => card.id);
 
-  $: combosList = shuffle(filter(comboData, combo => combo)) as Combo[];
+  let combosList = shuffle(filter(comboData, combo => combo)) as Combo[];
   $: roundCombo = combosList[roundIdx];
   $: roundRotation = roundCombo.rotations[0] || [];
   $: currentState = guessStates[guessStates.length-1];
@@ -215,7 +215,8 @@
   }
 
   function endGame() {
-    gameStage = 3;
+    // gameStage = 3;
+    combosList = shuffle(filter(comboData, combo => combo)) as Combo[];
   }
 </script>
 
@@ -230,7 +231,7 @@
         <div class="correct-rotations">
           <h3>{"Rotation(s):"}</h3>
           {#each roundCombo.rotations as rotation, i}
-            <ComboRow rotation={rotation} />
+            <ComboRow rotation={rotation} centered />
             {#if roundCombo.rotations.length > 1 && i < roundCombo.rotations.length-1}
               <div class="rotation-divider">OR</div>
             {/if}
