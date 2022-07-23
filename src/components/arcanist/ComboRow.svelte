@@ -30,7 +30,8 @@
 
 <style>
     .combo-row {
-        display: flex
+        display: flex;
+        justify-content: center;
     }
 
     .skill-box {

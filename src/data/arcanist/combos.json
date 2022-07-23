@@ -48,7 +48,7 @@
             [108, 300],
             [108, 223]
         ],
-        "notes": "Use after Rain. If in Endless Mana state, use before Celestial Rain falls but after its cooldown."
+        "notes": "Use after Celestial Rain. If in Endless Mana state, use before Celestial Rain falls but after its cooldown."
     },
     {
         "id": 600,

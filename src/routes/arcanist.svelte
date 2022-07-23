@@ -214,11 +214,6 @@
     }
   }
 
-  function handleNextRound() {
-    roundIdx++;
-    gameStage = 2;
-  }
-  
   function endGame() {
     gameStage = 3;
   }
@@ -232,11 +227,22 @@
   {#if gameStage === 2}
     <Modal title={`${getCardNames(roundCombo.cards).join(' + ')} Combos`} onClose={handleCloseModal} >
       <div class="combo-answers">
-        {#each roundCombo.rotations as rotation}
-          <ComboRow rotation={rotation} />
-        {/each}
+        <div class="correct-rotations">
+          <h3>{"Rotation(s):"}</h3>
+          {#each roundCombo.rotations as rotation, i}
+            <ComboRow rotation={rotation} />
+            {#if roundCombo.rotations.length > 1 && i < roundCombo.rotations.length-1}
+              <div class="rotation-divider">OR</div>
+            {/if}
+          {/each}
+        </div>
+        <h3>Input:</h3>
+        <ComboRow rotation={selectedSkillIds} correctness={correctness} />
+        {#if roundCombo.notes}
+          <div class="correct-notes">{roundCombo.notes}</div>
+        {/if}
+        <div class="next-button clickable" on:click={nextRound}>Next</div>
       </div>
-      <ComboRow rotation={selectedSkillIds} correctness={correctness} />
     </Modal>
   {/if}
   {#if showGlossary}
@@ -249,13 +255,13 @@
     {/each}
   </section>
   <section class="applied-effects">
-    {#if selectedSkill && selectedSkill.effects}
       <ul class="effects">
-        {#each selectedSkill.effects as effect}
-          <li>{effect}</li>
-        {/each}
+        {#if selectedSkill && selectedSkill.effects}
+          {#each selectedSkill.effects as effect}
+            <li>{effect}</li>
+          {/each}
+        {/if}
       </ul>
-    {/if}
     <div class="stacks">
       {#each Array(currentState.stacks || 0) as _}
         <div class="stack-card" />
@@ -278,7 +284,7 @@
       {/if}
     </div>
     {#if gameStage === 1}
-      <div class="submit-button" on:click={handleSubmit}>Submit</div>
+      <div class="submit-button clickable" on:click={handleSubmit}>Submit</div>
     {/if}
   </section>
   <section class="skills">
@@ -317,10 +323,13 @@
   }
   section.cards {
     flex: 2;
-    margin: 2rem;
+    margin: 1rem;
   }
   section.applied-effects {
-    flex: 2
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    flex: 1.5;
   } 
   section.input-area {
     flex: 2;
@@ -342,11 +351,14 @@
     height: auto;
   }
 
-  .applied-effects {
-    display: flex;
-    height: 4rem;
+  .applied-effects .effects {
+    display: block;
+    min-height: 4rem;
+    margin: 0;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    padding-inline-start: 20px;
   }
-
   .applied-effects .stacks{
     position: relative;
   }
@@ -361,20 +373,20 @@
 
   .applied-effects .stack-card:nth-child(1){
     transform: rotate(-45deg);
-    left: 0;
+    left: -40px;
     top: 10px;
   }
   .applied-effects .stack-card:nth-child(2){
     transform: rotate(-25deg);
-    left: 20px;
+    left: -20px;
   }
   .applied-effects .stack-card:nth-child(3){
     transform: rotate(25deg);
-    left: 40px;
+    left: 0px;
   }
   .applied-effects .stack-card:nth-child(4){
     transform: rotate(45deg);
-    left: 60px;
+    left: 20px;
     top: 10px;
   }
 
@@ -395,7 +407,7 @@
   .input-area .input-skills .skill-box:last-child {
     border-width: 2px 2px 2px 1px;
   }
-  .input-area .submit-button {
+  .submit-button, .next-button {
     border-radius: 4px;
     width: 6rem;
     border: 2px solid white;
@@ -431,4 +443,26 @@
     margin-bottom: 1rem;
   }
 
+  .combo-answers {
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    text-align: left;
+  }
+  .combo-answers .rotation-divider {
+    text-align: center;
+    margin: 0.5rem;
+    font-size: 0.8em;
+  }
+  .correct-rotations {
+    margin-bottom: 2rem;
+  }
+  .combo-answers h3 {
+    text-align: center;
+    margin: 0.5rem;
+  }
+  .combo-answers .correct-notes {
+    margin-top: 1.5rem;
+  }
 </style>

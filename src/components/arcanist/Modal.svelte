@@ -44,6 +44,8 @@
         border-radius: 8px;
         padding: 1rem;
         background-color: #191328;
+        min-width: 40rem;
+        min-height: 20rem;
     }
     .modal-title {
         position: relative;
