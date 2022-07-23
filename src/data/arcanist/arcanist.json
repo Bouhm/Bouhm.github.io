@@ -162,12 +162,6 @@
         "description": "Cast a magick circle at the target location. Use the skill again to inflict damage to foes."
     },
     {
-        "id": 206,
-        "name": "Normal",
-        "type": "Normal",
-        "description": ""
-    },
-    {
         "id": 210,
         "name": "Quadra Accelerate",
         "type": "Stacking",
@@ -210,12 +204,6 @@
         "description": "Throw cards down at the target location, inflicting damage."
     },
     {
-        "id": 217,
-        "name": "Stacking",
-        "type": "Stacking",
-        "description": ""
-    },
-    {
         "id": 223,
         "name": "Celestial Rain",
         "type": "Ruin",
@@ -238,12 +226,6 @@
         "name": "Secret Garden",
         "type": "Ruin",
         "description": "Instantly inflict damage to nearby foes. Foes with 4 stacks are slammed onto the ground."
-    },
-    {
-        "id": 226,
-        "name": "Ruin",
-        "type": "Ruin",
-        "description": ""
     },
     {
         "id": 300,

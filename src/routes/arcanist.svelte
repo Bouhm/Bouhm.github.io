@@ -100,11 +100,9 @@
     if (id > 209 && id < 220) {
       // Stacking skill used, increase stacks
       newState.stacks += stackInc;
-    if (id > 219 && id < 230 && newState.consumeStacks) {
+    } else if (id > 219 && id < 230 && newState.consumeStacks) {
       // Consume stacks on Ruin skill
       newState.stacks = 0;
-    }
-
     } else if (id === wheelId) {
       // Next skill cd should be reset
       newState.cdResetNextSkill = true;
@@ -224,7 +222,6 @@
   function endGame() {
     gameStage = 3;
   }
-
 </script>
 
 <svelte:head>
@@ -232,84 +229,79 @@
 </svelte:head>
 <svelte:window on:keyup={handleKeyPress}/>
 <main>
-  {#if !combosList.length}
-    <div>Loading...</div> 
-  {:else}
-    {#if gameStage === 2}
-      <Modal title={`${getCardNames(roundCombo.cards).join(' + ')} Combos`} onClose={handleCloseModal} >
-        <div class="combo-answers">
-          {#each roundCombo.rotations as rotation}
-            <ComboRow rotation={rotation} />
-          {/each}
-        </div>
-        <ComboRow rotation={selectedSkillIds} correctness={correctness} />
-      </Modal>
-    {/if}
-    {#if showGlossary}
-      <Glossary db={skillData} combos={comboData} onClose={() => showGlossary = false} />
-    {/if}
-    <div class="glossary-button" on:click={() => showGlossary = true}>i</div>
-    <section class="cards">
-      {#each roundCombo.cards as cardId, i}
-        <SkillKey bind:id={cardId} key={cardKeys[i]} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(cardId)} isCard={true} />
-      {/each}
-    </section>
-    <section class="applied-effects">
-      {#if selectedSkill && selectedSkill.effects}
-        <ul class="effects">
-          {#each selectedSkill.effects as effect}
-            <li>{effect}</li>
-          {/each}
-        </ul>
-      {/if}
-      <div class="stacks">
-        {#each Array(currentState.stacks || 0) as _}
-          <div class="stack-card" />
+  {#if gameStage === 2}
+    <Modal title={`${getCardNames(roundCombo.cards).join(' + ')} Combos`} onClose={handleCloseModal} >
+      <div class="combo-answers">
+        {#each roundCombo.rotations as rotation}
+          <ComboRow rotation={rotation} />
         {/each}
       </div>
-    </section>
-    <section class="input-area">
-      <div class="input-skills">
-        {#each selectedSkillIds as skillId, i} 
-          <div 
-              class={`skill-box`} 
-              style="background-image: url('{`${base}/arcanist/${skillId}.webp`}')"
-          />
-        {/each}
-        <!-- Empty slots when guessing -->
-        {#if roundRotation.length > selectedSkillIds.length}
-            {#each Array(roundRotation.length - selectedSkillIds.length) as _}
-                <div class="skill-box" />
-            {/each}
-        {/if}
-      </div>
-      {#if gameStage === 1}
-        <div class="submit button" on:click={handleSubmit}>Submit</div>
-      {:else if gameStage === 2}
-        <div class="next button" on:click={handleNextRound}>Next</div>
-      {/if}
-    </section>
-    <section class="skills">
-      <div class="special-skills">
-        <!-- Spacebar -->  
-        <SkillKey id={spacebarId} key="Spacebar" onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(spacebarId)} />
-        <!-- Autoattack -->
-        <SkillKey id={autoattackId} key="C" onClick={handleSelectSkill} />
-        <!-- Awakening -->
-        <SkillKey id={awakeningId} key="V" onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(awakeningId)} />
-      </div>
-      <div class="normal-skills">
-        {#each skillIds as skillId, i}
-          <SkillKey id={skillId} key={(i+1)+""} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(skillId)} />
-        {/each}
-      </div>
-    </section>
+      <ComboRow rotation={selectedSkillIds} correctness={correctness} />
+    </Modal>
   {/if}
+  {#if showGlossary}
+    <Glossary db={skillData} combos={comboData} onClose={() => showGlossary = false} />
+  {/if}
+  <div class="glossary-button clickable" on:click={() => showGlossary = true}>🕮</div>
+  <section class="cards">
+    {#each roundCombo.cards as cardId, i}
+      <SkillKey bind:id={cardId} key={cardKeys[i]} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(cardId)} isCard={true} />
+    {/each}
+  </section>
+  <section class="applied-effects">
+    {#if selectedSkill && selectedSkill.effects}
+      <ul class="effects">
+        {#each selectedSkill.effects as effect}
+          <li>{effect}</li>
+        {/each}
+      </ul>
+    {/if}
+    <div class="stacks">
+      {#each Array(currentState.stacks || 0) as _}
+        <div class="stack-card" />
+      {/each}
+    </div>
+  </section>
+  <section class="input-area">
+    <div class="input-skills">
+      {#each selectedSkillIds as skillId, i} 
+        <div 
+            class={`skill-box`} 
+            style="background-image: url('{`${base}/arcanist/${skillId}.webp`}')"
+        />
+      {/each}
+      <!-- Empty slots when guessing -->
+      {#if roundRotation.length > selectedSkillIds.length}
+          {#each Array(roundRotation.length - selectedSkillIds.length) as _}
+              <div class="skill-box" />
+          {/each}
+      {/if}
+    </div>
+    {#if gameStage === 1}
+      <div class="submit-button" on:click={handleSubmit}>Submit</div>
+    {/if}
+  </section>
+  <section class="skills">
+    <div class="special-skills">
+      <!-- Spacebar -->  
+      <SkillKey id={spacebarId} key="Spacebar" onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(spacebarId)} />
+      <!-- Autoattack -->
+      <SkillKey id={autoattackId} key="C" onClick={handleSelectSkill} />
+      <!-- Awakening -->
+      <SkillKey id={awakeningId} key="V" onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(awakeningId)} />
+    </div>
+    <div class="normal-skills">
+      {#each skillIds as skillId, i}
+        <SkillKey id={skillId} key={(i+1)+""} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(skillId)} />
+      {/each}
+    </div>
+  </section>
 </main>
 
 <style>
   :global(body) {
     background-color: #150F23;
+    box-sizing: border-box;
   }
 
   main {
@@ -317,18 +309,37 @@
     flex-flow: column;
     align-items: center;
     color: white;
+    height: 95vh;
   }
 
   section {
     display: flex;
   }
+  section.cards {
+    flex: 2;
+    margin: 2rem;
+  }
+  section.applied-effects {
+    flex: 2
+  } 
+  section.input-area {
+    flex: 2;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  section.skills {
+    flex: 1;
+  }
+  
+  .glossary-button {
+    font-size: 2em;
+  }
 
   .card img {
     width: 140px;
     height: auto;
-  }
-  .card img:hover {
-    cursor: pointer;
   }
 
   .applied-effects {
@@ -370,14 +381,27 @@
   .input-area .input-skills {
     display: flex;
   }
-  .input-area .input-skills .skill-box{
+  .input-area .input-skills .skill-box {
     width: 64px;
     height: 64px;
-    border-width: 2px 1px 2px 1px;
-    border-color: #FFB200;
-    border-style: solid;
+    border-bottom: 2px solid white;
     background-size: cover;
     background-position: left center;
+    margin: 0.2em;
+  }
+  .input-area .input-skills .skill-box:first-child {
+    border-width: 2px 1px 2px 2px;
+  }
+  .input-area .input-skills .skill-box:last-child {
+    border-width: 2px 2px 2px 1px;
+  }
+  .input-area .submit-button {
+    border-radius: 4px;
+    width: 6rem;
+    border: 2px solid white;
+    padding: 0.5rem;
+    text-align: center;
+    margin-top: 1rem;
   }
 
   .skills {
@@ -386,6 +410,11 @@
   .special-skills, .normal-skills {
     display: flex;
     justify-content: center;
+  }
+  .special-skills .skill-icon, .normal-skills .skill-icon {
+    border-width: 2px 1px 2px 1px;
+    border-color: #FFB200;
+    border-style: solid;
   }
   .special-skills {
     margin-right: 2rem;
@@ -397,7 +426,7 @@
     align-items: center;
   }
   .skill-detail img {
-    width: 200px;
+    width: 120px;
     height: auto;
     margin-bottom: 1rem;
   }

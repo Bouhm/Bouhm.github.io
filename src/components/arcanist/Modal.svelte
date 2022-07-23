@@ -15,7 +15,7 @@
 <div class="modal-container">
     <div class="modal-title">
         {title}
-        <div class="modal-close" on:click={onClose}>✖</div>
+        <div class="modal-close  clickable" on:click={onClose}>✖</div>
     </div>
     <div class="modal-content">
         <slot></slot>
@@ -56,9 +56,6 @@
         position: absolute;
         right: 0;
         top: 0;
-    }
-    .modal-close:hover {
-        cursor: pointer;
     }
     .modal-container .modal-title {
         border-bottom: 2px solid white;

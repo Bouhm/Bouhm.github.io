@@ -12,7 +12,10 @@
 </script>
 
 <div class:onCd={isOnCd} class="skill-icon" on:click={handleClick}>
-    <img src={`${base}/arcanist/${id}.webp`} />
+    <img 
+        src={`${base}/arcanist/${id}.webp`} 
+        width={isCard ? 128  : 64}
+    />
     <div class="skill-key">{key}</div>
 </div>
 
@@ -21,10 +24,9 @@
         display: flex;
         flex-flow: column;
         align-items: center;
-        margin: 0.5rem;
+        margin: 1rem 0.3rem 1rem 0.3rem;
     }
     .skill-icon img {
-        width: 64px;
         height: auto;
     }
     .skill-icon.onCd {
