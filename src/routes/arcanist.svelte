@@ -87,6 +87,7 @@
       // Skills usable twice
       case 211:
         if (newState.increasedStacks) stackInc = 4;
+        break;
       case 212:
         stackInc = 4;
         break;
