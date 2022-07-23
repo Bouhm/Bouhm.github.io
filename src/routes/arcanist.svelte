@@ -1,7 +1,6 @@
 <script lang="ts">
   import { base } from '$app/paths';
-  import { clone, uniq, filter, find, flatten, shuffle, indexOf, map, max, includes } from 'lodash';
-  import { tick } from "svelte";
+  import _ from 'lodash';
 
   import type { Combo, Skill } from '../data/arcanist/types';
   import arcanistDb from '../data/arcanist/arcanist.json';
@@ -24,8 +23,8 @@
   const comboData = combosDb as Combo[];
   const skillData = arcanistDb as Skill[];
   // All skill ids used in ALL the combos
-  const skillIds: number[] = uniq(comboData.reduce(
-    (ids: number[], combo: Combo) => ([...ids, ...filter(flatten(combo.rotations), id => id > 199 && id < 300)]),
+  const skillIds: number[] = _.uniq(comboData.reduce(
+    (ids: number[], combo: Combo) => ([...ids, ..._.filter(_.flatten(combo.rotations), id => id > 199 && id < 300)]),
     []
   )).sort();
   const defaultGuessState = {
@@ -52,15 +51,15 @@
   let guessStates = [defaultGuessState]
   let roundIdx = 0;
   let selectedSkillIds: number[] = [];
-  let filteredCardIds = map(filter(skillData, skill => skill.type === "Card"), card => card.id);
+  let filteredCardIds = _.map(_.filter(skillData, skill => skill.type === "Card"), card => card.id);
 
-  let combosList = shuffle(filter(comboData, combo => combo)) as Combo[];
+  let combosList = _.shuffle(_.filter(comboData, combo => combo)) as Combo[];
   $: roundCombo = combosList[roundIdx];
   $: roundRotation = roundCombo.rotations[0] || [];
   $: currentState = guessStates[guessStates.length-1];
   $: lastSelectedSkillId = selectedSkillIds[selectedSkillIds.length-1];
-  $: selectedSkill = find(skillData, skill => skill.id === selectedSkillIds[selectedSkillIds.length-1]) as Skill;
-  $: skillsOnCd = filter(selectedSkillIds, id => isOnCd(id));
+  $: selectedSkill = _.find(skillData, skill => skill.id === selectedSkillIds[selectedSkillIds.length-1]) as Skill;
+  $: skillsOnCd = _.filter(selectedSkillIds, id => isOnCd(id));
   $: console.log(currentState); 
 
   function isOnCd(id: number, idx?: number) {
@@ -71,7 +70,7 @@
 
   function getCardNames(ids: number[]) {
     return ids.map(id => {
-      const card = find(skillData, skill => skill.id === id)
+      const card = _.find(skillData, skill => skill.id === id)
       return card ? card.name : ""
     })
   }
@@ -81,7 +80,7 @@
 
     selectedSkillIds = [...selectedSkillIds, id];
 
-    let newState = clone(guessStates[guessStates.length-1]);
+    let newState = {...guessStates[guessStates.length-1]};
     let stackInc = 2;
     
     switch (id) {
@@ -132,7 +131,7 @@
         // Card skill
         case "KeyZ":
         case "KeyX":
-          pressedSkillId = roundCombo.cards[indexOf(cardKeys, e.key.toUpperCase())];
+          pressedSkillId = roundCombo.cards[_.indexOf(cardKeys, e.key.toUpperCase())];
           break;
         // Spacebar skill
         case "Space":
@@ -187,8 +186,8 @@
       for (let j = 0; j < roundCombo.rotations[i].length; j++) {
         const currentSkillId = roundCombo.rotations[i][j];
         const selectedSkillId = selectedSkillIds[j] ? selectedSkillIds[j] : -1;
-        const selectedSkill = find(arcanistDb, skill => skill.id === selectedSkillId);
-        const currentSkill = find(arcanistDb, skill => skill.id === currentSkillId);
+        const selectedSkill = _.find(arcanistDb, skill => skill.id === selectedSkillId);
+        const currentSkill = _.find(arcanistDb, skill => skill.id === currentSkillId);
         
         if (currentSkillId === selectedSkillId) {
           correctedSkillsArr[i][j] = 2;
@@ -202,8 +201,8 @@
 
     // Take the best one
     let sumArr = correctedSkillsArr.reduce((sums, curr) => [...sums, curr.reduce((sum, curr) => sum + curr, 0)], [])
-    const maxCorrectness = max(sumArr);
-    correctness = correctedSkillsArr[indexOf(sumArr, maxCorrectness)];
+    const maxCorrectness = _.max(sumArr);
+    correctness = correctedSkillsArr[_.indexOf(sumArr, maxCorrectness)];
     gameStage = 2;
 
     // 100% correct
@@ -216,7 +215,7 @@
 
   function endGame() {
     // gameStage = 3;
-    combosList = shuffle(filter(comboData, combo => combo)) as Combo[];
+    combosList = _.shuffle(_.filter(comboData, combo => combo)) as Combo[];
   }
 </script>
 
