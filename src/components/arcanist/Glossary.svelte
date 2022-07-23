@@ -30,11 +30,11 @@
 </script>
 
 <div class="glossary">
-    <div class="glossary-close-button" on:click={handleCloseGlossary}>✖</div>
     <div class="tabs">
         {#each tabs as tab, i}
             <div class="tab" class:selected={selectedTabIdx === i} on:click={() => handleClickTab(i)}>{tab}</div>
         {/each}
+        <div class="glossary-close-button" on:click={handleCloseGlossary}>✖</div>
     </div>
     <table class="glossary-content">
         {#if selectedTabIdx === 0}
@@ -85,6 +85,7 @@
         z-index: 1;
         background-color: #191328;
         overflow-y: auto;
+        height: 100%;
 
         display: flex;
         flex-flow: column;
@@ -92,6 +93,7 @@
     .glossary-content { 
         table-layout: auto;
         width: 100%;
+        height: 100%;
         border-spacing: 1rem;
         border-collapse: collapse;
     }
@@ -103,10 +105,17 @@
     }
 
     .tabs {
+        position: sticky;
         display: flex;
+        top: 0;
+        background-color: #201932;
+        z-index: 3;
     }
     .tab {
-        margin: 2rem 1rem;
+        margin: 1rem;
+        width: 4rem;
+        line-height: 2rem;
+        text-align: center;
     }
     .tab:hover {
         background-color: #201932;
