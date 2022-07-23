@@ -221,7 +221,7 @@
 </script>
 
 <svelte:head>
-  <title>Arcanist</title>
+  <title>Arcanist Combos</title>
 </svelte:head>
 <svelte:window on:keyup={handleKeyPress}/>
 <main>
@@ -273,8 +273,9 @@
     <div class="input-skills">
       {#each selectedSkillIds as skillId, i} 
         <div 
-            class={`skill-box`} 
+            class={`skill-box ${i === selectedSkillIds.length - 1 ? 'clickable' : ''}`} 
             style="background-image: url('{`${base}/arcanist/${skillId}.webp`}')"
+            on:click={handleRemoveSkill}
         />
       {/each}
       <!-- Empty slots when guessing -->

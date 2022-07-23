@@ -11,7 +11,7 @@
     }
 </script>
 
-<div class:onCd={isOnCd} class="skill-icon" on:click={handleClick}>
+<div class:onCd={isOnCd} class="skill-icon clickable" on:click={handleClick}>
     <img 
         src={`${base}/arcanist/${id}.webp`} 
         width={isCard ? 128  : 64}
