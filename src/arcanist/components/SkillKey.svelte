@@ -16,7 +16,7 @@
         src={`${base}/arcanist/${id}.webp`} 
         width={isCard ? 128  : 64}
     />
-    <div class="skill-key">{key}</div>
+    <input type="text" class="skill-key" value={key} />
 </div>
 
 <style>

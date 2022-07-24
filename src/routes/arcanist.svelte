@@ -2,7 +2,7 @@
   import { base } from '$app/paths';
   import _ from 'lodash';
 
-  import { showStartInfo } from '../arcanist/stores/store';
+  import { showStartInfo, keyBindings } from '../arcanist/stores/store';
   import type { Combo, Skill } from '../arcanist/data/types';
   import arcanistDb from '../arcanist/data/arcanist.json';
   import combosDb from '../arcanist/data/combos.json';
@@ -20,13 +20,13 @@
   const balanceId = 106;
   const wheelId = 111;
 
-  const difficulties = ["EASY", "MEDIUM", "HARD", "INFERNO"];
+  const difficulties = ["NORMAL", "HARD", "INFERNO"];
   const comboData = combosDb as Combo[];
   const skillData = arcanistDb as Skill[];
   // All skill ids used in ALL the combos
   const skillIds: number[] = _.uniq(comboData.reduce(
     (ids: number[], combo: Combo) => ([...ids, ..._.filter(_.flatten(combo.rotations), id => id > 199 && id < 300)]),
-    []
+    [200]
   )).sort();
   const defaultGuessState = {
     consumeStacks: true,
@@ -35,6 +35,7 @@
     increasedStacks: false,
     stacks: 0,
   };
+  let keyBindConfig = $keyBindings;
 
   let showGlossary = false;
   // Used to display correctness of each skill where
@@ -237,11 +238,6 @@
         <h3>
           These are combos for intended for 332 (3 Stack skills, 3 Ruin skills, 2 Normal skills) Empress Arcanist.
         </h3>
-        <h3>Basic Rotation Pattern</h3>
-        <div>
-          The bread-and-butter combo is 4 stacks → Return → Ruin skill → 4 stacks → Ruin skill. 
-          The two Ruin skills should be used during the duration of Return's buff.
-        </div>
         <h3>General Stacking</h3>
         <div> 
           Use Scratch Dealer + Quadra Accelerate or Spiral Edge twice (chain skill) to gain 4 stacks. 
