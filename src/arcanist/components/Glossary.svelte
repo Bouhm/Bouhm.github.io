@@ -29,7 +29,7 @@
     }
 </script>
 
-<div class="glossary">
+<div class="glossary view">
     <div class="tabs">
         {#each tabs as tab, i}
             <div class="tab" class:selected={selectedTabIdx === i} on:click={() => handleClickTab(i)}>{tab}</div>
@@ -77,16 +77,6 @@
 
 <style>
     .glossary {
-        position: absolute;
-        top: 0;
-        right: 15%;
-        left: 15%;
-        bottom: 0;
-        z-index: 1;
-        background-color: #191328;
-        overflow-y: auto;
-        height: 100%;
-
         display: flex;
         flex-flow: column;
     }

@@ -2,7 +2,7 @@
   import { base } from '$app/paths';
   import _ from 'lodash';
 
-  import { showStartInfo, keyBindings } from '../arcanist/stores/store';
+  import { showStartInfo, keyBindings, usedSkills } from '../arcanist/stores/store';
   import type { Combo, Skill } from '../arcanist/data/types';
   import arcanistDb from '../arcanist/data/arcanist.json';
   import combosDb from '../arcanist/data/combos.json';
@@ -11,6 +11,7 @@
   import SkillKey from '../arcanist/components/SkillKey.svelte';
   import Button from '../arcanist/components/Button.svelte';
   import Glossary from '../arcanist/components/Glossary.svelte';
+  import Keybindings from '../arcanist/components/Keybindings.svelte';
 
   const cardKeys = ["Z", "X"];
   const awakeningId = 301;
@@ -27,7 +28,9 @@
   const skillIds: number[] = _.uniq(comboData.reduce(
     (ids: number[], combo: Combo) => ([...ids, ..._.filter(_.flatten(combo.rotations), id => id > 199 && id < 300)]),
     [200]
-  )).sort();
+  ));
+  usedSkills.set([...skillIds, autoattackId, awakeningId, 0, 0]);
+
   const defaultGuessState = {
     consumeStacks: true,
     cdResetNextSkill: false,
@@ -35,7 +38,6 @@
     increasedStacks: false,
     stacks: 0,
   };
-  let keyBindConfig = $keyBindings;
 
   let showGlossary = false;
   // Used to display correctness of each skill where
@@ -62,7 +64,6 @@
   $: lastSelectedSkillId = selectedSkillIds[selectedSkillIds.length-1];
   $: selectedSkill = _.find(skillData, skill => skill.id === selectedSkillIds[selectedSkillIds.length-1]) as Skill;
   $: skillsOnCd = _.filter(selectedSkillIds, id => isOnCd(id));
-  $: console.log(gameStage, $showStartInfo); 
 
   function isOnCd(id: number, idx?: number) {
     return !(currentState && currentState.cdResetNextSkill && lastSelectedSkillId === id) &&
@@ -290,6 +291,7 @@
   {#if showGlossary}
     <Glossary db={skillData} combos={comboData} onClose={() => showGlossary = false} />
   {/if}
+  <Keybindings />
   <div class="glossary-button clickable" on:click={() => showGlossary = true}>🕮</div>
   <section class="cards">
     {#each roundCombo.cards as cardId, i}

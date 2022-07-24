@@ -97,14 +97,6 @@
     },
     {
         "id": 602,
-        "cards": [105, 111],
-        "rotations": [
-            [211,210,202,105,111,223,212,223]
-        ],
-        "notes": "Apply Wheel of Fortune's cooldown reset on the highest priority Ruin skill."
-    },
-    {
-        "id": 603,
         "cards": [105, 106],
         "rotations": [
             [212,202,105,223,211,225,210,226]
@@ -112,7 +104,7 @@
         "notes": "Perform optimal stacking rotation with Balance and use Serendipity with Cull whenever viable."
     },
     {
-        "id": 604,
+        "id": 603,
         "cards": [105, 100],
         "rotations": [
             [212,202,105,223,211,400,400,225]
@@ -120,7 +112,7 @@
         "notes": "Perform optimal stacking rotation with Three-Headed Snake and use Serendipity with Cull whenever viable."
     },
     {
-        "id": 605,
+        "id": 604,
         "cards": [105, 109],
         "rotations": [
             [211,210,202,105,223,212,223,109]
@@ -128,16 +120,8 @@
         "notes": "Cull combo with Star after Ruin skills to reduce cooldowns."
     },
     {
-        "id": 606,
-        "cards": [105, 111],
-        "rotations": [
-            [202,107,111,225,223,225,226]
-        ],
-        "notes": "Judgment combo with Wheel of Fortune cooldown reset on Serendipity double full-stack damage."
-    },
-    {
-        "id": 607,
-        "cards": [105, 111],
+        "id": 605,
+        "cards": [107, 111],
         "rotations": [
             [202,107,111,225,223,225,226]
         ],

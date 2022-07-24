@@ -32,4 +32,10 @@
     .skill-icon.onCd {
         filter: grayscale(1) brightness(0.8);
     }
+    input.skill-key {
+        background: none;
+        outline: none;
+        border: none;
+        color: white;
+    }
 </style>
