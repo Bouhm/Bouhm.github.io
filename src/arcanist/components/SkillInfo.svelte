@@ -1,6 +1,6 @@
 <script lang="ts">
     import { base } from '$app/paths';
-    import type { Skill } from '../../data/arcanist/types';
+    import type { Skill } from '../data/types';
     export let skill: Skill;
     export let width = 64;
 </script>

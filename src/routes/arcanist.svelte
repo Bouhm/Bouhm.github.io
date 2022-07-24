@@ -2,13 +2,15 @@
   import { base } from '$app/paths';
   import _ from 'lodash';
 
-  import type { Combo, Skill } from '../data/arcanist/types';
-  import arcanistDb from '../data/arcanist/arcanist.json';
-  import combosDb from '../data/arcanist/combos.json';
-  import Modal from '../components/arcanist/Modal.svelte';
-  import ComboRow from '../components/arcanist/ComboRow.svelte';
-  import SkillKey from '../components/arcanist/SkillKey.svelte';
-  import Glossary from '../components/arcanist/Glossary.svelte';
+  import { showStartInfo } from '../arcanist/stores/store';
+  import type { Combo, Skill } from '../arcanist/data/types';
+  import arcanistDb from '../arcanist/data/arcanist.json';
+  import combosDb from '../arcanist/data/combos.json';
+  import Modal from '../arcanist/components/Modal.svelte';
+  import ComboRow from '../arcanist/components/ComboRow.svelte';
+  import SkillKey from '../arcanist/components/SkillKey.svelte';
+  import Button from '../arcanist/components/Button.svelte';
+  import Glossary from '../arcanist/components/Glossary.svelte';
 
   const cardKeys = ["Z", "X"];
   const awakeningId = 300;
@@ -47,7 +49,7 @@
   // 1 = Round (guessing)
   // 2 = Round Submitted (self-explanatory)
   // 3 = Ended (all rounds completed)
-  let gameStage = 1;
+  let gameStage = 0;
   let guessStates = [defaultGuessState]
   let roundIdx = 0;
   let selectedSkillIds: number[] = [];
@@ -60,7 +62,7 @@
   $: lastSelectedSkillId = selectedSkillIds[selectedSkillIds.length-1];
   $: selectedSkill = _.find(skillData, skill => skill.id === selectedSkillIds[selectedSkillIds.length-1]) as Skill;
   $: skillsOnCd = _.filter(selectedSkillIds, id => isOnCd(id));
-  $: console.log(currentState); 
+  $: console.log(gameStage, $showStartInfo); 
 
   function isOnCd(id: number, idx?: number) {
     return !(currentState && currentState.cdResetNextSkill && lastSelectedSkillId === id) &&
@@ -167,6 +169,11 @@
     guessStates = guessStates.slice(0, guessStates.length-1);
   }
 
+  function startGame() {
+    localStorage.setItem("showStartInfo", "false");
+    gameStage = 1;
+  }
+
   function nextRound() {
     gameStage = 1;
     roundIdx++;
@@ -225,6 +232,37 @@
 </svelte:head>
 <svelte:window on:keyup={handleKeyPress}/>
 <main>
+  {#if gameStage === 0 && $showStartInfo}
+    <Modal title="Before you begin..." onClose={handleCloseModal} >
+      <div class="start-content">
+        <h3>General Stacking</h3>
+        <div> 
+          Use Scratch Dealer + Quadra Accelerate or Spiral Edge twice (chain skill) to gain 4 stacks. 
+          A tripod in Scratch Dealer provides attack speed to help land all Quadra Accelerate hits so it is used first.
+        </div>
+        
+        <h3>Ruin Skill Priority</h3>
+        <div>
+          Although Secret Garden has the highest Damage Per Cooldown (DPC), realistically it is better to prioritize Celestial Rain
+          due to the difficulty of rotating optimally off cooldowns. Celestial Rain's longer range makes it easier to land.
+          Serendipity is inefficient to use in most cases due to its long cooldown but can be used when
+          either Secret Garden or Celestial Rain are halfway or more through their cooldowns.
+        </div>
+
+        <h3>Basic Rotation Pattern</h3>
+        <div>
+          The bread-and-butter combo is 4 stacks → Return → Ruin skill → 4 stacks → Ruin skill. 
+          The two Ruin skills should be used during the duration of Return's buff.
+        </div>
+        <div>
+          Refer to the Glossary for help if you need to review Arcanist skills.
+        </div>
+        <div class="start-info-actions">
+          <Button onClick={startGame}>Start</Button>
+        </div>
+      </div>
+    </Modal>
+  {/if}
   {#if gameStage === 2}
     <Modal title={`${getCardNames(roundCombo.cards).join(' + ')} Combos`} onClose={handleCloseModal} >
       <div class="combo-answers">
@@ -286,7 +324,7 @@
       {/if}
     </div>
     {#if gameStage === 1}
-      <div class="submit-button clickable" on:click={handleSubmit}>Submit</div>
+      <Button onClick={handleSubmit}>Submit</Button>
     {/if}
   </section>
   <section class="skills">
@@ -344,6 +382,10 @@
     flex: 1;
   }
   
+  .start-info-actions {
+    display: flex;
+    justify-content: center;
+  }
   .glossary-button {
     font-size: 2em;
   }
@@ -409,15 +451,7 @@
   .input-area .input-skills .skill-box:last-child {
     border-width: 2px 2px 2px 1px;
   }
-  .submit-button, .next-button {
-    border-radius: 4px;
-    width: 6rem;
-    border: 2px solid white;
-    padding: 0.5rem;
-    text-align: center;
-    margin-top: 1rem;
-  }
-
+ 
   .skills {
     display: flex;
   }

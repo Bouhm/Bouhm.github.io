@@ -1,6 +1,6 @@
 <script lang="ts">
     import { find, groupBy } from "lodash";
-    import type { Combo, Skill } from "../../data/arcanist/types";
+    import type { Combo, Skill } from "../data//types";
     import ComboRow from "./ComboRow.svelte";
     import SkillInfo from "./SkillInfo.svelte";
     import { base } from '$app/paths';
