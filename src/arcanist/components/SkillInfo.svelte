@@ -27,7 +27,7 @@
         height: auto;
     }
     .skill-description {
-        font-size: 1.4em;
-        margin-left: 1.4rem;
+        font-size: 1.3em;
+        margin-left: 1.3rem;
     }
 </style>
