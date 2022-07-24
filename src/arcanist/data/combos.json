@@ -27,12 +27,52 @@
         "id": 504,
         "cards": [106],
         "rotations": [[106,211],[106,210]],
-        "notes": "Use Quadra Accelerate or Scratch Dealer to gain full stacks after using Balance."
+        "notes": "Use Quadra Accelerate or Scratch Dealer to gain 4 stacks with the effect of Balance."
     },
     {
         "id": 505,
-        "cards": [106],
-        "rotations": [[106,211],[106,210]],
-        "notes": "Use Quadra Accelerate and Scratch Dealer as the main stacking skills after using Balance."
-    }
+        "cards": [100],
+        "rotations": [[100,211,401,401],[106,210,401,401]],
+        "notes": "Use autoattacks to reach 4 stacks with the effect of Three-Headed Snake."
+    },
+    {
+        "id": 506,
+        "cards": [108],
+        "rotations": [[106,301],[106,223]],
+        "stacks": 4,
+        "notes": "Use within 30s of next Awakening use, otherwise use before Celestial Rain."
+    },
+    {
+        "id": 507,
+        "cards": [109],
+        "rotations": [[109,223],[223,109]],
+        "notes": "Use after Celestial Rain. If in Boundless MP state (Nightmare Set effect), use before Celestial Rain hits after its cooldown starts."
+    },
+    {
+        "id": 508,
+        "cards": [102],
+        "rotations": [[211,210,202,102,223,212,226]],
+        "notes": "Standard 4 stacks, buff, and ruin skill combo."
+    },
+    {
+        "id": 509,
+        "cards": [105],
+        "rotations": [[211,210,202,105,223,212,225]],
+        "notes": "With Cull, prioritize Serendipity because it benefits the most from the effects of Cull."
+    },
+    {
+        "id": 510,
+        "cards": [107],
+        "rotations": [[202,107,226,223,226]],
+        "notes": "With Judgment, prioritize Serendipity for the double full-stack damage."
+    },
+    {
+        "id": 511,
+        "cards": [111],
+        "rotations": [
+            [211,210,111,301,202,301,223],
+            [211,210,202,111,223,212,223]
+        ],
+        "notes": "Use Spacebar after the first Awakening to animation cancel."
+    },
 ]

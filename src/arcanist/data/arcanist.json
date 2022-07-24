@@ -116,14 +116,7 @@
         "name": "Emperor",
         "effects": [],
         "type": "Card",
-        "description": ""
-    },
-    {
-        "id": 113,
-        "name": "Empress",
-        "effects": [],
-        "type": "Card",
-        "description": ""
+        "description": "Inflict damage to foes in a large area."
     },
     {
         "id": 200,

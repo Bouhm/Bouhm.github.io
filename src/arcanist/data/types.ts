@@ -2,6 +2,7 @@ export type Combo = {
     id: number,
     cards: number[],
     rotations: number[][],
+    stacks?: number,
     notes?: string
 }
 
