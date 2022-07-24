@@ -240,12 +240,6 @@
     },
     {
         "id": 400,
-        "name": "Spacebar",
-        "type": "Spacebar",
-        "description": ""
-    },
-    {
-        "id": 401,
         "name": "Autoattack",
         "type": "Autoattack",
         "description": ""

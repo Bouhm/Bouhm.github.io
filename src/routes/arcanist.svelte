@@ -13,9 +13,8 @@
   import Glossary from '../arcanist/components/Glossary.svelte';
 
   const cardKeys = ["Z", "X"];
-  const awakeningId = 300;
-  const spacebarId = 400;
-  const autoattackId = 401;
+  const awakeningId = 301;
+  const autoattackId = 400;
   const judgmentId = 107;
   const threeHeadId = 100;
   const balanceId = 106;
@@ -137,9 +136,9 @@
           pressedSkillId = roundCombo.cards[_.indexOf(cardKeys, e.key.toUpperCase())];
           break;
         // Spacebar skill
-        case "Space":
-          pressedSkillId = spacebarId;
-          break;
+        // case "Space":
+        //   pressedSkillId = spacebarId;
+        //   break;
         // Autoattack
         case "KeyC":
           pressedSkillId = autoattackId;
@@ -235,6 +234,14 @@
   {#if gameStage === 0 && $showStartInfo}
     <Modal title="Before you begin..." onClose={handleCloseModal} >
       <div class="start-content">
+        <h3>
+          These are combos for intended for 332 (3 Stack skills, 3 Ruin skills, 2 Normal skills) Empress Arcanist.
+        </h3>
+        <h3>Basic Rotation Pattern</h3>
+        <div>
+          The bread-and-butter combo is 4 stacks → Return → Ruin skill → 4 stacks → Ruin skill. 
+          The two Ruin skills should be used during the duration of Return's buff.
+        </div>
         <h3>General Stacking</h3>
         <div> 
           Use Scratch Dealer + Quadra Accelerate or Spiral Edge twice (chain skill) to gain 4 stacks. 
@@ -243,8 +250,8 @@
         
         <h3>Ruin Skill Priority</h3>
         <div>
-          Although Secret Garden has the highest Damage Per Cooldown (DPC), realistically it is better to prioritize Celestial Rain
-          due to the difficulty of rotating optimally off cooldowns. Celestial Rain's longer range makes it easier to land.
+          Although Secret Garden has the highest Damage Per Cooldown (DPC), it is difficult to manage optimal rotations off cooldowns. 
+          Celestial Rain is realistically better as its longer range makes it easier to land.
           Serendipity is inefficient to use in most cases due to its long cooldown but can be used when
           either Secret Garden or Celestial Rain are halfway or more through their cooldowns.
         </div>
@@ -329,8 +336,6 @@
   </section>
   <section class="skills">
     <div class="special-skills">
-      <!-- Spacebar -->  
-      <SkillKey id={spacebarId} key="Spacebar" onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(spacebarId)} />
       <!-- Autoattack -->
       <SkillKey id={autoattackId} key="C" onClick={handleSelectSkill} />
       <!-- Awakening -->

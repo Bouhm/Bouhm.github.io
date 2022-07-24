@@ -32,7 +32,7 @@
     {
         "id": 505,
         "cards": [100],
-        "rotations": [[100,211,401,401],[106,210,401,401]],
+        "rotations": [[100,211,400,400],[106,210,400,400]],
         "notes": "Use autoattacks to reach 4 stacks with the effect of Three-Headed Snake."
     },
     {
@@ -57,13 +57,16 @@
     {
         "id": 509,
         "cards": [105],
-        "rotations": [[211,210,202,105,223,212,225]],
-        "notes": "With Cull, prioritize Serendipity because it benefits the most from the effects of Cull."
+        "rotations": [
+            [211,210,202,105,226,212,225],
+            [211,210,202,105,223,212,225]
+        ],
+        "notes": "With Cull, Serendipity becomes a viable option because it benefits a lot from the effects of Cull."
     },
     {
         "id": 510,
         "cards": [107],
-        "rotations": [[202,107,226,223,226]],
+        "rotations": [[202,107,225,223,226]],
         "notes": "With Judgment, prioritize Serendipity for the double full-stack damage."
     },
     {
@@ -73,6 +76,55 @@
             [211,210,111,301,202,301,223],
             [211,210,202,111,223,212,223]
         ],
-        "notes": "Use Spacebar after the first Awakening to animation cancel."
+        "notes": "In most cases Celestial Rain is more practical. The Awakening skill combo can be used for speedrunning easier content."
+    },
+    {
+        "id": 600,
+        "cards": [105, 107],
+        "rotations": [
+            [202,105,107,225,226,223],
+            [202,105,107,225,223,226]
+        ],
+        "notes": "Prioritized by damage. Serendipity benefits the most from both card effects."
+    },
+    {
+        "id": 601,
+        "cards": [105, 102],
+        "rotations": [
+            [211,210,202,105,102,223,212,225]
+        ],
+        "notes": "Cull combo with a chance of increased damage."
+    },
+    {
+        "id": 602,
+        "cards": [105, 111],
+        "rotations": [
+            [211,210,202,105,111,223,212,223]
+        ],
+        "notes": "Apply Wheel of Fortune's cooldown reset on the highest priority Ruin skill."
+    },
+    {
+        "id": 603,
+        "cards": [105, 111],
+        "rotations": [
+            [211,210,202,105,111,223,212,223]
+        ],
+        "notes": "Apply Wheel of Fortune's cooldown reset on the highest priority Ruin skill."
+    },
+    {
+        "id": 604,
+        "cards": [105, 106],
+        "rotations": [
+            [212,202,105,223,211,225,210,226]
+        ],
+        "notes": "Perform optimal stacking rotation with Balance and use Serendipity with Cull whenever viable."
+    },
+    {
+        "id": 605,
+        "cards": [105, 100],
+        "rotations": [
+            [212,202,105,223,211,400,400,223]
+        ],
+        "notes": "Apply Wheel of Fortune's cooldown reset on the highest priority Ruin skill."
     },
 ]
