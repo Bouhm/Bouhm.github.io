@@ -292,9 +292,15 @@
         <SkillKey id={awakeningId} key={$keyBindings.awakening.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(awakeningId)} />
       </div>
       <div class="normal-skills">
-        {#each skillIds as skillId, i}
-          <SkillKey id={skillId} key={$keyBindings[`skill${i+1}`].key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(skillId)} />
-        {/each}
+        <!-- I don't remember why I didn't just use an array -->
+        <SkillKey id={$keyBindings.skill1.skillId} key={$keyBindings.skill1.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill1.skillId)} />
+        <SkillKey id={$keyBindings.skill2.skillId} key={$keyBindings.skill2.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill2.skillId)} />
+        <SkillKey id={$keyBindings.skill3.skillId} key={$keyBindings.skill3.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill3.skillId)} />
+        <SkillKey id={$keyBindings.skill4.skillId} key={$keyBindings.skill4.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill4.skillId)} />
+        <SkillKey id={$keyBindings.skill5.skillId} key={$keyBindings.skill5.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill5.skillId)} />
+        <SkillKey id={$keyBindings.skill6.skillId} key={$keyBindings.skill6.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill6.skillId)} />
+        <SkillKey id={$keyBindings.skill7.skillId} key={$keyBindings.skill7.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill7.skillId)} />
+        <SkillKey id={$keyBindings.skill8.skillId} key={$keyBindings.skill8.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill8.skillId)} />
       </div>
     </section>
 </main>
@@ -334,7 +340,7 @@
   
   section.cards {
     flex: 4;
-    margin: 3rem 1rem 1rem 1rem;
+    margin: 4rem 1rem 1rem 1rem;
   }
   section.applied-effects {
     display: flex;
@@ -427,6 +433,12 @@
   .special-skills, .normal-skills {
     display: flex;
     justify-content: center;
+  }
+  .normal-skills {
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+    height: 128px;
   }
   .special-skills {
     margin-right: 2rem;

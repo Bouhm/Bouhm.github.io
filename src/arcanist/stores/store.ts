@@ -4,9 +4,11 @@ import combosDb from '../data/combos.json';
 import  _ from 'lodash';
 import type { Combo } from "../data/types";
 
-export const showStartInfo: Writable<boolean> = writable();
+// This is insanity why does it have to be like this
+export const showStartInfo: Writable<boolean> = writable(browser ? (localStorage.getItem('showStartInfo') === 'undefined' ? JSON.parse(localStorage.getItem('showStartInfo')!) : false) : false);
 export const usedSkills: Writable<number[]> = writable();
 export const selectedView: Writable<number> = writable();
+
 export type KeyBindingConfig = {
     [control: string]: {
         key: string,
@@ -69,7 +71,7 @@ export const defaultKeyBindings = {
     }
 };
 
-export const keyBindings: Writable<KeyBindingConfig> = writable(defaultKeyBindings);
+export const keyBindings: Writable<KeyBindingConfig> = writable(browser ? (localStorage.getItem('keyBindings') === 'undefined' ? JSON.parse(localStorage.getItem('keyBindings')!) : defaultKeyBindings) : defaultKeyBindings);
 
 if (browser) {
     showStartInfo.subscribe(val => {

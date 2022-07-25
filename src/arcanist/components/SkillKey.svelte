@@ -21,10 +21,12 @@
 
 <style>
     .skill-icon {
+        position: relative;
         display: flex;
         flex-flow: column;
         align-items: center;
-        margin: 1rem 0.3rem 1rem 0.3rem;
+        height: 64px;
+        margin: 0;
     }
     .skill-icon img {
         height: auto;
@@ -32,8 +34,12 @@
     .skill-icon.onCd {
         filter: grayscale(1) brightness(0.8);
     }
-    input.skill-key {
-        background: none;
+    div.skill-key {
+        position: absolute; 
+        bottom: 0;
+        text-transform: uppercase;
+        background: rgba(0,0,0,0.7);
+        padding: 0 0.3rem;
         outline: none;
         border: none;
         color: white;
