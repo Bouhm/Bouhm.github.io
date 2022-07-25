@@ -10,8 +10,8 @@
   import ComboRow from '../arcanist/components/ComboRow.svelte';
   import SkillKey from '../arcanist/components/SkillKey.svelte';
   import Button from '../arcanist/components/Button.svelte';
-  import Glossary from '../arcanist/components/Glossary.svelte';
-  import Keybindings from '../arcanist/components/Keybindings.svelte';
+  import Settings from '../arcanist/components/Settings.svelte';
+  import Glossary from '../arcanist/views/Glossary.svelte';
 
   const awakeningId = 301;
   const autoattackId = 400;
@@ -269,8 +269,12 @@
     {#if showGlossary}
       <Glossary db={skillData} combos={comboData} onClose={() => showGlossary = false} />
     {/if}
-    <Keybindings />
-    <div class="glossary-button clickable" on:click={() => showGlossary = true}>🕮</div>
+    <section class="controls">
+      <div class="glossary-button clickable" on:click={() => showGlossary = true}>🕮</div>
+      <div class="settings">
+        <Settings />
+      </div>
+    </section>
     <section class="cards">
       {#each roundCombo.cards as cardId, i}
         <SkillKey bind:id={cardId} key={$keyBindings[`special${i+1}`].key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(cardId)} isCard={true} />
@@ -342,6 +346,9 @@
   section {
     display: flex;
   }
+  section.controls {
+    position: relative;
+  }
   section.cards {
     flex: 2;
     margin: 1rem;
@@ -363,6 +370,14 @@
     flex: 1;
   }
   
+  .glossary-button {
+    margin: 0 auto;    
+  }
+  .settings {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
   .start-info-actions {
     display: flex;
     justify-content: center;

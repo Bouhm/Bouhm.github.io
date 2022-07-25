@@ -2,6 +2,7 @@
     import { base } from '$app/paths';
     import _ from 'lodash';
     import { keyBindings, type KeyBindingConfig } from '../stores/store';
+    import SkillKey from '../components/SkillKey.svelte';
 
     function isExistingKey(key: string) {
         return _.filter($keyBindings, kb => kb.key === key).length > 1;
@@ -77,16 +78,22 @@
 
     .keybindings-content {
         table-layout: fixed;
+        text-align: center;
     }
-
-    td.keybinding-control {
+    td {
         width: 4rem;
+    }
+    td.keybinding-moveup, td.keybinding-movedown {
+        width: 0.5rem;
+    }
+    td.keybinding-moveup img, td.keybinding-movedown img {
+        width: 32px;
     }
     td.keybinding-skill img {
         width: 64px;
     }
     td.keybinding-input {
-        width: 2rem;
+        width: 3rem;
     }
     td.keybinding-moveup img, td.keybinding-movedown img {
         background-color: white;

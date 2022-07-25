@@ -1,8 +1,8 @@
 <script lang="ts">
     import { find, groupBy } from "lodash";
     import type { Combo, Skill } from "../data//types";
-    import ComboRow from "./ComboRow.svelte";
-    import SkillInfo from "./SkillInfo.svelte";
+    import ComboRow from "../components/ComboRow.svelte";
+    import SkillInfo from "../components/SkillInfo.svelte";
     import { base } from '$app/paths';
     export let hideCombos = false;
     export let db: Skill[];
@@ -34,7 +34,6 @@
         {#each tabs as tab, i}
             <div class="tab" class:selected={selectedTabIdx === i} on:click={() => handleClickTab(i)}>{tab}</div>
         {/each}
-        <div class="glossary-close-button" on:click={handleCloseGlossary}>✖</div>
     </div>
     <table class="glossary-content">
         {#if selectedTabIdx === 0}
@@ -115,17 +114,7 @@
         border-bottom: 2px solid white;
         background-color: #201932;
     }
-
-    .glossary-close-button {
-        position: absolute;
-        top: 0;
-        right: 1rem;
-        font-size: 3em;
-    }
-    .glossary-close-button:hover {
-        cursor: pointer;
-    }
-
+    
     tr.combo-info {
         display: flex;
         margin: 2rem 0;
