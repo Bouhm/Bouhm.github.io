@@ -2,7 +2,7 @@
   import { base } from '$app/paths';
   import _, { find } from 'lodash';
 
-  import { showStartInfo, keyBindings, usedSkills } from '../arcanist/stores/store';
+  import { showStartInfo, keyBindings, skillIds } from '../arcanist/stores/store';
   import type { Combo, Skill } from '../arcanist/data/types';
   import arcanistDb from '../arcanist/data/arcanist.json';
   import combosDb from '../arcanist/data/combos.json';
@@ -23,12 +23,6 @@
   const difficulties = ["NORMAL", "HARD", "INFERNO"];
   const comboData = combosDb as Combo[];
   const skillData = arcanistDb as Skill[];
-  // All skill ids used in ALL the combos
-  const skillIds: number[] = _.uniq(comboData.reduce(
-    (ids: number[], combo: Combo) => ([...ids, ..._.filter(_.flatten(combo.rotations), id => id > 199 && id < 300)]),
-    [200]
-  ));
-  usedSkills.set([...skillIds, autoattackId, awakeningId, 0, 0]);
 
   const defaultGuessState = {
     consumeStacks: true,

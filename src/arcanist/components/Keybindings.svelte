@@ -1,34 +1,37 @@
 <script lang="ts">
     import { base } from '$app/paths';
     import _ from 'lodash';
-    import { keyBindings, usedSkills, type KeyBindingConfig } from '../stores/store';
-    let config: KeyBindingConfig = _.clone($keyBindings);
-    let keyNames = [
-        'skill1',
-        'skill2',
-        'skill3',
-        'skill4',
-        'skill5',
-        'skill6',
-        'skill7',
-        'skill8',
-        'autoattack',
-        'awakening',
-        'special1',
-        'special2' 
-    ];
-
-    let keyMap: { [key: string]: number } = {};
-    keyNames.forEach((key, i) => {
-        keyMap[key] = $usedSkills[i];
-    })
+    import { keyBindings, type KeyBindingConfig } from '../stores/store';
 
     function isExistingKey(key: string) {
-        return _.filter(config, kb => kb.key === key).length > 1;
+        return _.filter($keyBindings, kb => kb.key === key).length > 1;
+    }
+
+    function handleMoveUp(control: string) {
+        const newConfig = _.clone($keyBindings);
+        const curr = newConfig[control];
+        const newNum = parseInt(control.slice(-1))-1
+        const next = _.clone(newConfig[`skill${newNum}`]);
+
+        console.log(curr, next);
+
+        newConfig[`skill${newNum}`] = curr;
+        newConfig[control] = next;
+        keyBindings.set(newConfig as KeyBindingConfig);
+    }
+
+    function handleMoveDown(control: string) {
+        const newConfig = _.clone($keyBindings);
+        const curr = newConfig[control];
+        const newNum = parseInt(control.slice(-1))+1
+        const next = _.clone(newConfig[`skill${newNum}`]);
+        newConfig[`skill${newNum}`] = curr;
+        newConfig[control] = next;
+        keyBindings.set(newConfig as KeyBindingConfig);
     }
 
     function handleKeyChange(e: Event, control: string) {
-        let newConfig = _.clone(config);
+        let newConfig = _.clone($keyBindings);
         newConfig[control].key = (e.target as HTMLInputElement).value;
         keyBindings.set(newConfig as KeyBindingConfig);
     }
@@ -36,12 +39,28 @@
 
 <div class="keybindings view">
     <table class="keybindings-content">
-        {#each Object.entries(config) as [control, skillKey]}
+        {#each Object.entries($keyBindings) as [control, skillKey], i}
             <tr>
                 <td class="keybinding-control">{control.toUpperCase()}</td>
-                <td class="keybinding-skill"><img src="{base}/arcanist/{keyMap[control]}.webp"/></td>
+                <td class="keybinding-skill"><img src="{base}/arcanist/{skillKey.skillId}.webp"/></td>
+                <td class="keybinding-moveup">
+                    {#if i > 0 && i < 8}
+                        <img class="clickable" on:click={() => handleMoveUp(control)} src="{base}/arcanist/circle-up-solid.svg"/>
+                    {/if}
+                </td>
+                <td class="keybinding-movedown">
+                    {#if i > -1 && i < 7}
+                        <img class="clickable" on:click={() => handleMoveDown(control)} src="{base}/arcanist/circle-down-solid.svg"/>
+                    {/if}
+                </td>
                 <td class="keybinding-input">
-                    <input type="text" class:error={isExistingKey(config[control].key)} maxlength=1 on:change={(e) => handleKeyChange(e, control)} bind:value={config[control].key} />
+                    <input 
+                        type="text" 
+                        class:error={isExistingKey($keyBindings[control].key)} 
+                        maxlength=1 
+                        on:change={(e) => handleKeyChange(e, control)}
+                        bind:value={$keyBindings[control].key} 
+                    />
                 </td>
             </tr>
         {/each}
@@ -67,7 +86,15 @@
         width: 64px;
     }
     td.keybinding-input {
-        width: 10rem;
+        width: 2rem;
+    }
+    td.keybinding-moveup img, td.keybinding-movedown img {
+        background-color: white;
+        border-radius: 50%;
+    }
+    td.keybinding-input input {
+        font-weight: 700;
+        width: 2rem;
     }
     td.keybinding-input input.error {
         color: red;
