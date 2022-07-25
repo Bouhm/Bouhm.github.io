@@ -1,5 +1,6 @@
 <script lang="ts">
   import { base } from '$app/paths';
+  import { browser } from "$app/env"
   import _ from 'lodash';
 
   import { showStartInfo, keyBindings, skillIds, selectedView } from '../arcanist/stores/store';
@@ -214,103 +215,108 @@
   <title>Arcanist Combos</title>
 </svelte:head>
 <svelte:window on:keyup={handleKeyPress}/>
-<main>
-    {#if gameStage === 0 && $showStartInfo}
-      <StartInfo onCloseStartInfo={handleCloseModal} onStartGame={startGame} />
-    {/if}
-    {#if gameStage === 2}
-      <Modal title={`${getCardNames(roundCombo.cards).join(' + ')} Combos`} onClose={handleCloseModal} >
-        <div class="combo-answers">
-          <div class="correct-rotations">
-            <h3>{"Rotation(s):"}</h3>
-            {#each roundCombo.rotations as rotation, i}
-              <ComboRow rotation={rotation} centered />
-              {#if roundCombo.rotations.length > 1 && i < roundCombo.rotations.length-1}
-                <div class="rotation-divider">OR</div>
-              {/if}
-            {/each}
-          </div>
-          <h3>Input:</h3>
-          <ComboRow rotation={selectedSkillIds} correctness={correctness} />
-          {#if roundCombo.notes}
-            <div class="correct-notes">{roundCombo.notes}</div>
-          {/if}
-          <div class="next-button clickable" on:click={nextRound}>Next</div>
-        </div>
-      </Modal>
-    {/if}
-    {#if $selectedView > -1}
-      <View db={skillData} combos={comboData} />
-    {/if}
-    <div class="controls">
-      <div class="logo"></div>
-      <div class="glossary-button clickable" on:click={() => selectedView.set(0)}>🕮</div>
-      <div class="settings-container">
-        <!-- <Settings /> -->
-      </div>
-    </div>
-    <section class="cards">
-      {#each roundCombo.cards as cardId, i}
-        <SkillKey bind:id={cardId} key={$keyBindings[`special${i+1}`].key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(cardId)} isCard={true} />
-      {/each}
-    </section>
-    <section class="applied-effects">
-        <ul class="effects">
-          {#if selectedSkill && selectedSkill.effects}
-            {#each selectedSkill.effects as effect}
-              <li>{effect}</li>
-            {/each}
-          {/if}
-        </ul>
-      <div class="stacks">
-        {#each Array(currentState.stacks || 0) as _}
-          <div class="stack-card" />
-        {/each}
-      </div>
-    </section>
-    <section class="input-area">
-      <div class="input-skills">
-        {#each selectedSkillIds as skillId, i} 
-          <div 
-              class={`skill-box ${i === selectedSkillIds.length - 1 ? 'clickable' : ''}`} 
-              style="background-image: url('{`${base}/arcanist/${skillId}.webp`}')"
-              on:click={handleRemoveSkill}
-          />
-        {/each}
-        <!-- Empty slots when guessing -->
-        {#if roundRotation.length > selectedSkillIds.length}
-            {#each Array(roundRotation.length - selectedSkillIds.length) as _}
-                <div class="skill-box" />
-            {/each}
-        {/if}
-      </div>
-      {#if gameStage === 1}
-        <Button onClick={handleSubmit}>Submit</Button>
+
+{#if browser}
+  <main>
+      {#if gameStage === 0 && $showStartInfo}
+        <StartInfo onCloseStartInfo={handleCloseModal} onStartGame={startGame} />
       {/if}
-    </section>
-    <section class="skills">
-      <div class="special-skills">
-        <!-- Autoattack -->
-        <SkillKey id={autoattackId} key={$keyBindings.autoattack.key} onClick={handleSelectSkill} />
-        <!-- Awakening -->
-        <SkillKey id={awakeningId} key={$keyBindings.awakening.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(awakeningId)} />
+      {#if gameStage === 2}
+        <Modal title={`${getCardNames(roundCombo.cards).join(' + ')} Combos`} onClose={handleCloseModal} >
+          <div class="combo-answers">
+            <div class="correct-rotations">
+              <h3>{"Rotation(s):"}</h3>
+              {#each roundCombo.rotations as rotation, i}
+                <ComboRow rotation={rotation} centered />
+                {#if roundCombo.rotations.length > 1 && i < roundCombo.rotations.length-1}
+                  <div class="rotation-divider">OR</div>
+                {/if}
+              {/each}
+            </div>
+            <h3>Input:</h3>
+            <ComboRow rotation={selectedSkillIds} correctness={correctness} />
+            {#if roundCombo.notes}
+              <div class="correct-notes">{roundCombo.notes}</div>
+            {/if}
+            <div class="next-button clickable" on:click={nextRound}>Next</div>
+          </div>
+        </Modal>
+      {/if}
+      {#if $selectedView > -1}
+        <View db={skillData} combos={comboData} />
+      {/if}
+      <div class="controls">
+        <div class="logo"></div>
+        <div class="glossary-button clickable" on:click={() => selectedView.set(0)}>🕮</div>
+        <div class="settings-container">
+          <!-- <Settings /> -->
+        </div>
       </div>
-      <div class="normal-skills">
-        <!-- I don't remember why I didn't just use an array -->
-        <SkillKey id={$keyBindings.skill1.skillId} key={$keyBindings.skill1.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill1.skillId)} />
-        <SkillKey id={$keyBindings.skill2.skillId} key={$keyBindings.skill2.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill2.skillId)} />
-        <SkillKey id={$keyBindings.skill3.skillId} key={$keyBindings.skill3.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill3.skillId)} />
-        <SkillKey id={$keyBindings.skill4.skillId} key={$keyBindings.skill4.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill4.skillId)} />
-        <SkillKey id={$keyBindings.skill5.skillId} key={$keyBindings.skill5.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill5.skillId)} />
-        <SkillKey id={$keyBindings.skill6.skillId} key={$keyBindings.skill6.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill6.skillId)} />
-        <SkillKey id={$keyBindings.skill7.skillId} key={$keyBindings.skill7.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill7.skillId)} />
-        <SkillKey id={$keyBindings.skill8.skillId} key={$keyBindings.skill8.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill8.skillId)} />
-      </div>
-      <div class="key-bindings-settings">
-        <Button onClick={() => selectedView.set(1)} >Key Bindings</Button>
-      </div>
-    </section>
-</main>
+      <section class="cards">
+        {#each roundCombo.cards as cardId, i}
+          <SkillKey bind:id={cardId} key={$keyBindings[`special${i+1}`].key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(cardId)} isCard={true} />
+        {/each}
+      </section>
+      <section class="applied-effects">
+          <ul class="effects">
+            {#if selectedSkill && selectedSkill.effects}
+              {#each selectedSkill.effects as effect}
+                <li>{effect}</li>
+              {/each}
+            {/if}
+          </ul>
+        <div class="stacks">
+          {#each Array(currentState.stacks || 0) as _}
+            <div class="stack-card" />
+          {/each}
+        </div>
+      </section>
+      <section class="input-area">
+        <div class="input-skills">
+          {#each selectedSkillIds as skillId, i} 
+            <div 
+                class={`skill-box ${i === selectedSkillIds.length - 1 ? 'clickable' : ''}`} 
+                style="background-image: url('{`${base}/arcanist/${skillId}.webp`}')"
+                on:click={handleRemoveSkill}
+            />
+          {/each}
+          <!-- Empty slots when guessing -->
+          {#if roundRotation.length > selectedSkillIds.length}
+              {#each Array(roundRotation.length - selectedSkillIds.length) as _}
+                  <div class="skill-box" />
+              {/each}
+          {/if}
+        </div>
+        {#if gameStage === 1}
+          <Button onClick={handleSubmit}>Submit</Button>
+        {/if}
+      </section>
+      <section class="skills">
+        <div class="special-skills">
+          <!-- Autoattack -->
+          <SkillKey id={autoattackId} key={$keyBindings.autoattack.key} onClick={handleSelectSkill} />
+          <!-- Awakening -->
+          <SkillKey id={awakeningId} key={$keyBindings.awakening.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(awakeningId)} />
+        </div>
+        <div class="normal-skills">
+          <!-- I don't remember why I didn't just use an array -->
+          <SkillKey id={$keyBindings.skill1.skillId} key={$keyBindings.skill1.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill1.skillId)} />
+          <SkillKey id={$keyBindings.skill2.skillId} key={$keyBindings.skill2.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill2.skillId)} />
+          <SkillKey id={$keyBindings.skill3.skillId} key={$keyBindings.skill3.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill3.skillId)} />
+          <SkillKey id={$keyBindings.skill4.skillId} key={$keyBindings.skill4.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill4.skillId)} />
+          <SkillKey id={$keyBindings.skill5.skillId} key={$keyBindings.skill5.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill5.skillId)} />
+          <SkillKey id={$keyBindings.skill6.skillId} key={$keyBindings.skill6.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill6.skillId)} />
+          <SkillKey id={$keyBindings.skill7.skillId} key={$keyBindings.skill7.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill7.skillId)} />
+          <SkillKey id={$keyBindings.skill8.skillId} key={$keyBindings.skill8.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill8.skillId)} />
+        </div>
+        <div class="key-bindings-settings">
+          <Button onClick={() => selectedView.set(1)} >Key Bindings</Button>
+        </div>
+      </section>
+  </main>
+{:else}
+  <h1>Loading...</h1>
+{/if}
 
 <style>
   :global(body) {
