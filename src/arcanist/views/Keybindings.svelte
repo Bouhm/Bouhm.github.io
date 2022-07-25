@@ -8,17 +8,20 @@
         return _.filter($keyBindings, kb => kb.key === key).length > 1;
     }
 
+    function updateStorage(newConfig: KeyBindingConfig) {
+        keyBindings.set(newConfig as KeyBindingConfig);
+        localStorage.setItem('keyBindings', JSON.stringify(newConfig));
+    }
+
     function handleMoveUp(control: string) {
         const newConfig = _.clone($keyBindings);
         const curr = newConfig[control];
-        const newNum = parseInt(control.slice(-1))-1
+        const newNum = parseInt(control.slice(-1))-1;
         const next = _.clone(newConfig[`skill${newNum}`]);
-
-        console.log(curr, next);
 
         newConfig[`skill${newNum}`] = curr;
         newConfig[control] = next;
-        keyBindings.set(newConfig as KeyBindingConfig);
+        updateStorage(newConfig);
     }
 
     function handleMoveDown(control: string) {
@@ -28,13 +31,13 @@
         const next = _.clone(newConfig[`skill${newNum}`]);
         newConfig[`skill${newNum}`] = curr;
         newConfig[control] = next;
-        keyBindings.set(newConfig as KeyBindingConfig);
+        updateStorage(newConfig);
     }
 
     function handleKeyChange(e: Event, control: string) {
         let newConfig = _.clone($keyBindings);
         newConfig[control].key = (e.target as HTMLInputElement).value;
-        keyBindings.set(newConfig as KeyBindingConfig);
+        updateStorage(newConfig);
     }
 </script>
 

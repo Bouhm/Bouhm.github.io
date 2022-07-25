@@ -48,9 +48,8 @@
   let guessStates = [defaultGuessState]
   let roundIdx = 0;
   let selectedSkillIds: number[] = [];
-  let filteredCardIds = _.map(_.filter(skillData, skill => skill.type === "Card"), card => card.id);
 
-  let combosList = _.shuffle(_.filter(comboData, combo => combo)) as Combo[];
+  let combosList = _.shuffle(_.filter(comboData, combo => combo.rotations[0].length > 1)) as Combo[];
   $: roundCombo = combosList[roundIdx];
   $: roundRotation = roundCombo.rotations[0] || [];
   $: currentState = guessStates[guessStates.length-1];
@@ -87,6 +86,9 @@
       case 212:
         stackInc = 4;
         break;
+      case 400:
+        if (newState.stackOnAuto) stackInc = 1;
+        break;
       case 210:
       default: 
         if (newState.increasedStacks) stackInc++;
@@ -106,8 +108,11 @@
       // When Three-Headed Snake is used, autos apply stacks
       newState.stackOnAuto = true;
     } else if (id === judgmentId) {
-      // When Three-Headed Snake is used, autos apply stacks
+      // When Judgment is used, Ruin skills apply as 4-stacks
       newState.consumeStacks = false;
+    } else if (id === balanceId) {
+      // When Balance is used, autos apply stacks
+      newState.stackOnAuto = true;
     } else if (id === autoattackId && newState.stackOnAuto) {
       newState.stacks++;
     } 
@@ -117,7 +122,7 @@
   }
 
   function handleKeyPress(e: KeyboardEvent) {
-    if (gameStage === 2) return;
+    if (gameStage === 2 || $showStartInfo || $selectedView > -1) return;
 
     let pressedSkillId = -1;
 
@@ -203,7 +208,6 @@
     // gameStage = 3;
     combosList = _.shuffle(_.filter(comboData, combo => combo)) as Combo[];
   }
-
 </script>
 
 <svelte:head>
@@ -242,7 +246,7 @@
       <div class="logo"></div>
       <div class="glossary-button clickable" on:click={() => selectedView.set(0)}>🕮</div>
       <div class="settings-container">
-        <Settings />
+        <!-- <Settings /> -->
       </div>
     </div>
     <section class="cards">
@@ -302,6 +306,9 @@
         <SkillKey id={$keyBindings.skill7.skillId} key={$keyBindings.skill7.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill7.skillId)} />
         <SkillKey id={$keyBindings.skill8.skillId} key={$keyBindings.skill8.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill8.skillId)} />
       </div>
+      <div class="key-bindings-settings">
+        <Button onClick={() => selectedView.set(1)} >Key Bindings</Button>
+      </div>
     </section>
 </main>
 
@@ -357,6 +364,7 @@
   }
   section.skills {
     flex: 3;
+    display: flex;
   }
   .start-info-actions {
     display: flex;
@@ -427,9 +435,6 @@
     border-width: 2px 2px 2px 1px;
   }
  
-  .skills {
-    display: flex;
-  }
   .special-skills, .normal-skills {
     display: flex;
     justify-content: center;
@@ -439,9 +444,11 @@
     grid-template-rows: repeat(2, 1fr);
     grid-template-columns: repeat(4, 1fr);
     height: 128px;
+    margin-right: 2rem;
   }
   .special-skills {
     margin-right: 2rem;
+    height: 64px;
   }
  
   .skill-detail {

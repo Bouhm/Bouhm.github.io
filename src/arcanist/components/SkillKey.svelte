@@ -25,7 +25,7 @@
         display: flex;
         flex-flow: column;
         align-items: center;
-        height: 64px;
+        height: 100%;
         margin: 0;
     }
     .skill-icon img {
