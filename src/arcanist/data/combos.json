@@ -99,7 +99,7 @@
         "id": 602,
         "cards": [105, 106],
         "rotations": [
-            [212,202,105,223,211,225,210,226]
+            [212,202,105,223,106,211,225,210,226]
         ],
         "notes": "Perform optimal stacking rotation with Balance and use Serendipity with Cull whenever viable."
     },
@@ -107,7 +107,7 @@
         "id": 603,
         "cards": [105, 100],
         "rotations": [
-            [212,202,105,223,211,400,400,225]
+            [212,202,105,223,105,211,400,400,225]
         ],
         "notes": "Perform optimal stacking rotation with Three-Headed Snake and use Serendipity with Cull whenever viable."
     },
