@@ -33,7 +33,6 @@
     stacks: 0,
   };
 
-  let showGlossary = false;
   // Used to display correctness of each skill where
   // 0 = wrong 
   // 1 = wrong skill but correct skill type
@@ -237,14 +236,15 @@
       </Modal>
     {/if}
     {#if $selectedView > -1}
-      <View selectedView={$selectedView} db={skillData} combos={comboData} />
+      <View db={skillData} combos={comboData} />
     {/if}
-    <section class="controls">
-      <div class="glossary-button clickable" on:click={() => showGlossary = true}>🕮</div>
+    <div class="controls">
+      <div class="logo"></div>
+      <div class="glossary-button clickable" on:click={() => selectedView.set(0)}>🕮</div>
       <div class="settings-container">
         <Settings />
       </div>
-    </section>
+    </div>
     <section class="cards">
       {#each roundCombo.cards as cardId, i}
         <SkillKey bind:id={cardId} key={$keyBindings[`special${i+1}`].key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(cardId)} isCard={true} />
@@ -316,15 +316,25 @@
   section {
     display: flex;
   }
-  section.controls {
-    position: relative;
-    min-height: 2rem;
+  .controls {
+    position: fixed;
     width: 100%;
+    min-height: 3rem;
     flex: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(255,255,255,0.05);
+    border-bottom: 2px solid rgba(255,255,255,0.1);
   }
+  .controls div {
+    flex: 1;
+  }
+  
   section.cards {
     flex: 4;
-    margin: 1rem;
+    margin: 3rem 1rem 1rem 1rem;
   }
   section.applied-effects {
     display: flex;
@@ -352,11 +362,6 @@
     left: 50%;
     transform: translateX(-50%);
     font-size: 2em;
-  }
-  .controls .settings-container {
-    position: absolute;
-    top: 0.5rem;
-    right: 1rem;
   }
 
   .applied-effects .effects {

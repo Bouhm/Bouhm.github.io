@@ -56,6 +56,7 @@ import { selectedView } from '../stores/store';
 
 <style>
     .settings {
+        margin: 0;
         position: relative;
         display: flex;
         flex-flow: column;
@@ -65,14 +66,20 @@ import { selectedView } from '../stores/store';
         justify-content: flex-end;
     }
     .settings-button {
+        margin-right: 1rem;
         width: 32px;
+        height: 32px;
     }
     .settings-menu {
+        position: absolute;
+        top: 2.6rem;
+        right: 0;
         width: 8rem;
+        padding: 1rem;
         background-color: rgba(255,255,255,0.1);
+        border: 2px solid rgba(255,255,255,0.15);
     }
     .settings-menu .menu-option {
         width: 100%;
-        padding: 0.5rem;
     }
 </style>
