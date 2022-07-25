@@ -1,6 +1,6 @@
 <script lang="ts">
   import { base } from '$app/paths';
-  import _ from 'lodash';
+  import _, { find } from 'lodash';
 
   import { showStartInfo, keyBindings, usedSkills } from '../arcanist/stores/store';
   import type { Combo, Skill } from '../arcanist/data/types';
@@ -13,7 +13,6 @@
   import Glossary from '../arcanist/components/Glossary.svelte';
   import Keybindings from '../arcanist/components/Keybindings.svelte';
 
-  const cardKeys = ["Z", "X"];
   const awakeningId = 301;
   const autoattackId = 400;
   const judgmentId = 107;
@@ -128,27 +127,11 @@
 
     let pressedSkillId = -1;
 
-    if (parseInt(e.key)) {
-      pressedSkillId = skillIds[parseInt(e.key)-1];
+    const skillKey = _.find($keyBindings, kb => kb.key === e.key);
+    if (skillKey) {
+      pressedSkillId = skillKey.skillId;
     } else {
-      switch(e.code) {
-        // Card skill
-        case "KeyZ":
-        case "KeyX":
-          pressedSkillId = roundCombo.cards[_.indexOf(cardKeys, e.key.toUpperCase())];
-          break;
-        // Spacebar skill
-        // case "Space":
-        //   pressedSkillId = spacebarId;
-        //   break;
-        // Autoattack
-        case "KeyC":
-          pressedSkillId = autoattackId;
-          break;
-        // Awakening
-        case "KeyV":
-          pressedSkillId = awakeningId;
-          break;
+      switch(e.key) {
         // Submit
         case "Enter":
           if (selectedSkillIds.length === roundRotation.length) handleSubmit();
@@ -226,6 +209,7 @@
     // gameStage = 3;
     combosList = _.shuffle(_.filter(comboData, combo => combo)) as Combo[];
   }
+
 </script>
 
 <svelte:head>
@@ -233,118 +217,118 @@
 </svelte:head>
 <svelte:window on:keyup={handleKeyPress}/>
 <main>
-  {#if gameStage === 0 && $showStartInfo}
-    <Modal title="Before you begin..." onClose={handleCloseModal} >
-      <div class="start-content">
-        <h3>
-          These are combos for intended for 332 (3 Stack skills, 3 Ruin skills, 2 Normal skills) Empress Arcanist.
-        </h3>
-        <h3>General Stacking</h3>
-        <div> 
-          Use Scratch Dealer + Quadra Accelerate or Spiral Edge twice (chain skill) to gain 4 stacks. 
-          A tripod in Scratch Dealer provides attack speed to help land all Quadra Accelerate hits so it is used first.
-        </div>
-        
-        <h3>Ruin Skill Priority</h3>
-        <div>
-          Although Secret Garden has the highest Damage Per Cooldown (DPC), it is difficult to manage optimal rotations off cooldowns. 
-          Celestial Rain is realistically better as its longer range makes it easier to land.
-          Serendipity is inefficient to use in most cases due to its long cooldown but can be used when
-          either Secret Garden or Celestial Rain are halfway or more through their cooldowns.
-        </div>
+    {#if gameStage === 0 && $showStartInfo}
+      <Modal title="Before you begin..." onClose={handleCloseModal} >
+        <div class="start-content">
+          <h3>
+            These are combos for intended for 332 (3 Stack skills, 3 Ruin skills, 2 Normal skills) Empress Arcanist.
+          </h3>
+          <h3>General Stacking</h3>
+          <div> 
+            Use Scratch Dealer + Quadra Accelerate or Spiral Edge twice (chain skill) to gain 4 stacks. 
+            A tripod in Scratch Dealer provides attack speed to help land all Quadra Accelerate hits so it is used first.
+          </div>
+          
+          <h3>Ruin Skill Priority</h3>
+          <div>
+            Although Secret Garden has the highest Damage Per Cooldown (DPC), it is difficult to manage optimal rotations off cooldowns. 
+            Celestial Rain is realistically better as its longer range makes it easier to land.
+            Serendipity is inefficient to use in most cases due to its long cooldown but can be used when
+            either Secret Garden or Celestial Rain are halfway or more through their cooldowns.
+          </div>
 
-        <h3>Basic Rotation Pattern</h3>
-        <div>
-          The bread-and-butter combo is 4 stacks → Return → Ruin skill → 4 stacks → Ruin skill. 
-          The two Ruin skills should be used during the duration of Return's buff.
+          <h3>Basic Rotation Pattern</h3>
+          <div>
+            The bread-and-butter combo is 4 stacks → Return → Ruin skill → 4 stacks → Ruin skill. 
+            The two Ruin skills should be used during the duration of Return's buff.
+          </div>
+          <div>
+            Refer to the Glossary for help if you need to review Arcanist skills.
+          </div>
+          <div class="start-info-actions">
+            <Button onClick={startGame}>Start</Button>
+          </div>
         </div>
-        <div>
-          Refer to the Glossary for help if you need to review Arcanist skills.
-        </div>
-        <div class="start-info-actions">
-          <Button onClick={startGame}>Start</Button>
-        </div>
-      </div>
-    </Modal>
-  {/if}
-  {#if gameStage === 2}
-    <Modal title={`${getCardNames(roundCombo.cards).join(' + ')} Combos`} onClose={handleCloseModal} >
-      <div class="combo-answers">
-        <div class="correct-rotations">
-          <h3>{"Rotation(s):"}</h3>
-          {#each roundCombo.rotations as rotation, i}
-            <ComboRow rotation={rotation} centered />
-            {#if roundCombo.rotations.length > 1 && i < roundCombo.rotations.length-1}
-              <div class="rotation-divider">OR</div>
-            {/if}
-          {/each}
-        </div>
-        <h3>Input:</h3>
-        <ComboRow rotation={selectedSkillIds} correctness={correctness} />
-        {#if roundCombo.notes}
-          <div class="correct-notes">{roundCombo.notes}</div>
-        {/if}
-        <div class="next-button clickable" on:click={nextRound}>Next</div>
-      </div>
-    </Modal>
-  {/if}
-  {#if showGlossary}
-    <Glossary db={skillData} combos={comboData} onClose={() => showGlossary = false} />
-  {/if}
-  <Keybindings />
-  <div class="glossary-button clickable" on:click={() => showGlossary = true}>🕮</div>
-  <section class="cards">
-    {#each roundCombo.cards as cardId, i}
-      <SkillKey bind:id={cardId} key={cardKeys[i]} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(cardId)} isCard={true} />
-    {/each}
-  </section>
-  <section class="applied-effects">
-      <ul class="effects">
-        {#if selectedSkill && selectedSkill.effects}
-          {#each selectedSkill.effects as effect}
-            <li>{effect}</li>
-          {/each}
-        {/if}
-      </ul>
-    <div class="stacks">
-      {#each Array(currentState.stacks || 0) as _}
-        <div class="stack-card" />
-      {/each}
-    </div>
-  </section>
-  <section class="input-area">
-    <div class="input-skills">
-      {#each selectedSkillIds as skillId, i} 
-        <div 
-            class={`skill-box ${i === selectedSkillIds.length - 1 ? 'clickable' : ''}`} 
-            style="background-image: url('{`${base}/arcanist/${skillId}.webp`}')"
-            on:click={handleRemoveSkill}
-        />
-      {/each}
-      <!-- Empty slots when guessing -->
-      {#if roundRotation.length > selectedSkillIds.length}
-          {#each Array(roundRotation.length - selectedSkillIds.length) as _}
-              <div class="skill-box" />
-          {/each}
-      {/if}
-    </div>
-    {#if gameStage === 1}
-      <Button onClick={handleSubmit}>Submit</Button>
+      </Modal>
     {/if}
-  </section>
-  <section class="skills">
-    <div class="special-skills">
-      <!-- Autoattack -->
-      <SkillKey id={autoattackId} key="C" onClick={handleSelectSkill} />
-      <!-- Awakening -->
-      <SkillKey id={awakeningId} key="V" onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(awakeningId)} />
-    </div>
-    <div class="normal-skills">
-      {#each skillIds as skillId, i}
-        <SkillKey id={skillId} key={(i+1)+""} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(skillId)} />
+    {#if gameStage === 2}
+      <Modal title={`${getCardNames(roundCombo.cards).join(' + ')} Combos`} onClose={handleCloseModal} >
+        <div class="combo-answers">
+          <div class="correct-rotations">
+            <h3>{"Rotation(s):"}</h3>
+            {#each roundCombo.rotations as rotation, i}
+              <ComboRow rotation={rotation} centered />
+              {#if roundCombo.rotations.length > 1 && i < roundCombo.rotations.length-1}
+                <div class="rotation-divider">OR</div>
+              {/if}
+            {/each}
+          </div>
+          <h3>Input:</h3>
+          <ComboRow rotation={selectedSkillIds} correctness={correctness} />
+          {#if roundCombo.notes}
+            <div class="correct-notes">{roundCombo.notes}</div>
+          {/if}
+          <div class="next-button clickable" on:click={nextRound}>Next</div>
+        </div>
+      </Modal>
+    {/if}
+    {#if showGlossary}
+      <Glossary db={skillData} combos={comboData} onClose={() => showGlossary = false} />
+    {/if}
+    <Keybindings />
+    <div class="glossary-button clickable" on:click={() => showGlossary = true}>🕮</div>
+    <section class="cards">
+      {#each roundCombo.cards as cardId, i}
+        <SkillKey bind:id={cardId} key={$keyBindings[`special${i+1}`].key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(cardId)} isCard={true} />
       {/each}
-    </div>
-  </section>
+    </section>
+    <section class="applied-effects">
+        <ul class="effects">
+          {#if selectedSkill && selectedSkill.effects}
+            {#each selectedSkill.effects as effect}
+              <li>{effect}</li>
+            {/each}
+          {/if}
+        </ul>
+      <div class="stacks">
+        {#each Array(currentState.stacks || 0) as _}
+          <div class="stack-card" />
+        {/each}
+      </div>
+    </section>
+    <section class="input-area">
+      <div class="input-skills">
+        {#each selectedSkillIds as skillId, i} 
+          <div 
+              class={`skill-box ${i === selectedSkillIds.length - 1 ? 'clickable' : ''}`} 
+              style="background-image: url('{`${base}/arcanist/${skillId}.webp`}')"
+              on:click={handleRemoveSkill}
+          />
+        {/each}
+        <!-- Empty slots when guessing -->
+        {#if roundRotation.length > selectedSkillIds.length}
+            {#each Array(roundRotation.length - selectedSkillIds.length) as _}
+                <div class="skill-box" />
+            {/each}
+        {/if}
+      </div>
+      {#if gameStage === 1}
+        <Button onClick={handleSubmit}>Submit</Button>
+      {/if}
+    </section>
+    <section class="skills">
+      <div class="special-skills">
+        <!-- Autoattack -->
+        <SkillKey id={autoattackId} key={$keyBindings.autoattack.key} onClick={handleSelectSkill} />
+        <!-- Awakening -->
+        <SkillKey id={awakeningId} key={$keyBindings.awakening.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(awakeningId)} />
+      </div>
+      <div class="normal-skills">
+        {#each skillIds as skillId, i}
+          <SkillKey id={skillId} key={$keyBindings[`skill${i+1}`].key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(skillId)} />
+        {/each}
+      </div>
+    </section>
 </main>
 
 <style>
@@ -356,7 +340,7 @@
   main {
     display: flex;
     flex-flow: column;
-    align-items: center;
+    align-items: center;  
     color: white;
     height: 95vh;
   }

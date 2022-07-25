@@ -1,29 +1,74 @@
 import { writable, type Writable } from "svelte/store";
 import { browser } from "$app/env"
 
-export const showStartInfo = writable(browser && JSON.parse(localStorage.getItem("showStartInfo")||"true"));
-showStartInfo.subscribe(val => {
-    if (browser) return (localStorage.showStartInfo = val);
-})
-
-export const usedSkills: Writable<number[]> = writable([]);
+export const showStartInfo: Writable<boolean> = writable();
+export const usedSkills: Writable<number[]> = writable();
+export type KeyBindingConfig = {
+    [control: string]: {
+        key: string,
+        skillId: number
+    }
+}
 
 export const defaultKeyBindings = {
-    skill1: 'q',
-    skill2: 'w',
-    skill3: 'e',
-    skill4: 'r',
-    skill5: 'a',
-    skill6: 's',
-    skill7: 'd',
-    skill8: 'f',
-    auto: 'c',
-    awakening: 'v',
-    special1: 'z',
-    special2: 'x'
+    skill1: {
+        key: 'q',
+        skillId: 0
+    },
+    skill2: {
+        key: 'w',
+        skillId: 0,
+    },
+    skill3: {
+        key: 'e',
+        skillId: 0
+    },
+    skill4: {
+        key: 'r',
+        skillId: 0,
+    },
+    skill5: {
+        key: 'a',
+        skillId: 0,
+    },
+    skill6: {
+        key: 's',
+        skillId: 0,
+    },
+    skill7: {
+        key: 'd',
+        skillId: 0,
+    },
+    skill8: {
+        key: 'f',
+        skillId: 0,
+    },
+    autoattack: {
+        key: 'c',
+        skillId: 0,
+    },
+    awakening: {
+        key: 'v',
+        skillId: 0
+    },
+    special1: {
+        key: 'z',
+        skillId: 0
+    },
+    special2: {
+        key: 'x',
+        skillId: 0
+    }
 };
 
-export const keyBindings = writable(browser && JSON.parse(localStorage.getItem("keyBindings")||JSON.stringify(defaultKeyBindings)));
-showStartInfo.subscribe(val => {
-    if (browser) return (localStorage.keyBindings = val);
-})
+export const keyBindings: Writable<KeyBindingConfig> = writable(defaultKeyBindings);
+
+if (browser) {
+    showStartInfo.subscribe(val => {
+        return localStorage.showStartInfo = JSON.stringify(val);
+    })
+
+    keyBindings.subscribe(val => {
+        return localStorage.keyBindings = JSON.stringify(val);
+    })
+}
