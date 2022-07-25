@@ -1,8 +1,8 @@
 <script lang="ts">
   import { base } from '$app/paths';
-  import _, { find } from 'lodash';
+  import _ from 'lodash';
 
-  import { showStartInfo, keyBindings, skillIds } from '../arcanist/stores/store';
+  import { showStartInfo, keyBindings, skillIds, selectedView } from '../arcanist/stores/store';
   import type { Combo, Skill } from '../arcanist/data/types';
   import arcanistDb from '../arcanist/data/arcanist.json';
   import combosDb from '../arcanist/data/combos.json';
@@ -11,7 +11,8 @@
   import SkillKey from '../arcanist/components/SkillKey.svelte';
   import Button from '../arcanist/components/Button.svelte';
   import Settings from '../arcanist/components/Settings.svelte';
-  import Glossary from '../arcanist/views/Glossary.svelte';
+  import View from '../arcanist/views/View.svelte';
+  import StartInfo from '../arcanist/components/StartInfo.svelte';
 
   const awakeningId = 301;
   const autoattackId = 400;
@@ -212,38 +213,7 @@
 <svelte:window on:keyup={handleKeyPress}/>
 <main>
     {#if gameStage === 0 && $showStartInfo}
-      <Modal title="Before you begin..." onClose={handleCloseModal} >
-        <div class="start-content">
-          <h3>
-            These are combos for intended for 332 (3 Stack skills, 3 Ruin skills, 2 Normal skills) Empress Arcanist.
-          </h3>
-          <h3>General Stacking</h3>
-          <div> 
-            Use Scratch Dealer + Quadra Accelerate or Spiral Edge twice (chain skill) to gain 4 stacks. 
-            A tripod in Scratch Dealer provides attack speed to help land all Quadra Accelerate hits so it is used first.
-          </div>
-          
-          <h3>Ruin Skill Priority</h3>
-          <div>
-            Although Secret Garden has the highest Damage Per Cooldown (DPC), it is difficult to manage optimal rotations off cooldowns. 
-            Celestial Rain is realistically better as its longer range makes it easier to land.
-            Serendipity is inefficient to use in most cases due to its long cooldown but can be used when
-            either Secret Garden or Celestial Rain are halfway or more through their cooldowns.
-          </div>
-
-          <h3>Basic Rotation Pattern</h3>
-          <div>
-            The bread-and-butter combo is 4 stacks → Return → Ruin skill → 4 stacks → Ruin skill. 
-            The two Ruin skills should be used during the duration of Return's buff.
-          </div>
-          <div>
-            Refer to the Glossary for help if you need to review Arcanist skills.
-          </div>
-          <div class="start-info-actions">
-            <Button onClick={startGame}>Start</Button>
-          </div>
-        </div>
-      </Modal>
+      <StartInfo onCloseStartInfo={handleCloseModal} onStartGame={startGame} />
     {/if}
     {#if gameStage === 2}
       <Modal title={`${getCardNames(roundCombo.cards).join(' + ')} Combos`} onClose={handleCloseModal} >
@@ -266,12 +236,12 @@
         </div>
       </Modal>
     {/if}
-    {#if showGlossary}
-      <Glossary db={skillData} combos={comboData} onClose={() => showGlossary = false} />
+    {#if $selectedView > -1}
+      <View selectedView={$selectedView} db={skillData} combos={comboData} />
     {/if}
     <section class="controls">
       <div class="glossary-button clickable" on:click={() => showGlossary = true}>🕮</div>
-      <div class="settings">
+      <div class="settings-container">
         <Settings />
       </div>
     </section>
@@ -348,47 +318,45 @@
   }
   section.controls {
     position: relative;
+    min-height: 2rem;
+    width: 100%;
+    flex: 1rem;
   }
   section.cards {
-    flex: 2;
+    flex: 4;
     margin: 1rem;
   }
   section.applied-effects {
     display: flex;
     flex-flow: column;
     align-items: center;
-    flex: 1.5;
+    flex: 2.5;
   } 
   section.input-area {
-    flex: 2;
+    flex: 4;
     display: flex;
     flex-flow: column;
     align-items: center;
     margin-bottom: 2rem;
   }
   section.skills {
-    flex: 1;
-  }
-  
-  .glossary-button {
-    margin: 0 auto;    
-  }
-  .settings {
-    position: absolute;
-    right: 0;
-    top: 0;
+    flex: 3;
   }
   .start-info-actions {
     display: flex;
     justify-content: center;
   }
-  .glossary-button {
+  .controls .glossary-button {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
     font-size: 2em;
   }
-
-  .card img {
-    width: 140px;
-    height: auto;
+  .controls .settings-container {
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
   }
 
   .applied-effects .effects {
@@ -455,11 +423,6 @@
     display: flex;
     justify-content: center;
   }
-  .special-skills .skill-icon, .normal-skills .skill-icon {
-    border-width: 2px 1px 2px 1px;
-    border-color: #FFB200;
-    border-style: solid;
-  }
   .special-skills {
     margin-right: 2rem;
   }
@@ -468,11 +431,6 @@
     display: flex;
     flex-flow: column;
     align-items: center;
-  }
-  .skill-detail img {
-    width: 120px;
-    height: auto;
-    margin-bottom: 1rem;
   }
 
   .combo-answers {

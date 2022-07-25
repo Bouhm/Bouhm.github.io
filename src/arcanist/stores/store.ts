@@ -6,6 +6,7 @@ import type { Combo } from "../data/types";
 
 export const showStartInfo: Writable<boolean> = writable();
 export const usedSkills: Writable<number[]> = writable();
+export const selectedView: Writable<number> = writable();
 export type KeyBindingConfig = {
     [control: string]: {
         key: string,
@@ -15,7 +16,7 @@ export type KeyBindingConfig = {
 export const skillIds: number[] = _.uniq(combosDb.reduce(
     (ids: number[], combo: Combo) => ([...ids, ..._.filter(_.flatten(combo.rotations), id => id > 199 && id < 300)]),
     [200]
-  ));
+));
   
 export const defaultKeyBindings = {
     skill1: {
@@ -52,11 +53,11 @@ export const defaultKeyBindings = {
     },
     autoattack: {
         key: 'c',
-        skillId: 0,
+        skillId: 400,
     },
     awakening: {
         key: 'v',
-        skillId: 0
+        skillId: 301
     },
     special1: {
         key: 'z',

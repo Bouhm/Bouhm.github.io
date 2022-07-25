@@ -1,18 +1,29 @@
 <script lang="ts">
-    export let title: string;
-    export let onClose: (()=>void) | null = null;
+    import { selectedView } from "../stores/store";
+    import type { Combo, Skill } from "../data/types";
 
-    function handleClose() {
-        onClose && onClose();
+    import Glossary from "./Glossary.svelte";
+    import Keybindings from "./Keybindings.svelte";
+    export let db: Skill[];
+    export let combos: Combo[];
+
+    const titles = ["Glossary", "Key Bindings"]
+
+    function handleCloseView() {
+        selectedView.set(-1);
     }
 </script>
 
 <div class="view">
     <div class="view-title">
-        <h1>{title}</h1>
-        <div class="view-close-button clickable" on:click={handleClose}>✖</div>
+        <h1>{titles[$selectedView]}</h1>
+        <div class="view-close-button clickable" on:click={handleCloseView}>✖</div>
     </div>
-    <slot />
+    {#if $selectedView === 0}
+        <Glossary db={db} combos={combos} />
+    {:else if $selectedView === 1}
+        <Keybindings />
+    {/if}
 </div>
 
 <style>

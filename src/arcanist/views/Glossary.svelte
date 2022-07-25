@@ -7,7 +7,6 @@
     export let hideCombos = false;
     export let db: Skill[];
     export let combos: Combo[];
-    export let onClose: ()=>void;
 
     const skillGroups = groupBy(db, skill => skill.type)
     const skills = [...skillGroups.Normal, ...skillGroups.Stacking, ...skillGroups.Ruin];
@@ -23,13 +22,9 @@
     function handleClickTab(i: number) {
         selectedTabIdx = i;
     }
-
-    function handleCloseGlossary() {
-        onClose();
-    }
 </script>
 
-<div class="glossary view">
+<div class="glossary">
     <div class="tabs">
         {#each tabs as tab, i}
             <div class="tab" class:selected={selectedTabIdx === i} on:click={() => handleClickTab(i)}>{tab}</div>

@@ -1,10 +1,8 @@
 <script lang="ts">
     import { base } from '$app/paths';
-    import Keybindings from '../views/Keybindings.svelte';
-    import View from '../views/View.svelte';
+import { selectedView } from '../stores/store';
 
     let showMenu = false;
-    let selectedMenuOption = -1;
 
     const menuOptions = [
         { name: "Keybindings" }
@@ -38,13 +36,15 @@
     }
 
     function handleSelectMenuOption(i: number) {
-        selectedMenuOption = i;
+        selectedView.set(i+1);
         showMenu = false;
     }
 </script>
 
 <div class="settings" use:clickOutside={handleCloseMenu}>
-    <img on:blur={handleCloseMenu} on:click={handleClick} class="settings-button clickable" src="${base}/arcanist/cog-solid.svg" alt="settings"/>
+    <div class="settings-icon">
+        <img on:click={handleClick} class="settings-button clickable" src="{base}/arcanist/cog-solid.svg" alt="settings"/>
+    </div>
     {#if showMenu}
         <div class="settings-menu">
             {#each menuOptions as menuOption, i}
@@ -53,14 +53,26 @@
         </div>
     {/if}
 </div>
-{#if selectedMenuOption > -1}
-    <View title="Key Bindings">
-        {#if selectedMenuOption === 0}
-            <Keybindings />
-        {/if}
-    </View>
-{/if}
 
 <style>
-
+    .settings {
+        position: relative;
+        display: flex;
+        flex-flow: column;
+    }
+    .settings-icon {
+        display: flex;
+        justify-content: flex-end;
+    }
+    .settings-button {
+        width: 32px;
+    }
+    .settings-menu {
+        width: 8rem;
+        background-color: rgba(255,255,255,0.1);
+    }
+    .settings-menu .menu-option {
+        width: 100%;
+        padding: 0.5rem;
+    }
 </style>

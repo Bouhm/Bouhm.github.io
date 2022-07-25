@@ -13,7 +13,7 @@
 
 <div class:onCd={isOnCd} class="skill-icon clickable" on:click={handleClick}>
     <img 
-        src={`${base}/arcanist/${id}.webp`} 
+        src="{base}/arcanist/{id}.webp"
         width={isCard ? 128  : 64}
     />
     <div class="skill-key">{key}</div>

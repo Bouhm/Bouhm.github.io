@@ -38,12 +38,21 @@
     }
 </script>
 
-<div class="keybindings view">
+<div class="keybindings">
     <table class="keybindings-content">
         {#each Object.entries($keyBindings) as [control, skillKey], i}
             <tr>
                 <td class="keybinding-control">{control.toUpperCase()}</td>
                 <td class="keybinding-skill"><img src="{base}/arcanist/{skillKey.skillId}.webp"/></td>
+                <td class="keybinding-input">
+                    <input 
+                        type="text" 
+                        class:error={isExistingKey($keyBindings[control].key)} 
+                        maxlength=1 
+                        on:change={(e) => handleKeyChange(e, control)}
+                        bind:value={$keyBindings[control].key} 
+                    />
+                </td>
                 <td class="keybinding-moveup">
                     {#if i > 0 && i < 8}
                         <img class="clickable" on:click={() => handleMoveUp(control)} src="{base}/arcanist/circle-up-solid.svg"/>
@@ -53,15 +62,6 @@
                     {#if i > -1 && i < 7}
                         <img class="clickable" on:click={() => handleMoveDown(control)} src="{base}/arcanist/circle-down-solid.svg"/>
                     {/if}
-                </td>
-                <td class="keybinding-input">
-                    <input 
-                        type="text" 
-                        class:error={isExistingKey($keyBindings[control].key)} 
-                        maxlength=1 
-                        on:change={(e) => handleKeyChange(e, control)}
-                        bind:value={$keyBindings[control].key} 
-                    />
                 </td>
             </tr>
         {/each}
@@ -94,10 +94,6 @@
     }
     td.keybinding-input {
         width: 3rem;
-    }
-    td.keybinding-moveup img, td.keybinding-movedown img {
-        background-color: white;
-        border-radius: 50%;
     }
     td.keybinding-input input {
         font-weight: 700;
