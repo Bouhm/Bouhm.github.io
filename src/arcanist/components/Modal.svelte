@@ -46,6 +46,7 @@
         background-color: #191328;
         min-width: 40rem;
         min-height: 20rem;
+        overflow-y: auto;
     }
     .modal-title {
         position: relative;
