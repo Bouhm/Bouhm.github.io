@@ -166,6 +166,7 @@
   }
 
   function handleCloseModal() {
+    showStartInfo.set(false);
     nextRound();
   }
 
