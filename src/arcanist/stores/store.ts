@@ -12,16 +12,17 @@ export type KeyBindingConfig = {
     }
 }
 
-// This is insanity why does it have to be like this
-export const showStartInfo: Writable<boolean> = writable(browser ? (!localStorage.getItem('showStartInfo') ? true : JSON.parse(localStorage.getItem('showStartInfo')!)) : true);
-export const usedSkills: Writable<number[]> = writable();
-export const selectedView: Writable<number> = writable();
 
 export const skillIds: number[] = _.uniq(combosDb.reduce(
     (ids: number[], combo: Combo) => ([...ids, ..._.filter(_.flatten(combo.rotations), id => id > 199 && id < 300)]),
     [200]
 ));
   
+// This is insanity why does it have to be like this
+export const showStartInfo: Writable<boolean> = writable(browser ? (!localStorage.getItem('showStartInfo') ? true : JSON.parse(localStorage.getItem('showStartInfo')!)) : true);
+export const usedSkills: Writable<number[]> = writable(skillIds);
+export const selectedView: Writable<number> = writable();
+
 export const defaultKeyBindings = {
     skill1: {
         index: 0,

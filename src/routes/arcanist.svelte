@@ -59,9 +59,10 @@
   $: skillsOnCd = _.filter(selectedSkillIds, id => isOnCd(id));
 
   function isOnCd(id: number, idx?: number) {
-    return !(currentState && currentState.cdResetNextSkill && lastSelectedSkillId === id) &&
+    return (!(currentState && currentState.cdResetNextSkill && lastSelectedSkillId === id) &&
       id !== autoattackId &&
-      selectedSkillIds.includes(id);
+      selectedSkillIds.includes(id)) ||
+      id < 200;
   }
 
   function getCardNames(ids: number[]) {
@@ -94,6 +95,11 @@
       default: 
         if (newState.increasedStacks) stackInc++;
         break;
+    }
+
+    // Consume effects
+    if (newState.cdResetNextSkill) {
+      newState.cdResetNextSkill = false;
     }
 
     if (id > 209 && id < 220) {
@@ -317,7 +323,7 @@
           <SkillKey id={$keyBindings.skill7.skillId} key={$keyBindings.skill7.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill7.skillId)} />
           <SkillKey id={$keyBindings.skill8.skillId} key={$keyBindings.skill8.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill8.skillId)} />
         </div>
-        <div class="key-bindings-settings">
+        <div class="key-bindings-settings clickable">
           <img on:click={() => selectedView.set(1)} class="settings-button" src="{base}/arcanist/cog-solid.svg" alt="settings"/>
         </div>
       </section>
@@ -447,6 +453,7 @@
   }
   .input-area .input-skills .skill-box img {
     width: 64px;
+    border-radius: 3px;
   }
   .input-area .input-skills .skill-box:first-child {
     border-width: 2px 1px 2px 2px;
