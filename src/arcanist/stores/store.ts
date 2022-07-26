@@ -7,7 +7,7 @@ import type { Combo } from "../data/types";
 export type KeyBindingConfig = {
     [control: string]: {
         key: string,
-        skillId?: number
+        skillId: number
     }
 }
 
@@ -64,9 +64,11 @@ export const defaultKeyBindings = {
     },
     special1: {
         key: 'z',
+        skillId: -1
     },
     special2: {
         key: 'x',
+        skillId: -1
     }
 };
 
