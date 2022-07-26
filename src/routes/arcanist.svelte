@@ -170,7 +170,6 @@
   }
 
   function handleCloseModal() {
-    showStartInfo.set(false);
     nextRound();
   }
 
@@ -224,7 +223,7 @@
 {#if browser}
   <main>
       {#if gameStage === 0 && $showStartInfo}
-        <StartInfo onCloseStartInfo={handleCloseModal} onStartGame={startGame} />
+        <StartInfo onCloseStartInfo={startGame} onStartGame={startGame} />
       {/if}
       {#if gameStage === 2}
         <Modal title={`${getCardNames(roundCombo.cards).join(' + ')} Combos`} onClose={handleCloseModal} >
@@ -243,7 +242,7 @@
             {#if roundCombo.notes}
               <div class="correct-notes">{roundCombo.notes}</div>
             {/if}
-            <div class="next-button clickable" on:click={nextRound}>Next</div>
+            <Button class="next-button" onClick={nextRound}>Next</Button>
           </div>
         </Modal>
       {/if}
