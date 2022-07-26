@@ -17,7 +17,7 @@
         border: 2px solid white;
         padding: 0.5rem;
         text-align: center;
-        margin-top: 1rem;
+        margin-top: 2rem;
     }
 
     .button.asIcon {

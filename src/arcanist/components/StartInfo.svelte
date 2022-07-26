@@ -52,4 +52,14 @@
         display: flex;
         justify-content: center;
     }
+
+    @media (max-width: 600px) {
+        h3 {
+            font-size: 1.1em;
+        }
+
+        h3:not(:first-child) {
+            margin-top: 2.5rem;
+        }
+    }
 </style>

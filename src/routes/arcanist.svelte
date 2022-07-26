@@ -297,10 +297,10 @@
       </section>
       <section class="skills">
         <div class="special-skills">
-          <!-- Autoattack -->
-          <SkillKey id={autoattackId} key={$keyBindings.autoattack.key} onClick={handleSelectSkill} />
           <!-- Awakening -->
           <SkillKey id={awakeningId} key={$keyBindings.awakening.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes(awakeningId)} />
+          <!-- Autoattack -->
+          <SkillKey id={autoattackId} key={$keyBindings.autoattack.key} onClick={handleSelectSkill} />
         </div>
         <div class="normal-skills">
           <!-- I don't remember why I didn't just use an array -->
@@ -359,7 +359,7 @@
   
   section.cards {
     flex: 4;
-    margin: 4rem 1rem 1rem 1rem;
+    margin: 6rem 1rem 1rem 1rem;
   }
   section.applied-effects {
     display: flex;
@@ -407,7 +407,7 @@
     width: 20px;
     height: 30px;
     background-color: purple;
-    border: 2px solid black;
+    border: 2px solid rgba(255,255,255,0.5);
   }
 
   .applied-effects .stack-card:nth-child(1){
@@ -450,17 +450,16 @@
   .special-skills, .normal-skills {
     display: flex;
     justify-content: center;
+    height: 128px;
+    margin-right: 2rem;
   }
   .normal-skills {
     display: grid;
     grid-template-rows: repeat(2, 1fr);
     grid-template-columns: repeat(4, 1fr);
-    height: 128px;
-    margin-right: 2rem;
   }
   .special-skills {
-    margin-right: 2rem;
-    height: 64px;
+    flex-flow: column;
   }
   .settings-button {
       width: 32px;
@@ -494,5 +493,52 @@
   }
   .combo-answers .correct-notes {
     margin-top: 1.5rem;
+  }
+
+  @media (max-width: 600px) {
+    .key-bindings-settings {
+      display: none;
+    }
+    
+    .applied-effects {
+      font-size: 0.9em;
+    }
+    .applied-effects .stack-card{
+      position: absolute;
+      width: 10px;
+      height: 20px;
+    }
+    .applied-effects .stack-card:nth-child(1){
+      transform: rotate(-50deg);
+      left: -23px;
+      top: 7px;
+    }
+    .applied-effects .stack-card:nth-child(2){
+      transform: rotate(-25deg);
+      left: -10px;
+    }
+    .applied-effects .stack-card:nth-child(3){
+      transform: rotate(25deg);
+      left: 2px;
+    }
+    .applied-effects .stack-card:nth-child(4){
+      transform: rotate(50deg);
+      left: 13px;
+      top: 7px;
+    }
+
+    .special-skills, .normal-skills {
+      margin: 0;
+    }
+
+    .input-area {
+      justify-content: center;
+    }
+    
+    .input-area .input-skills .skill-box {
+      width: 32px;
+      height: 32px;
+      margin: 0.1em;
+    }
   }
 </style>

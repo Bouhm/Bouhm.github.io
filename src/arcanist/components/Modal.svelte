@@ -46,6 +46,7 @@
         background-color: #191328;
         min-width: 40rem;
         min-height: 20rem;
+        overflow-y: auto;
     }
     .modal-title {
         position: relative;
@@ -64,5 +65,18 @@
     }
     .modal-content {
         padding: 1rem;
+    }
+
+    @media (max-width: 600px) {
+        .modal-container {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
+            min-width: 0;
+            min-height: 0;
+            transform: none;
+        }
     }
 </style>

@@ -38,6 +38,7 @@
         z-index: 1;
         background-color: #191328;
         overflow-y: auto;
+        overflow-x: hidden;
     }
     
     .view-content {
@@ -58,5 +59,21 @@
         top: 0;
         right: 1rem;
         font-size: 3em;
+    }
+
+    @media (max-width: 600px) {
+        .view-content {
+            width: 100%;
+        }
+
+        .view-title h1 {
+            font-size: 2em;
+            margin-left: 1rem;
+        }
+
+        .view-close-button {
+            top: 0.5rem;
+            font-size: 2em;
+        }
     }
 </style>

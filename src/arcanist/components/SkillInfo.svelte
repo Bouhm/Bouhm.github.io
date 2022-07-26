@@ -30,4 +30,22 @@
         font-size: 1.3em;
         margin-left: 1.3rem;
     }
+
+    @media (max-width: 600px) {
+        .skill-info {
+            margin: 1rem 0;
+        }
+        .skill-detail {
+            min-width: 6rem;
+            font-size: 0.8em;
+        }
+        .skill-info img {
+            max-width: 64px;
+        }
+        .skill-description {
+            font-size: 0.9em;
+            margin-left: 0.5rem;
+            padding-right: 1rem;
+        }
+    }
 </style>

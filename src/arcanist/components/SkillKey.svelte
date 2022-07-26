@@ -36,12 +36,22 @@
     }
     div.skill-key {
         position: absolute; 
-        bottom: 0;
+        top: 0;
         text-transform: uppercase;
         background: rgba(0,0,0,0.7);
         padding: 0 0.3rem;
         outline: none;
         border: none;
         color: white;
+    }
+
+    @media (max-width: 600px) {
+        .skill-icon img {
+            max-width: 96px;
+        }
+
+        .skill-key {
+            display: none;
+        }
     }
 </style>
