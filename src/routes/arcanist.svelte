@@ -242,7 +242,7 @@
             {#if roundCombo.notes}
               <div class="correct-notes">{roundCombo.notes}</div>
             {/if}
-            <Button class="next-button" onClick={nextRound}>Next</Button>
+            <Button onClick={nextRound}>Next</Button>
           </div>
         </Modal>
       {/if}
@@ -314,7 +314,9 @@
           <SkillKey id={$keyBindings.skill8.skillId} key={$keyBindings.skill8.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill8.skillId)} />
         </div>
         <div class="key-bindings-settings">
-          <Button onClick={() => selectedView.set(1)} >Key Bindings</Button>
+          <Button onClick={() => selectedView.set(1)} isIcon>
+            <img class="settings-button" src="{base}/arcanist/cog-solid.svg" alt="settings"/>
+          </Button>
         </div>
       </section>
   </main>
@@ -460,7 +462,11 @@
     margin-right: 2rem;
     height: 64px;
   }
- 
+  .settings-button {
+      width: 32px;
+      height: 32px;
+  }
+
   .skill-detail {
     display: flex;
     flex-flow: column;

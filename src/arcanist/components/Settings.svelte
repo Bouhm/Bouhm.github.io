@@ -1,12 +1,10 @@
 <script lang="ts">
     import { base } from '$app/paths';
-import { selectedView } from '../stores/store';
+    import { selectedView } from '../stores/store';
 
     let showMenu = false;
 
-    const menuOptions = [
-        { name: "Keybindings" }
-    ];
+    const menuOptions: { [name: string]: string }[] = [];
 
     function clickOutside(el: HTMLDivElement, callback: ()=>void) {
 		function onClick(event: Event) {
