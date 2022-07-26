@@ -134,4 +134,35 @@
         width: 144px;
         height: auto;
     }
+
+    @media (max-width: 600px) {
+        .glossary-content {
+        }
+        .glossary-content tr {
+            display: flex;
+            flex-flow: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        .combo-detail .combo-cards .card-name {
+            font-size: 0.9em;
+        }
+        .combo-detail .combo-cards img {
+            width: 64px;
+        }
+        .combo-info {
+            padding: 0 2rem;
+        }
+        .combo-info .combo-description {
+            font-size: 0.9em;
+            margin: 1rem 0 0 0;
+            text-align: center;
+        }
+        .combo-rotations {
+            display: flex;
+            flex-flow: column;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+    }
 </style>

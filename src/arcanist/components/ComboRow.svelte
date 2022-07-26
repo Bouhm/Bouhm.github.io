@@ -72,4 +72,11 @@
     .wrapper.c2::after{
         background-color: rgba(49,188,58,0.55);
     }
+    
+    @media (max-width: 600px) {
+        .skill-box {
+            width: 32px;
+            height: 32px;
+        }
+    }
 </style>

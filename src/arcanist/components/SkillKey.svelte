@@ -36,7 +36,7 @@
     }
     div.skill-key {
         position: absolute; 
-        bottom: 0;
+        top: 0;
         text-transform: uppercase;
         background: rgba(0,0,0,0.7);
         padding: 0 0.3rem;
