@@ -126,10 +126,14 @@
     if (gameStage === 2 || $showStartInfo || $selectedView > -1) return;
 
     let pressedSkillId = -1;
-
     const skillKey = _.find($keyBindings, kb => kb.key === e.key);
+
     if (skillKey) {
-      pressedSkillId = skillKey.skillId;
+      if (skillKey.skillId > -1) {
+        pressedSkillId = skillKey.skillId; 
+      } else {
+        pressedSkillId = roundCombo.cards[skillKey.index];
+      } 
     } else {
       switch(e.key) {
         // Submit
