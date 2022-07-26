@@ -44,4 +44,14 @@
         border: none;
         color: white;
     }
+
+    @media (max-width: 600px) {
+        .skill-icon img {
+            max-width: 96px;
+        }
+
+        .skill-key {
+            display: none;
+        }
+    }
 </style>
