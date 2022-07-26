@@ -39,6 +39,14 @@
         newConfig[control].key = (e.target as HTMLInputElement).value;
         updateStorage(newConfig);
     }
+
+    function getIcon(skillId: number) {
+        if (skillId > -1) {
+            return skillId
+        } else {
+            return 'blank'
+        }
+    }
 </script>
 
 <div class="keybindings">
@@ -46,7 +54,7 @@
         {#each Object.entries($keyBindings) as [control, skillKey], i}
             <tr>
                 <td class="keybinding-control">{control.toUpperCase()}</td>
-                <td class="keybinding-skill"><img src="{base}/arcanist/{skillKey.skillId}.webp"/></td>
+                <td class="keybinding-skill"><img src="{base}/arcanist/{getIcon(skillKey.skillId)}.webp"/></td>
                 <td class="keybinding-input">
                     <input 
                         type="text" 

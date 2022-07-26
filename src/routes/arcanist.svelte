@@ -251,7 +251,9 @@
       {/if}
       <div class="controls">
         <div class="logo"></div>
-        <div class="glossary-button clickable" on:click={() => selectedView.set(0)}>🕮</div>
+        <div class="glossary-button clickable" on:click={() => selectedView.set(0)}>
+          <img src="{base}/arcanist/book-open-solid.svg" alt="glossary" />
+        </div>
         <div class="settings-container">
           <!-- <Settings /> -->
         </div>
@@ -287,7 +289,9 @@
           <!-- Empty slots when guessing -->
           {#if roundRotation.length > selectedSkillIds.length}
               {#each Array(roundRotation.length - selectedSkillIds.length) as _}
-                  <div class="skill-box" />
+                  <div class="skill-box">
+                    <img src="{base}/arcanist/blankSkill.webp" />
+                  </div>
               {/each}
           {/if}
         </div>
@@ -314,9 +318,7 @@
           <SkillKey id={$keyBindings.skill8.skillId} key={$keyBindings.skill8.key} onClick={handleSelectSkill} isOnCd={skillsOnCd.includes($keyBindings.skill8.skillId)} />
         </div>
         <div class="key-bindings-settings">
-          <Button onClick={() => selectedView.set(1)} isIcon>
-            <img class="settings-button" src="{base}/arcanist/cog-solid.svg" alt="settings"/>
-          </Button>
+          <img on:click={() => selectedView.set(1)} class="settings-button" src="{base}/arcanist/cog-solid.svg" alt="settings"/>
         </div>
       </section>
   </main>
@@ -384,8 +386,9 @@
   }
   .controls .glossary-button {
     position: absolute;
-    top: 0;
+    top: 0.5rem;
     left: 50%;
+    width: 32px;
     transform: translateX(-50%);
     font-size: 2em;
   }
@@ -429,16 +432,21 @@
     top: 10px;
   }
 
+  .input-area {
+    justify-content: center;
+  }
   .input-area .input-skills {
     display: flex;
   }
   .input-area .input-skills .skill-box {
     width: 64px;
     height: 64px;
-    border-bottom: 2px solid white;
     background-size: cover;
     background-position: left center;
     margin: 0.2em;
+  }
+  .input-area .input-skills .skill-box img {
+    width: 64px;
   }
   .input-area .input-skills .skill-box:first-child {
     border-width: 2px 1px 2px 2px;
@@ -539,14 +547,13 @@
       margin: 0;
     }
 
-    .input-area {
-      justify-content: center;
-    }
-    
     .input-area .input-skills .skill-box {
       width: 32px;
       height: 32px;
       margin: 0.1em;
+    }
+    .input-area .input-skills .skill-box img {
+      width: 32px;
     }
   }
 </style>

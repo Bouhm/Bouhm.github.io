@@ -24,7 +24,9 @@
     <!-- Empty slots when guessing -->
     {#if max && max > rotation.length}
         {#each Array(max - rotation.length) as _}
-            <div class="skill-box" />
+            <div class="skill-box">
+                <img src="{base}/arcanist/blank.webp" />
+            </div>
         {/each}
     {/if}
 </div>
@@ -42,6 +44,10 @@
         height: 64px;
         background-size: cover;
         background-position: left center;
+    }
+
+    .skill-box img {
+        width: 64px;
     }
 
     .wrapper {

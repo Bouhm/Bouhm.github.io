@@ -47,16 +47,16 @@
     }
     
     .view-title {
-        margin-top: 1rem;
+        position: relative;
         margin-bottom: 2rem;
     }
     .view-title h1 {
-        margin-top: 0;
+        margin-top: 1rem;
     }
 
     .view-close-button {
         position: absolute;
-        top: 0;
+        top: -0.5rem;
         right: 1rem;
         font-size: 3em;
     }
@@ -67,12 +67,11 @@
         }
 
         .view-title h1 {
-            font-size: 2em;
+            font-size: 1.6em;
             margin-left: 1rem;
         }
 
         .view-close-button {
-            top: 0.5rem;
             font-size: 2em;
         }
     }
