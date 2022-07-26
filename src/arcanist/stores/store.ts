@@ -7,12 +7,12 @@ import type { Combo } from "../data/types";
 export type KeyBindingConfig = {
     [control: string]: {
         key: string,
-        skillId: number
+        skillId?: number
     }
 }
 
 // This is insanity why does it have to be like this
-export const showStartInfo: Writable<boolean> = writable(browser ? (localStorage.getItem('showStartInfo') !== 'undefined' ? JSON.parse(localStorage.getItem('showStartInfo')!) : false) : false);
+export const showStartInfo: Writable<boolean> = writable(browser ? (!localStorage.getItem('showStartInfo') ? true : JSON.parse(localStorage.getItem('showStartInfo')!)) : true);
 export const usedSkills: Writable<number[]> = writable();
 export const selectedView: Writable<number> = writable();
 
@@ -64,15 +64,13 @@ export const defaultKeyBindings = {
     },
     special1: {
         key: 'z',
-        skillId: 0
     },
     special2: {
         key: 'x',
-        skillId: 0
     }
 };
 
-export const keyBindings: Writable<KeyBindingConfig> = writable(browser ? (localStorage.getItem('keyBindings') !== 'undefined' ? JSON.parse(localStorage.getItem('keyBindings')!) : defaultKeyBindings) : defaultKeyBindings);
+export const keyBindings: Writable<KeyBindingConfig> = writable(browser ? (!localStorage.getItem('keyBindings') ? defaultKeyBindings : JSON.parse(localStorage.getItem('keyBindings')!)) : defaultKeyBindings);
 
 if (browser) {
     showStartInfo.subscribe(val => {

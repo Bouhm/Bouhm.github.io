@@ -13,7 +13,7 @@
     }
 </script>
 
-<Modal title="Before you begin..." onClose={handleCloseModal} >
+<Modal title="Before you begin" onClose={handleCloseModal} >
     <div class="start-content">
         <h3>
         These are combos for intended for 332 (3 Stack skills, 3 Ruin skills, 2 Normal skills) Empress Arcanist.
@@ -47,5 +47,9 @@
 </Modal>
 
 <style>
-    
+    .start-info-actions {
+        margin-top: 1rem;
+        display: flex;
+        justify-content: center;
+    }
 </style>

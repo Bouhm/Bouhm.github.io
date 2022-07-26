@@ -154,7 +154,7 @@
   }
 
   function startGame() {
-    localStorage.setItem("showStartInfo", "false");
+    showStartInfo.set(false);
     gameStage = 1;
   }
 
