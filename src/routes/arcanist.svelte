@@ -465,6 +465,14 @@
       width: 32px;
       height: 32px;
   }
+  .key-bindings-settings {
+    margin-top: 0.5rem;
+  }
+  .key-bindings-settings img {
+    border: 2px solid white;
+    border-radius: 6px;
+    padding: 0.3rem;
+  }
 
   .skill-detail {
     display: flex;
