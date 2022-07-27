@@ -68,14 +68,15 @@
   $: skillsOnCd = _.filter(selectedSkillIds, (id) => isOnCd(id));
 
   function isOnCd(id: number, idx?: number) {
+    console.log(
+      id,
+      !!currentState.cdResetSkill && currentState.cdResetSkill !== id
+    );
+
     return (
-      (!(
-        currentState &&
-        currentState.cdResetSkill === id &&
-        lastSelectedSkillId === id
-      ) &&
-        id !== autoattackId &&
-        selectedSkillIds.includes(id)) ||
+      (id !== autoattackId &&
+        selectedSkillIds.includes(id) &&
+        currentState.cdResetSkill !== id) ||
       id < 200
     );
   }
@@ -119,6 +120,8 @@
     // Consume effects
     if (newState.cdResetSkill === id) {
       newState.cdResetSkill = -1;
+    } else if (newState.cdResetSkill === 0) {
+      newState.cdResetSkill = id;
     }
 
     if (id > 209 && id < 220) {
@@ -129,13 +132,14 @@
       newState.stacks = 0;
     } else if (id === wheelId) {
       // Next skill cd should be reset
-      newState.cdResetSkill = id;
+      newState.cdResetSkill = 0;
     } else if (id === threeHeadId) {
       // When Three-Headed Snake is used, autos apply stacks
       newState.stackOnAuto = true;
     } else if (id === judgmentId) {
       // When Judgment is used, Ruin skills apply as 4-stacks
       newState.consumeStacks = false;
+      newState.stacks = 4;
     } else if (id === balanceId) {
       // When Balance is used, autos apply stacks
       newState.stackOnAuto = true;
