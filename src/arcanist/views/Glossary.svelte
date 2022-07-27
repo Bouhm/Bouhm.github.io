@@ -14,7 +14,7 @@
     ...skillGroups.Ruin,
   ];
   const cards = skillGroups.Card;
-  const tabs = ["Cards", "Skills", "Combos", "Basics", "Sources"];
+  const tabs = ["Cards", "Skills", "Combos", "Sources"];
   let selectedTabIdx = 0;
 
   function getCardName(id: number) {
@@ -48,7 +48,7 @@
       {#each skills as skill}
         <SkillInfo {skill} />
       {/each}
-    {:else}
+    {:else if selectedTabIdx === 2}
       {#each combos as combo}
         <tr class="combo-info">
           <td class="combo-detail">
@@ -73,6 +73,25 @@
           </td>
         </tr>
       {/each}
+    {:else}
+      <h3>Combos Guide by Evv</h3>
+      <div>
+        https://docs.google.com/document/d/1ttoHy8lvfvxAosRRNsojeDoK6HditxoeMYb4e2jDrDE
+      </div>
+      <br />
+      <h3>Arcana Guide by Eruca</h3>
+      <div>
+        https://docs.google.com/document/d/1XZVOmVz-Q9KpVJS4EF-Bs2mAp4vwIMskuxoXF23xXJc
+      </div>
+      <br />
+      <h3>Translated Guide by trg1234</h3>
+      <div>
+        https://docs.google.com/document/d/1ziX4iHTMd7eKNU-mBGuxMMD-P04bJ50Swshk0wi1oWM
+      </div>
+      <div>https://www.youtube.com/watch?v=-O9frNTvr_E</div>
+      <br />
+      <h3>Arcana Discord</h3>
+      <div>https://discord.gg/Xc2NYwXEGt</div>
     {/if}
   </table>
 </div>
