@@ -68,11 +68,6 @@
   $: skillsOnCd = _.filter(selectedSkillIds, (id) => isOnCd(id));
 
   function isOnCd(id: number, idx?: number) {
-    console.log(
-      id,
-      !!currentState.cdResetSkill && currentState.cdResetSkill !== id
-    );
-
     return (
       (id !== autoattackId &&
         selectedSkillIds.includes(id) &&
@@ -271,7 +266,9 @@
       style="background-image: url('{base}/arcanist/bg.webp');"
     />
     {#if $showStartInfo}
-      <StartInfo onCloseStartInfo={startGame} onStartGame={startGame} />
+      <Modal title="Before You Start" onClose={startGame}>
+        <StartInfo />
+      </Modal>
     {/if}
     {#if gameStage === 2}
       <Modal
@@ -314,7 +311,7 @@
     </div>
     <section class="cards">
       {#each roundCombo.cards as cardId, i}
-        {#key i}
+        {#key roundIdx}
           <SkillKey
             className="animate__animated animate__backInDown"
             bind:id={cardId}
@@ -450,7 +447,8 @@
 
 <style>
   :global(body) {
-    background-color: #1a122b;
+    background-color: #171026;
+    background: linear-gradient(90deg, #171026, #201635, #171026);
     box-sizing: border-box;
   }
 
@@ -463,7 +461,7 @@
     flex-flow: column;
     align-items: center;
     color: white;
-    height: 95vh;
+    height: 100vh;
   }
 
   .background {

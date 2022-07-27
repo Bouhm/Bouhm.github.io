@@ -4,6 +4,7 @@
   import ComboRow from "../components/ComboRow.svelte";
   import SkillInfo from "../components/SkillInfo.svelte";
   import { base } from "$app/paths";
+  import StartInfo from "../components/StartInfo.svelte";
   export let db: Skill[];
   export let combos: Combo[];
 
@@ -14,7 +15,7 @@
     ...skillGroups.Ruin,
   ];
   const cards = skillGroups.Card;
-  const tabs = ["Cards", "Skills", "Combos", "Sources"];
+  const tabs = ["Cards", "Skills", "Combos", "Basics", "Sources"];
   let selectedTabIdx = 0;
 
   function getCardName(id: number) {
@@ -73,25 +74,42 @@
           </td>
         </tr>
       {/each}
+    {:else if selectedTabIdx === 3}
+      <StartInfo />
     {:else}
       <h3>Combos Guide by Evv</h3>
       <div>
-        https://docs.google.com/document/d/1ttoHy8lvfvxAosRRNsojeDoK6HditxoeMYb4e2jDrDE
+        <a
+          href="https://docs.google.com/document/d/1ttoHy8lvfvxAosRRNsojeDoK6HditxoeMYb4e2jDrDE"
+          target="_blank">Google Doc</a
+        >
       </div>
       <br />
       <h3>Arcana Guide by Eruca</h3>
       <div>
-        https://docs.google.com/document/d/1XZVOmVz-Q9KpVJS4EF-Bs2mAp4vwIMskuxoXF23xXJc
+        <a
+          href="https://docs.google.com/document/d/1XZVOmVz-Q9KpVJS4EF-Bs2mAp4vwIMskuxoXF23xXJc"
+          target="_blank">Google Doc</a
+        >
       </div>
       <br />
       <h3>Translated Guide by trg1234</h3>
       <div>
-        https://docs.google.com/document/d/1ziX4iHTMd7eKNU-mBGuxMMD-P04bJ50Swshk0wi1oWM
+        <a
+          href="https://docs.google.com/document/d/1ziX4iHTMd7eKNU-mBGuxMMD-P04bJ50Swshk0wi1oWM"
+          target="_blank">Google Doc</a
+        >
       </div>
-      <div>https://www.youtube.com/watch?v=-O9frNTvr_E</div>
+      <div>
+        <a href="https://www.youtube.com/watch?v=-O9frNTvr_E" target="_blank"
+          >Youtube (KR)</a
+        >
+      </div>
       <br />
       <h3>Arcana Discord</h3>
-      <div>https://discord.gg/Xc2NYwXEGt</div>
+      <div>
+        <a href="https://discord.gg/Xc2NYwXEGt" target="_blank">Discord</a>
+      </div>
     {/if}
   </table>
 </div>
@@ -103,16 +121,21 @@
   }
   .glossary-content {
     table-layout: auto;
-    width: 100%;
-    height: 100%;
     border-spacing: 1rem;
     border-collapse: collapse;
+    margin: 1rem;
+  }
+  .glossary-content div {
+    font-size: 1.3em;
+  }
+  .glossary-content h3 {
+    font-size: 1.4em;
   }
   td.combo-detail {
     width: auto;
   }
-
-  .glossary-content {
+  td.combo-detail .card-name {
+    font-size: 0.9em;
   }
 
   .tabs {
@@ -124,7 +147,7 @@
   }
   .tab {
     margin: 1rem;
-    width: 4rem;
+    width: 5rem;
     line-height: 2rem;
     text-align: center;
   }
@@ -145,9 +168,13 @@
     display: flex;
     flex-flow: column;
     justify-content: space-between;
-    font-size: 1.2em;
     margin-left: 1.4rem;
   }
+
+  .combo-info .combo-description .combo-notes {
+    font-size: 1.2em;
+  }
+
   .combo-description .combo-notes {
     margin-bottom: 2rem;
   }
@@ -163,7 +190,20 @@
   }
 
   @media (max-width: 600px) {
-    .glossary-content {
+    .glossary-content h3 {
+      font-size: 1.1em;
+    }
+
+    .glossary-content div {
+      font-size: 1em;
+    }
+
+    .glossary-content h3:not(:first-child) {
+      margin-top: 2.5rem;
+    }
+
+    .tab {
+      font-size: 0.9em;
     }
     .glossary-content tr {
       display: flex;
