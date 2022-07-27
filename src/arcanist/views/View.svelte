@@ -37,7 +37,7 @@
     right: 0;
     left: 0;
     bottom: 0;
-    z-index: 1;
+    z-index: 10;
     background-color: #191328;
     overflow-y: auto;
     overflow-x: hidden;

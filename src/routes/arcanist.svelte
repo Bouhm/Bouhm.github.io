@@ -49,7 +49,7 @@
   // 1 = Round (guessing)
   // 2 = Round Submitted (self-explanatory)
   // 3 = Ended (all rounds completed)
-  let gameStage = 0;
+  let gameStage = 1;
   let guessStates = [defaultGuessState];
   let roundIdx = 0;
   let selectedSkillIds: number[] = [];
@@ -262,7 +262,7 @@
 
 {#if browser}
   <main>
-    {#if gameStage === 0 && $showStartInfo}
+    {#if $showStartInfo}
       <StartInfo onCloseStartInfo={startGame} onStartGame={startGame} />
     {/if}
     {#if gameStage === 2}
@@ -463,7 +463,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 10;
+    z-index: 3;
 
     background: #211b2e;
     border-bottom: 2px solid rgba(255, 255, 255, 0.1);
