@@ -57,10 +57,9 @@
   let combosList = _.shuffle(
     _.filter(comboData, (combo) => combo.rotations[0].length > 1)
   ) as Combo[];
-  $: roundCombo = combosList[roundIdx];
-  $: roundRotation = roundCombo.rotations[0] || [];
+  let roundCombo = combosList[roundIdx];
+  let roundRotation = roundCombo.rotations[0] || [];
   $: currentState = guessStates[guessStates.length - 1];
-  $: lastSelectedSkillId = selectedSkillIds[selectedSkillIds.length - 1];
   $: selectedSkill = _.find(
     skillData,
     (skill) => skill.id === selectedSkillIds[selectedSkillIds.length - 1]
@@ -191,6 +190,8 @@
     roundIdx++;
     selectedSkillIds = [];
     guessStates = [defaultGuessState];
+    roundCombo = combosList[roundIdx];
+    roundRotation = roundCombo.rotations[0] || [];
   }
 
   function handleCloseModal() {
@@ -252,6 +253,8 @@
     // gameStage = 3;
     combosList = _.shuffle(_.filter(comboData, (combo) => combo)) as Combo[];
   }
+
+  $: console.log(roundIdx);
 </script>
 
 <svelte:head>
@@ -361,7 +364,11 @@
         {/if}
       </div>
       {#if gameStage === 1}
-        <Button onClick={handleSubmit}>Submit</Button>
+        <Button
+          onClick={handleSubmit}
+          disabled={roundRotation.length !== selectedSkillIds.length}
+          >Submit</Button
+        >
       {/if}
     </section>
     <section class="skills">
@@ -585,7 +592,7 @@
     height: 64px;
     background-size: cover;
     background-position: left center;
-    margin: 0.2em;
+    margin: 0;
   }
   .input-area .input-skills .skill-box img {
     width: 64px;
@@ -652,6 +659,7 @@
     margin: 0.5rem;
   }
   .combo-answers .correct-notes {
+    font-size: 1.2em;
     margin-top: 1.5rem;
   }
 
@@ -706,12 +714,12 @@
     }
 
     .input-area .input-skills .skill-box {
-      width: 32px;
-      height: 32px;
+      width: 48px;
+      height: 48px;
       margin: 0.1em;
     }
     .input-area .input-skills .skill-box img {
-      width: 32px;
+      width: 48px;
     }
   }
 </style>
