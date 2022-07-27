@@ -32,7 +32,7 @@
 
   const defaultGuessState = {
     consumeStacks: true,
-    cdResetNextSkill: false,
+    cdResetSkill: -1,
     stackOnAuto: false,
     increasedStacks: false,
     stacks: 0,
@@ -71,7 +71,7 @@
     return (
       (!(
         currentState &&
-        currentState.cdResetNextSkill &&
+        currentState.cdResetSkill === id &&
         lastSelectedSkillId === id
       ) &&
         id !== autoattackId &&
@@ -117,8 +117,8 @@
     }
 
     // Consume effects
-    if (newState.cdResetNextSkill) {
-      newState.cdResetNextSkill = false;
+    if (newState.cdResetSkill === id) {
+      newState.cdResetSkill = -1;
     }
 
     if (id > 209 && id < 220) {
@@ -129,7 +129,7 @@
       newState.stacks = 0;
     } else if (id === wheelId) {
       // Next skill cd should be reset
-      newState.cdResetNextSkill = true;
+      newState.cdResetSkill = id;
     } else if (id === threeHeadId) {
       // When Three-Headed Snake is used, autos apply stacks
       newState.stackOnAuto = true;
