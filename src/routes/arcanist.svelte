@@ -1,7 +1,7 @@
 <script lang="ts">
   import { base } from "$app/paths";
   import { browser } from "$app/env";
-  import _ from "lodash";
+  import _, { round } from "lodash";
 
   import {
     showStartInfo,
@@ -262,6 +262,10 @@
 
 {#if browser}
   <main>
+    <div
+      class="background"
+      style="background-image: url('{base}/arcanist/bg.webp');"
+    />
     {#if $showStartInfo}
       <StartInfo onCloseStartInfo={startGame} onStartGame={startGame} />
     {/if}
@@ -306,14 +310,16 @@
     </div>
     <section class="cards">
       {#each roundCombo.cards as cardId, i}
-        <SkillKey
-          className="animate__animated animate__backInDown"
-          bind:id={cardId}
-          key={$keyBindings[`special${i + 1}`].key}
-          onClick={handleSelectSkill}
-          isOnCd={skillsOnCd.includes(cardId)}
-          isCard={true}
-        />
+        {#key i}
+          <SkillKey
+            className="animate__animated animate__backInDown"
+            bind:id={cardId}
+            key={$keyBindings[`special${i + 1}`].key}
+            onClick={handleSelectSkill}
+            isOnCd={skillsOnCd.includes(cardId)}
+            isCard={true}
+          />
+        {/key}
       {/each}
     </section>
     <section class="applied-effects">
@@ -440,8 +446,12 @@
 
 <style>
   :global(body) {
-    background-color: #150f23;
+    background-color: #1a122b;
     box-sizing: border-box;
+  }
+
+  h1 {
+    color: white;
   }
 
   main {
@@ -452,8 +462,21 @@
     height: 95vh;
   }
 
+  .background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-repeat: repeat;
+    mix-blend-mode: overlay;
+    z-index: 0;
+    opacity: 0.1;
+  }
+
   section {
     display: flex;
+    z-index: 1;
   }
   .controls {
     position: fixed;
