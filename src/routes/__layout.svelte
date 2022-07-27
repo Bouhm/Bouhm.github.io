@@ -1,5 +1,6 @@
 <script>
-	import '../app.css';
+  import "animate.css/animate.min.css";
+  import "../app.css";
 </script>
 
 <slot />
