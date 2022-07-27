@@ -68,9 +68,9 @@
                 <td class="keybinding-control">{control.toUpperCase()}</td>
                 <td 
                     class="keybinding-skill clickable" 
-                    on:click={() => handleClickSkill(control)}
                 >
                     <div 
+                        on:click={() => handleClickSkill(control)}
                         class:error={isExistingSkill($keyBindings[control].skillId)} 
                         class="keybinding-skill-wrapper"
                     >
