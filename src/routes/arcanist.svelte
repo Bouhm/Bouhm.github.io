@@ -54,9 +54,7 @@
   let roundIdx = 0;
   let selectedSkillIds: number[] = [];
 
-  let combosList = _.shuffle(
-    _.filter(comboData, (combo) => combo.rotations[0].length > 1)
-  ) as Combo[];
+  let combosList = shuffleRounds();
   let roundCombo = combosList[roundIdx];
   let roundRotation = roundCombo.rotations[0] || [];
   $: currentState = guessStates[guessStates.length - 1];
@@ -65,6 +63,12 @@
     (skill) => skill.id === selectedSkillIds[selectedSkillIds.length - 1]
   ) as Skill;
   $: skillsOnCd = _.filter(selectedSkillIds, (id) => isOnCd(id));
+
+  function shuffleRounds() {
+    return _.shuffle(
+      _.filter(comboData, (combo) => combo.rotations[0].length > 1)
+    ) as Combo[];
+  }
 
   function isOnCd(id: number, idx?: number) {
     return (
@@ -186,8 +190,12 @@
   }
 
   function nextRound() {
-    gameStage = 1;
     roundIdx++;
+    if (roundIdx > roundRotation.length - 1) {
+      endGame();
+    }
+
+    gameStage = 1;
     selectedSkillIds = [];
     guessStates = [defaultGuessState];
     roundCombo = combosList[roundIdx];
@@ -243,18 +251,13 @@
 
     // 100% correct
     if (maxCorrectness === 2 * roundRotation.length) numCorrect++;
-
-    if (roundIdx > roundRotation.length - 1) {
-      endGame();
-    }
   }
 
   function endGame() {
     // gameStage = 3;
-    combosList = _.shuffle(_.filter(comboData, (combo) => combo)) as Combo[];
+    roundIdx = 0;
+    combosList = shuffleRounds();
   }
-
-  $: console.log(roundIdx);
 </script>
 
 <svelte:head>
