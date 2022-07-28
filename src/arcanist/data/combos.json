@@ -32,7 +32,7 @@
     {
         "id": 505,
         "cards": [100],
-        "rotations": [[100,211,400,400],[106,210,400,400]],
+        "rotations": [[100,211,400,400],[100,210,400,400]],
         "notes": "Use autoattacks to reach 4 stacks with the effect of Three-Headed Snake."
     },
     {
@@ -192,5 +192,5 @@
             [211,210,202,111,223,212,223,109]
         ],
         "notes": "Perform basic stacking rotation and apply Wheel of Fortune on priority Ruin skill to use it twice. Use Star at the end to reduce cooldowns."
-    }   
+    }
 ]
