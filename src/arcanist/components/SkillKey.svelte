@@ -6,6 +6,7 @@
   export let isOnCd = false;
   export let isCard = false;
   export let className = "";
+  export let isComboSkill = id === 211 || id === 212;
 
   function handleClick() {
     onClick(id);
@@ -19,6 +20,9 @@
 >
   <img class:asCard={isCard} src="{base}/arcanist/{id}.webp" />
   <div class="skill-key">{key}</div>
+  {#if isComboSkill}
+    <div class="combo-indicator">>></div>
+  {/if}
 </div>
 
 <style>
@@ -49,6 +53,17 @@
     outline: none;
     border: none;
     color: white;
+  }
+  .combo-indicator {
+    position: absolute;
+    bottom: 0rem;
+    right: 0.2rem;
+    font-size: 1.1em;
+    font-weight: 700;
+    color: white;
+    letter-spacing: -2px;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+      1px 1px 0 #000;
   }
 
   @media (max-width: 600px) {

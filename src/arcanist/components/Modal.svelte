@@ -44,8 +44,7 @@
     border-radius: 8px;
     padding: 1rem;
     background-color: #191328;
-    min-width: 45rem;
-    min-height: 30rem;
+    min-width: 40rem;
     overflow-y: auto;
   }
   .modal-title {

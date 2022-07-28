@@ -64,6 +64,7 @@
             class="clickable"
             src="{base}/arcanist/{skill}.webp"
             on:click={() => handleSkillSelect(skill, clickedSkillSlot)}
+            alt="skill"
           />
         {/each}
       </div>
@@ -96,7 +97,10 @@
             class:clickable={control.startsWith("skill")}
             class="keybinding-skill-wrapper"
           >
-            <img src="{base}/arcanist/{getIcon(skillKey.skillId)}.webp" />
+            <img
+              src="{base}/arcanist/{getIcon(skillKey.skillId)}.webp"
+              alt="skill-key"
+            />
           </div>
         </td>
         <td class="keybinding-input">
@@ -143,7 +147,7 @@
     text-transform: uppercase;
     color: white;
     font-weight: 700;
-    width: 5rem;
+    width: 4.8rem;
     background-color: #513e82;
     border: none;
     padding: 0.5rem;
@@ -177,6 +181,8 @@
 
   .skill-selection {
     display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     flex-wrap: wrap;
   }

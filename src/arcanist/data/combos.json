@@ -52,7 +52,7 @@
         "id": 508,
         "cards": [102],
         "rotations": [[211,210,202,102,223,212,226]],
-        "notes": "Standard 4 stacks, buff, and ruin skill combo."
+        "notes": "Standard 4 stacks, buff, and Ruin skill combo."
     },
     {
         "id": 509,
@@ -192,5 +192,5 @@
             [211,210,202,111,223,212,223,109]
         ],
         "notes": "Perform basic stacking rotation and apply Wheel of Fortune on priority Ruin skill to use it twice. Use Star at the end to reduce cooldowns."
-    }
+    }   
 ]
