@@ -73,7 +73,7 @@
         "id": 511,
         "cards": [111],
         "rotations": [
-            [211,210,111,301,202,301,223],
+            [211,210,202,111,301,301,223],
             [211,210,202,111,223,212,223]
         ],
         "notes": "In most cases Celestial Rain is more practical over the long run. The Awakening skill combo can be used for speedrunning easier content."
