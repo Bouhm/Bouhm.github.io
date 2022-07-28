@@ -73,7 +73,9 @@
   <table class="keybindings-content">
     <tr>
       <td class="keybinding-control">UNDO SKILL</td>
-      <td />
+      <td class="keybinding-skill">
+        <img class="lock" src="{base}/arcanist/lock-solid.svg" alt="lock" />
+      </td>
       <td class="keybinding-input">
         <input type="text" value="Backspace" disabled />
       </td>
@@ -81,7 +83,9 @@
     <br />
     <tr>
       <td class="keybinding-control">SUBMIT</td>
-      <td />
+      <td class="keybinding-skill">
+        <img class="lock" src="{base}/arcanist/lock-solid.svg" alt="lock" />
+      </td>
       <td class="keybinding-input">
         <input type="text" value="Enter" disabled />
       </td>
@@ -123,7 +127,6 @@
     flex-flow: column;
     color: white;
   }
-
   .keybindings-content {
     table-layout: fixed;
     text-align: center;
@@ -136,22 +139,27 @@
   }
   td.keybinding-skill {
     padding-left: 2rem;
+    text-align: left;
   }
   td.keybinding-skill img {
     width: 64px;
   }
+  td.keybinding-skill .lock {
+    width: 16px;
+    margin-left: 1.5rem;
+  }
   td.keybinding-input {
-    width: 3rem;
   }
   td.keybinding-input input {
     text-transform: uppercase;
-    color: white;
     font-weight: 700;
-    width: 4.8rem;
-    background-color: #513e82;
-    border: none;
+    width: 5rem;
+    border: 2px solid rgba(0, 0, 0, 0.4);
+    text-align: center;
+    border-bottom-width: 5px;
+    background-color: rgba(255, 255, 255, 0.8);
     padding: 0.5rem;
-    border-radius: 6px;
+    border-radius: 7px;
     outline: none;
   }
   td.keybinding-input input.error {
