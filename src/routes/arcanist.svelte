@@ -142,8 +142,8 @@
       newState.consumeStacks = false;
       newState.stacks = 4;
     } else if (id === balanceId) {
-      // When Balance is used, autos apply stacks
-      newState.stackOnAuto = true;
+      // When Balance is used, increase stacking
+      newState.increasedStacks = true;
     } else if (id === autoattackId && newState.stackOnAuto) {
       newState.stacks++;
     }
@@ -156,7 +156,10 @@
     if (gameStage === 2 || $showStartInfo || $selectedView > -1) return;
 
     let pressedSkillId = -1;
-    const skillKey = _.find($keyBindings, (kb) => kb.key === e.key);
+    const skillKey = _.find(
+      $keyBindings,
+      (kb) => kb.key === e.key.toLowerCase()
+    );
 
     if (skillKey) {
       if (skillKey.skillId > -1) {
@@ -203,6 +206,10 @@
     guessStates = [defaultGuessState];
     roundCombo = combosList[roundIdx];
     roundRotation = roundCombo.rotations[0] || [];
+
+    if (!!roundCombo.stacks) {
+      guessStates[0].stacks = roundCombo.stacks;
+    }
   }
 
   function handleCloseModal() {
@@ -534,6 +541,8 @@
   section.skills {
     flex: 3;
     display: flex;
+    border-top: 2px solid rgba(255, 255, 255, 0.3);
+    padding-top: 1rem;
   }
   .start-info-actions {
     display: flex;
