@@ -1,7 +1,7 @@
 <script lang="ts">
   import { base } from "$app/paths";
   import { browser } from "$app/env";
-  import _, { round } from "lodash";
+  import _ from "lodash";
 
   import {
     showStartInfo,
@@ -18,6 +18,7 @@
   import Button from "../arcanist/components/Button.svelte";
   import View from "../arcanist/views/View.svelte";
   import StartInfo from "../arcanist/components/StartInfo.svelte";
+  import Loader from "../arcanist/components/Loader.svelte";
 
   const awakeningId = 301;
   const autoattackId = 400;
@@ -265,8 +266,8 @@
 </svelte:head>
 <svelte:window on:keyup={handleKeyPress} />
 
-{#if browser}
-  <main>
+<main>
+  {#if browser}
     <div
       class="background"
       style="background-image: url('{base}/arcanist/bg.webp');"
@@ -450,10 +451,10 @@
         />
       </div>
     </section>
-  </main>
-{:else}
-  <h1>Loading...</h1>
-{/if}
+  {:else}
+    <Loader />
+  {/if}
+</main>
 
 <style>
   :global(body) {
@@ -559,6 +560,7 @@
     height: 30px;
     background-color: purple;
     border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 6px;
   }
 
   .applied-effects .stack-card.full {
