@@ -20,6 +20,8 @@
   import StartInfo from "../arcanist/components/StartInfo.svelte";
   import Loader from "../arcanist/components/Loader.svelte";
 
+  const cf = { token: "7b07a8a595c44186a8e8656f2ca9551d" };
+
   const awakeningId = 301;
   const autoattackId = 400;
   const judgmentId = 107;
@@ -263,6 +265,10 @@
 
 <svelte:head>
   <title>Arcanist Rotations Combos And Nutshell Analysis</title>
+  <script
+    defer
+    src="https://static.cloudflareinsights.com/beacon.min.js"
+    data-cf-beacon={JSON.stringify(cf)}></script>
 </svelte:head>
 <svelte:window on:keyup={handleKeyPress} />
 
