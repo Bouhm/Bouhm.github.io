@@ -320,7 +320,7 @@
       {#each roundCombo.cards as cardId, i}
         {#key roundIdx}
           <SkillKey
-            className="animate__animated animate__backInDown"
+            className="animate__animated animate__backInDown animate__faster"
             bind:id={cardId}
             key={$keyBindings[`special${i + 1}`].key}
             onClick={handleSelectSkill}

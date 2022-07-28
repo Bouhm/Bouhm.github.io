@@ -17,7 +17,7 @@
   class="skill-icon clickable {className}"
   on:click={handleClick}
 >
-  <img src="{base}/arcanist/{id}.webp" width={isCard ? 128 : 64} />
+  <img class:asCard={isCard} src="{base}/arcanist/{id}.webp" />
   <div class="skill-key">{key}</div>
 </div>
 
@@ -32,6 +32,10 @@
   }
   .skill-icon img {
     height: auto;
+    width: 64px;
+  }
+  .skill-icon img.asCard {
+    width: 128px;
   }
   .skill-icon.onCd {
     filter: grayscale(1) brightness(0.8);
