@@ -560,7 +560,7 @@
     height: 30px;
     background-color: purple;
     border: 2px solid rgba(255, 255, 255, 0.5);
-    border-radius: 6px;
+    border-radius: 3px;
   }
 
   .applied-effects .stack-card.full {
