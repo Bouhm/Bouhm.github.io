@@ -13,7 +13,7 @@
 
 <div class="combo-row" class:centered>
   {#each rotation as skillId, i}
-    <div class={`wrapper c${correctness[i]}`}>
+    <div class={`wrapper ${correctness[i] ? "c" + correctness[i] : ""}`}>
       <div
         class={`skill-box`}
         on:click={() => handleClick(i)}
@@ -86,8 +86,8 @@
 
   @media (max-width: 600px) {
     .skill-box {
-      width: 48px;
-      height: 48px;
+      width: 36px;
+      height: 36px;
     }
   }
 </style>

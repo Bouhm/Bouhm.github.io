@@ -45,6 +45,7 @@
     {
         "id": 507,
         "cards": [109],
+        "stacks": 4,
         "rotations": [[109,223],[223,109]],
         "notes": "Use after Ruin skill to reduce its cooldown. If in Boundless MP state (Nightmare Set effect), use before Celestial Rain hits after its cooldown starts."
     },

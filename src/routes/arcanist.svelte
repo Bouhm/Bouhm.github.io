@@ -329,66 +329,69 @@
         <!-- <Settings /> -->
       </div>
     </div>
-    <section class="cards">
-      {#each roundCombo.cards as cardId, i}
-        {#key roundIdx}
-          <SkillKey
-            className="animate__animated animate__backInDown animate__faster"
-            bind:id={cardId}
-            key={$keyBindings[`special${i + 1}`].key}
-            onClick={handleSelectSkill}
-            isOnCd={skillsOnCd.includes(cardId)}
-            isCard={true}
-          />
-        {/key}
-      {/each}
-    </section>
-    <section class="applied-effects">
-      <ul class="effects">
-        {#if selectedSkill && selectedSkill.effects}
-          {#each selectedSkill.effects as effect}
-            <li>{effect}</li>
-          {/each}
-        {/if}
-      </ul>
-      <div class:full={currentState.stacks === 4} class="stacks">
-        {#each Array(currentState.stacks || 0) as _}
-          <div
-            class:full={currentState.stacks === 4}
-            class="stack-card animate__animated animate__fadeIn"
-          />
+    <div class="game">
+      <div class="cards">
+        {#each roundCombo.cards as cardId, i}
+          {#key roundIdx}
+            <SkillKey
+              className="animate__animated animate__backInDown animate__faster"
+              bind:id={cardId}
+              key={$keyBindings[`special${i + 1}`].key}
+              onClick={handleSelectSkill}
+              isOnCd={skillsOnCd.includes(cardId)}
+              isCard={true}
+            />
+          {/key}
         {/each}
       </div>
-    </section>
-    <section class="input-area">
-      <div class="input-skills">
-        {#each selectedSkillIds as skillId, i}
-          <div
-            class={`skill-box animate__animated animate__flipInY ${
-              i === selectedSkillIds.length - 1 ? "clickable" : ""
-            }`}
-            style="background-image: url('{`${base}/arcanist/${skillId}.webp`}')"
-            on:click={handleRemoveSkill}
-          />
-        {/each}
-        <!-- Empty slots when guessing -->
-        {#if roundRotation.length > selectedSkillIds.length}
-          {#each Array(roundRotation.length - selectedSkillIds.length) as _}
-            <div class="skill-box">
-              <img src="{base}/arcanist/blankSkill.webp" />
-            </div>
+      <div class="applied-effects">
+        <ul class="effects">
+          {#if selectedSkill && selectedSkill.effects}
+            {#each selectedSkill.effects as effect}
+              <li>{effect}</li>
+            {/each}
+          {/if}
+        </ul>
+        <div class:full={currentState.stacks === 4} class="stacks">
+          {#each Array(currentState.stacks || 0) as _}
+            <div
+              class:full={currentState.stacks === 4}
+              class="stack-card animate__animated animate__fadeIn"
+            />
           {/each}
+        </div>
+      </div>
+      <div class="input-area">
+        <div class="input-skills">
+          {#each selectedSkillIds as skillId, i}
+            <div
+              class={`skill-box animate__animated animate__flipInY ${
+                i === selectedSkillIds.length - 1 ? "clickable" : ""
+              }`}
+              style="background-image: url('{`${base}/arcanist/${skillId}.webp`}')"
+              on:click={handleRemoveSkill}
+            />
+          {/each}
+          <!-- Empty slots when guessing -->
+          {#if roundRotation.length > selectedSkillIds.length}
+            {#each Array(roundRotation.length - selectedSkillIds.length) as _}
+              <div class="skill-box">
+                <img src="{base}/arcanist/blankSkill.webp" />
+              </div>
+            {/each}
+          {/if}
+        </div>
+        {#if gameStage === 1}
+          <Button
+            onClick={handleSubmit}
+            disabled={roundRotation.length !== selectedSkillIds.length}
+            >Submit</Button
+          >
         {/if}
       </div>
-      {#if gameStage === 1}
-        <Button
-          onClick={handleSubmit}
-          disabled={roundRotation.length !== selectedSkillIds.length}
-          >Submit</Button
-        >
-      {/if}
-    </section>
-    <section class="skills">
+    </div>
+
+    <div class="skills">
       <div class="special-skills">
         <!-- Awakening -->
         <SkillKey
@@ -463,7 +466,7 @@
           alt="settings"
         />
       </div>
-    </section>
+    </div>
   {:else}
     <Loader />
   {/if}
@@ -486,6 +489,7 @@
     align-items: center;
     color: white;
     height: 100vh;
+    overflow-x: hidden;
   }
 
   .background {
@@ -500,10 +504,27 @@
     opacity: 0.1;
   }
 
-  section {
+  .game {
     display: flex;
+    flex-flow: column;
+    align-items: center;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    padding: 0 2rem;
+    margin-bottom: 2rem;
+    width: 40%;
+    min-width: 35rem;
     z-index: 1;
+    -moz-box-shadow: inset 0 0 10px #000000;
+    -webkit-box-shadow: inset 0 0 10px #000000;
+    box-shadow: inset 0 0 10px #000000;
   }
+  .game > div {
+    flex: 4;
+    display: flex;
+  }
+
   .controls {
     position: fixed;
     width: 100%;
@@ -521,28 +542,24 @@
     flex: 1;
   }
 
-  section.cards {
-    flex: 4;
+  div.cards {
     margin: 6rem 1rem 1rem 1rem;
   }
-  section.applied-effects {
+  div.applied-effects {
     display: flex;
     flex-flow: column;
     align-items: center;
-    flex: 2.5;
   }
-  section.input-area {
-    flex: 4;
+  div.input-area {
     display: flex;
     flex-flow: column;
     align-items: center;
     margin-bottom: 2rem;
   }
-  section.skills {
-    flex: 3;
+  div.skills {
+    flex: 1;
     display: flex;
-    border-top: 2px solid rgba(255, 255, 255, 0.3);
-    padding-top: 1rem;
+    padding-bottom: 2rem;
   }
   .start-info-actions {
     display: flex;
@@ -645,6 +662,7 @@
     height: 32px;
   }
   .key-bindings-settings {
+    z-index: 1;
     margin-top: 0.5rem;
   }
   .key-bindings-settings img {
@@ -697,6 +715,11 @@
   }
 
   @media (max-width: 600px) {
+    .game {
+      min-width: 0;
+      width: 100%;
+    }
+
     .key-bindings-settings {
       display: none;
     }
@@ -734,12 +757,12 @@
     }
 
     .input-area .input-skills .skill-box {
-      width: 48px;
-      height: 48px;
+      width: 36px;
+      height: 36px;
       margin: 0.1em;
     }
     .input-area .input-skills .skill-box img {
-      width: 48px;
+      width: 36px;
     }
   }
 </style>
