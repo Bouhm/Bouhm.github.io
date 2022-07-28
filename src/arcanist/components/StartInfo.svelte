@@ -33,6 +33,7 @@
     Ruin skill. The two Ruin skills should be used during the duration of
     Return's buff.
   </div>
+  <br />
   <div>
     Refer to the Glossary for help if you need to review Arcanist skills.
   </div>

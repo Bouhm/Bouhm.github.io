@@ -61,7 +61,7 @@
             [211,210,202,105,226,212,225],
             [211,210,202,105,223,212,225]
         ],
-        "notes": "With Cull, Serendipity becomes a viable option because it benefits a lot from the effects of Cull."
+        "notes": "With Cull, Serendipity becomes a viable option for the second Ruin Skill because it benefits a lot from its effects."
     },
     {
         "id": 510,
@@ -85,7 +85,7 @@
             [202,105,107,225,226,223],
             [202,105,107,225,223,226]
         ],
-        "notes": "Prioritized by damage. Serendipity benefits the most from both card effects."
+        "notes": "Ruin skills prioritized by damage. Serendipity benefits the most from both card effects."
     },
     {
         "id": 601,
