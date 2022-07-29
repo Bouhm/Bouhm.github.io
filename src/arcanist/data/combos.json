@@ -158,7 +158,7 @@
         "id": 609,
         "cards": [102,106],
         "rotations": [
-            [212,202,102,223,211,226,210,225]
+            [212,202,102,223,106,211,226,210,225]
         ],
         "notes": "Use Spiral Edge to obtain 4 stacks before using Balance. Buff with Twisted Fate before alternating Ruin + full stacking with enhanced Stacking skills from Balance."
     },
