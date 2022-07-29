@@ -86,7 +86,6 @@
         <input type="text" value="Backspace" disabled />
       </td>
     </tr>
-    <br />
     <tr>
       <td class="keybinding-control">SUBMIT</td>
       <td class="keybinding-skill">
@@ -150,10 +149,13 @@
   td {
     width: 4rem;
   }
+  tr:nth-child(even):not(:nth-child(1)):not(:nth-child(2)) {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
   td.keybinding-control {
     text-align: right;
     text-transform: uppercase;
-    font-size: 1.1em;
+    font-size: 1.05em;
   }
   td.keybinding-skill {
     padding-left: 2rem;
@@ -170,6 +172,9 @@
   td.keybinding-skill .lock {
     width: 16px;
     margin-left: 1.5rem;
+  }
+  td.keybinding-input {
+    text-align: start;
   }
   td.keybinding-input input {
     text-transform: uppercase;

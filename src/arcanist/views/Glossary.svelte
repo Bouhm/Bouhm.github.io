@@ -126,7 +126,7 @@
     margin: 1rem;
   }
   .glossary-content div {
-    font-size: 1.3em;
+    font-size: 1.2em;
   }
   .glossary-content h3 {
     font-size: 1.4em;
@@ -172,7 +172,7 @@
   }
 
   .combo-info .combo-description .combo-notes {
-    font-size: 1.2em;
+    font-size: 1.1em;
   }
 
   .combo-description .combo-notes {

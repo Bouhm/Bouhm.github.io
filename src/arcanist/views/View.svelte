@@ -44,7 +44,7 @@
   }
 
   .view-content {
-    width: 60%;
+    width: 65%;
     margin: 0 auto;
   }
 

@@ -343,7 +343,6 @@
               class="card animate__animated animate__backInDown animate__faster"
             >
               <SkillKey
-                name={getSkillName(cardId)}
                 bind:id={cardId}
                 key={$keyBindings[i + 10].key}
                 onClick={handleSelectSkill}
@@ -406,14 +405,12 @@
           key={$keyBindings[9].key}
           onClick={handleSelectSkill}
           isOnCd={isOnCd(awakeningId)}
-          name={getSkillName(awakeningId)}
         />
         <!-- Autoattack -->
         <SkillKey
           id={autoattackId}
           key={$keyBindings[8].key}
           onClick={handleSelectSkill}
-          name={getSkillName(autoattackId)}
         />
       </div>
       <div class="normal-skills">
@@ -423,7 +420,6 @@
             key={kb.key}
             onClick={handleSelectSkill}
             isOnCd={isOnCd(kb.skillId)}
-            name={getSkillName(kb.skillId)}
             isComboSkill={kb.skillId === 211 || kb.skillId === 212}
           />
         {/each}
@@ -468,7 +464,7 @@
     background-repeat: repeat;
     mix-blend-mode: overlay;
     z-index: 0;
-    opacity: 0.1;
+    opacity: 0.08;
   }
 
   .game {
