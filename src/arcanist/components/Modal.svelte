@@ -37,7 +37,7 @@
     position: fixed;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -60%);
+    transform: translate(-50%, -50%);
     z-index: 99;
     display: flex;
     flex-flow: column;
@@ -45,7 +45,6 @@
     padding: 1rem;
     background-color: #191328;
     min-width: 45rem;
-    margin-top: 2rem;
     overflow-y: auto;
   }
   .modal-title {

@@ -1,4 +1,10 @@
 <script lang="ts">
+  import Button from "./Button.svelte";
+  export let onStart: () => void;
+
+  function handleClickStart() {
+    onStart && onStart();
+  }
 </script>
 
 <div class="start-content">
@@ -6,7 +12,6 @@
     These are combos for intended for 332 (3 Stack skills, 3 Ruin skills, 2
     Normal skills) Empress Arcanist.
   </h3>
-  <br />
 
   <h3>General Stacking</h3>
   <div>
@@ -14,7 +19,6 @@
     gain 4 stacks. A tripod in Scratch Dealer provides attack speed to help land
     all Quadra Accelerate hits so it is used first.
   </div>
-  <br />
 
   <h3>Ruin Skill Priority</h3>
   <div>
@@ -25,7 +29,6 @@
     can be used when either Secret Garden or Celestial Rain are halfway or more
     through their cooldowns.
   </div>
-  <br />
 
   <h3>Basic Rotation Pattern</h3>
   <div>
@@ -33,9 +36,11 @@
     Ruin skill. The two Ruin skills should be used during the duration of
     Return's buff.
   </div>
-  <br />
   <div>
     Refer to the Glossary for help if you need to review Arcanist skills.
+  </div>
+  <div class="start-button">
+    <Button onClick={handleClickStart}>Start</Button>
   </div>
 </div>
 
@@ -45,6 +50,11 @@
   }
   .start-content div {
     font-size: 1.3em;
+    margin-bottom: 1rem;
+  }
+  .start-button {
+    display: flex;
+    justify-content: center;
   }
 
   @media (max-width: 600px) {

@@ -287,7 +287,7 @@
     />
     {#if $showStartInfo}
       <Modal title="Before You Start" onClose={startGame}>
-        <StartInfo />
+        <StartInfo onStart={startGame} />
       </Modal>
     {/if}
     {#if gameStage === 2}

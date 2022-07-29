@@ -92,9 +92,10 @@
         "id": 601,
         "cards": [105, 102],
         "rotations": [
+            [211,210,202,105,102,223,212,225],
             [211,210,202,105,102,223,212,225]
         ],
-        "notes": "Obtain 4 stacks and apply buffs from cards before using Ruin skills. Serendipity is viable with Cull as it benefits a lot from its effects."
+        "notes": "Use standard Stacking rotation and apply buffs before using Ruin skills. Serendipity is viable as the second Ruin skill since it benefits a lot from Cull."
     },
     {
         "id": 602,
