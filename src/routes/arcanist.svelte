@@ -207,9 +207,9 @@
     roundCombo = combosList[roundIdx];
     roundRotation = roundCombo.rotations[0] || [];
 
-    if (!!roundCombo.stacks) {
-      guessStates[0].stacks = roundCombo.stacks;
-    }
+    // if (!!roundCombo.stacks) {
+    //   guessStates[0].stacks = roundCombo.stacks;
+    // }
   }
 
   function handleCloseModal() {
