@@ -44,7 +44,8 @@
     border-radius: 8px;
     padding: 1rem;
     background-color: #191328;
-    min-width: 40rem;
+    min-width: 45rem;
+    margin-top: 2rem;
     overflow-y: auto;
   }
   .modal-title {
@@ -76,6 +77,7 @@
       min-width: 0;
       min-height: 0;
       transform: none;
+      margin: 0;
     }
   }
 </style>
