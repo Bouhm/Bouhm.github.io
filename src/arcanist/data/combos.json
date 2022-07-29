@@ -191,19 +191,11 @@
     {
         "id": 613,
         "cards": [111,109],
+        "usedSkills": [301],
         "rotations": [
-            [211,210,202,111,223,212,223,109],
-            [211,210,202,111,301,212,301,109]
-        ],
-        "notes": "Perform basic stacking rotation and apply Wheel of Fortune on priority skills to use them twice. Use Star at the end to reduce cooldowns."
-    },
-    {
-        "id": 613,
-        "cards": [111,109],
-        "rotations": [
-            [211,210,202,111,223,212,223,109],
-            [211,210,202,111,301,212,301,109]
+            [211,210,202,111,223,212,223,109]
         ],
         "notes": "Perform basic stacking rotation and apply Wheel of Fortune on priority skills to use them twice. Use Star at the end to reduce cooldowns."
     }
+
 ]
