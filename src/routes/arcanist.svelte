@@ -1,7 +1,7 @@
 <script lang="ts">
   import { base } from "$app/paths";
   import { browser } from "$app/env";
-  import _ from "lodash";
+  import _, { round } from "lodash";
 
   import {
     showStartInfo,
@@ -60,6 +60,7 @@
   let combosList = shuffleRounds();
   let roundCombo = combosList[roundIdx];
   let roundRotation = roundCombo.rotations[0] || [];
+
   $: currentState = guessStates[guessStates.length - 1];
   $: selectedSkill = _.find(
     skillData,
@@ -207,9 +208,11 @@
     roundCombo = combosList[roundIdx];
     roundRotation = roundCombo.rotations[0] || [];
 
-    // if (!!roundCombo.stacks) {
-    //   guessStates[0].stacks = roundCombo.stacks;
-    // }
+    if (!!roundCombo.stacks) {
+      guessStates[0].stacks = roundCombo.stacks;
+    } else {
+      guessStates[0].stacks = 0;
+    }
   }
 
   function handleCloseModal() {
@@ -268,6 +271,8 @@
     roundIdx = 0;
     combosList = shuffleRounds();
   }
+
+  $: console.log(roundCombo, guessStates);
 </script>
 
 <svelte:head>
