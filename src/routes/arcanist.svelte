@@ -271,7 +271,7 @@
 </script>
 
 <svelte:head>
-  <title>Arcanist Rotations Combos And Nutshell Analysis</title>
+  <title>Arcanist Rotations, Combos, And Nutshell Analysis (ARCANA)</title>
   <script
     defer
     src="https://static.cloudflareinsights.com/beacon.min.js"

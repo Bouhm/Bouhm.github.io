@@ -13,7 +13,11 @@
 
 <div class="combo-row" class:centered>
   {#each rotation as skillId, i}
-    <div class={`wrapper ${correctness[i] ? "c" + correctness[i] : ""}`}>
+    <div
+      class={`wrapper ${
+        correctness[i] !== undefined ? "c" + correctness[i] : ""
+      }`}
+    >
       <div
         class={`skill-box`}
         on:click={() => handleClick(i)}
