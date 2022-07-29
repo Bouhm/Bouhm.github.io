@@ -85,6 +85,11 @@
     });
   }
 
+  function getSkillName(id: number) {
+    const card = _.find(skillData, (skill) => skill.id === id);
+    return card ? card.name : "";
+  }
+
   function handleSelectSkill(id: number) {
     if (selectedSkillIds.length >= roundRotation.length || isOnCd(id)) return;
 
@@ -335,6 +340,7 @@
           {#key roundIdx}
             <SkillKey
               className="animate__animated animate__backInDown animate__faster"
+              name={getSkillName(cardId)}
               bind:id={cardId}
               key={$keyBindings[`special${i + 1}`].key}
               onClick={handleSelectSkill}
@@ -395,12 +401,14 @@
           key={$keyBindings.awakening.key}
           onClick={handleSelectSkill}
           isOnCd={isOnCd(awakeningId)}
+          name={getSkillName(awakeningId)}
         />
         <!-- Autoattack -->
         <SkillKey
           id={autoattackId}
           key={$keyBindings.autoattack.key}
           onClick={handleSelectSkill}
+          name={getSkillName(awakeningId)}
         />
       </div>
       <div class="normal-skills">
@@ -410,48 +418,56 @@
           key={$keyBindings.skill1.key}
           onClick={handleSelectSkill}
           isOnCd={isOnCd($keyBindings.skill1.skillId)}
+          name={getSkillName($keyBindings.skill1.skillId)}
         />
         <SkillKey
           id={$keyBindings.skill2.skillId}
           key={$keyBindings.skill2.key}
           onClick={handleSelectSkill}
           isOnCd={isOnCd($keyBindings.skill2.skillId)}
+          name={getSkillName($keyBindings.skill2.skillId)}
         />
         <SkillKey
           id={$keyBindings.skill3.skillId}
           key={$keyBindings.skill3.key}
           onClick={handleSelectSkill}
           isOnCd={isOnCd($keyBindings.skill3.skillId)}
+          name={getSkillName($keyBindings.skill3.skillId)}
         />
         <SkillKey
           id={$keyBindings.skill4.skillId}
           key={$keyBindings.skill4.key}
           onClick={handleSelectSkill}
           isOnCd={isOnCd($keyBindings.skill4.skillId)}
+          name={getSkillName($keyBindings.skill4.skillId)}
         />
         <SkillKey
           id={$keyBindings.skill5.skillId}
           key={$keyBindings.skill5.key}
           onClick={handleSelectSkill}
           isOnCd={isOnCd($keyBindings.skill5.skillId)}
+          name={getSkillName($keyBindings.skill5.skillId)}
         />
         <SkillKey
           id={$keyBindings.skill6.skillId}
           key={$keyBindings.skill6.key}
           onClick={handleSelectSkill}
           isOnCd={isOnCd($keyBindings.skill6.skillId)}
+          name={getSkillName($keyBindings.skill6.skillId)}
         />
         <SkillKey
           id={$keyBindings.skill7.skillId}
           key={$keyBindings.skill7.key}
           onClick={handleSelectSkill}
           isOnCd={isOnCd($keyBindings.skill7.skillId)}
+          name={getSkillName($keyBindings.skill7.skillId)}
         />
         <SkillKey
           id={$keyBindings.skill8.skillId}
           key={$keyBindings.skill8.key}
           onClick={handleSelectSkill}
           isOnCd={isOnCd($keyBindings.skill8.skillId)}
+          name={getSkillName($keyBindings.skill8.skillId)}
         />
       </div>
       <div class="key-bindings-settings clickable">

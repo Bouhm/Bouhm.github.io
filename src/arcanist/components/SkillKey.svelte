@@ -1,10 +1,12 @@
 <script lang="ts">
   import { base } from "$app/paths";
+  import Tooltip from "./Tooltip.svelte";
   export let id: number;
   export let key: string;
   export let onClick: (id: number) => void;
   export let isOnCd = false;
   export let isCard = false;
+  export let name: string;
   export let className = "";
   export let isComboSkill = id === 211 || id === 212;
 
@@ -13,17 +15,19 @@
   }
 </script>
 
-<div
-  class:onCd={isOnCd}
-  class="skill-icon clickable {className}"
-  on:click={handleClick}
->
-  <img class:asCard={isCard} src="{base}/arcanist/{id}.webp" />
-  <div class="skill-key">{key}</div>
-  {#if isComboSkill}
-    <div class="combo-indicator">>></div>
-  {/if}
-</div>
+<Tooltip title={name}>
+  <div
+    class:onCd={isOnCd}
+    class="skill-icon clickable {className}"
+    on:click={handleClick}
+  >
+    <img class:asCard={isCard} src="{base}/arcanist/{id}.webp" />
+    <div class="skill-key">{key}</div>
+    {#if isComboSkill}
+      <div class="combo-indicator">>></div>
+    {/if}
+  </div>
+</Tooltip>
 
 <style>
   .skill-icon {
