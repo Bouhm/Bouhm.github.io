@@ -338,15 +338,19 @@
       <div class="cards">
         {#each roundCombo.cards as cardId, i}
           {#key roundIdx}
-            <SkillKey
-              className="animate__animated animate__backInDown animate__faster"
-              name={getSkillName(cardId)}
-              bind:id={cardId}
-              key={$keyBindings[`special${i + 1}`].key}
-              onClick={handleSelectSkill}
-              isOnCd={isOnCd(cardId)}
-              isCard={true}
-            />
+            <div
+              class="card animate__animated animate__backInDown animate__faster"
+            >
+              <SkillKey
+                name={getSkillName(cardId)}
+                bind:id={cardId}
+                key={$keyBindings[`special${i + 1}`].key}
+                onClick={handleSelectSkill}
+                isOnCd={isOnCd(cardId)}
+                isCard={true}
+              />
+              <div class="card-title">{getSkillName(cardId)}</div>
+            </div>
           {/key}
         {/each}
       </div>
@@ -408,7 +412,7 @@
           id={autoattackId}
           key={$keyBindings.autoattack.key}
           onClick={handleSelectSkill}
-          name={getSkillName(awakeningId)}
+          name={getSkillName(autoattackId)}
         />
       </div>
       <div class="normal-skills">
@@ -537,6 +541,15 @@
     display: flex;
   }
 
+  .card {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    font-size: 0.8em;
+  }
+  .card .card-title {
+    margin-top: 0.3rem;
+  }
   .controls {
     position: fixed;
     width: 100%;

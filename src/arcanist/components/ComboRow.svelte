@@ -95,5 +95,10 @@
       width: 36px;
       height: 36px;
     }
+
+    .skill-box img {
+      width: 36px;
+      height: 36px;
+    }
   }
 </style>

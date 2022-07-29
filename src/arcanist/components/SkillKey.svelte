@@ -15,7 +15,7 @@
   }
 </script>
 
-<Tooltip title={name}>
+{#if isCard}
   <div
     class:onCd={isOnCd}
     class="skill-icon clickable {className}"
@@ -27,7 +27,21 @@
       <div class="combo-indicator">>></div>
     {/if}
   </div>
-</Tooltip>
+{:else}
+  <Tooltip title={name}>
+    <div
+      class:onCd={isOnCd}
+      class="skill-icon clickable {className}"
+      on:click={handleClick}
+    >
+      <img class:asCard={isCard} src="{base}/arcanist/{id}.webp" />
+      <div class="skill-key">{key}</div>
+      {#if isComboSkill}
+        <div class="combo-indicator">>></div>
+      {/if}
+    </div>
+  </Tooltip>
+{/if}
 
 <style>
   .skill-icon {
@@ -73,6 +87,9 @@
   @media (max-width: 600px) {
     .skill-icon img {
       max-width: 96px;
+    }
+    .skill-icon {
+      max-height: 135px;
     }
 
     .skill-key {
