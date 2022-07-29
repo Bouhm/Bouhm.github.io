@@ -16,8 +16,10 @@
   <h3>General Stacking</h3>
   <div>
     Use Scratch Dealer + Quadra Accelerate or Spiral Edge twice (chain skill) to
-    gain 4 stacks. A tripod in Scratch Dealer provides attack speed to help land
-    all Quadra Accelerate hits so it is used first.
+    gain 4 stacks. The Safety Device Tripod in Scratch Dealer provides attack
+    speed to shorten Quadra Accelerate animation so it is used first. Call of
+    Destiny will also typically be used prior to Scratch Dealer, and whenever it
+    can be wove in for the attack speed buff.
   </div>
 
   <h3>Ruin Skill Priority</h3>

@@ -6,7 +6,6 @@
   import {
     showStartInfo,
     keyBindings,
-    skillIds,
     selectedView,
   } from "../arcanist/stores/store";
   import type { Combo, Skill } from "../arcanist/data/types";
@@ -38,6 +37,7 @@
     cdResetSkill: -1,
     stackOnAuto: false,
     increasedStacks: false,
+    usedSkills: [] as number[],
     stacks: 0,
   };
 
@@ -79,7 +79,8 @@
       (id !== autoattackId &&
         selectedSkillIds.includes(id) &&
         currentState.cdResetSkill !== id) ||
-      id < 200
+      id < 200 ||
+      _.includes(currentState.usedSkills, id)
     );
   }
 
@@ -198,7 +199,7 @@
 
   function nextRound() {
     roundIdx++;
-    if (roundIdx > roundRotation.length - 1) {
+    if (roundIdx > combosList.length - 1) {
       endGame();
     }
 
@@ -212,6 +213,10 @@
       guessStates[0].stacks = roundCombo.stacks;
     } else {
       guessStates[0].stacks = 0;
+    }
+
+    if (roundCombo.usedSkills && roundCombo.usedSkills.length) {
+      guessStates[0].usedSkills = roundCombo.usedSkills;
     }
   }
 
@@ -272,7 +277,7 @@
     combosList = shuffleRounds();
   }
 
-  $: console.log(roundCombo, guessStates);
+  $: console.log(currentState.usedSkills);
 </script>
 
 <svelte:head>
@@ -311,7 +316,11 @@
             {/each}
           </div>
           <h3>Input:</h3>
-          <ComboRow rotation={selectedSkillIds} {correctness} />
+          <ComboRow
+            rotation={selectedSkillIds}
+            max={roundCombo.rotations[0].length}
+            {correctness}
+          />
           {#if roundCombo.notes}
             <div class="correct-notes">{roundCombo.notes}</div>
           {/if}
@@ -387,11 +396,7 @@
           {/if}
         </div>
         {#if gameStage === 1}
-          <Button
-            onClick={handleSubmit}
-            disabled={roundRotation.length !== selectedSkillIds.length}
-            >Submit</Button
-          >
+          <Button onClick={handleSubmit}>Submit</Button>
         {/if}
       </div>
     </div>

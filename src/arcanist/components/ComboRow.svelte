@@ -28,8 +28,10 @@
   <!-- Empty slots when guessing -->
   {#if max && max > rotation.length}
     {#each Array(max - rotation.length) as _}
-      <div class="skill-box">
-        <img src="{base}/arcanist/blank.webp" />
+      <div class={`wrapper ${correctness.length ? "c0" : ""}`}>
+        <div class="skill-box">
+          <img src="{base}/arcanist/blankSkill.webp" />
+        </div>
       </div>
     {/each}
   {/if}

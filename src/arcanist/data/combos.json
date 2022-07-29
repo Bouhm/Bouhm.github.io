@@ -173,6 +173,7 @@
     {
         "id": 611,
         "cards": [102,111],
+        "usedSkills": [301],
         "rotations": [
             [211,210,202,102,111,223,212,223]
         ],
@@ -186,6 +187,15 @@
             [211,210,202,102,223,109,212,226]
         ],
         "notes": "Perform basic stacking rotation and apply Twisted Fate buff before using Star at the end for cooldown reduction. Star can also be used after Celestial Rain to optimize its cooldown."
+    },
+    {
+        "id": 613,
+        "cards": [111,109],
+        "rotations": [
+            [211,210,202,111,223,212,223,109],
+            [211,210,202,111,301,212,301,109]
+        ],
+        "notes": "Perform basic stacking rotation and apply Wheel of Fortune on priority skills to use them twice. Use Star at the end to reduce cooldowns."
     },
     {
         "id": 613,
