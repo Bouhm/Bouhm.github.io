@@ -37,7 +37,6 @@
     cdResetSkill: -1,
     stackOnAuto: false,
     increasedStacks: false,
-    usedSkills: [] as number[],
     stacks: 0,
   };
 
@@ -66,7 +65,6 @@
     skillData,
     (skill) => skill.id === selectedSkillIds[selectedSkillIds.length - 1]
   ) as Skill;
-  $: skillsOnCd = _.filter(selectedSkillIds, (id) => isOnCd(id));
 
   function shuffleRounds() {
     return _.shuffle(
@@ -74,15 +72,11 @@
     ) as Combo[];
   }
 
-  function isOnCd(id: number, idx?: number) {
-    return (
-      (id !== autoattackId &&
-        selectedSkillIds.includes(id) &&
-        currentState.cdResetSkill !== id) ||
-      id < 200 ||
-      _.includes(currentState.usedSkills, id)
-    );
-  }
+  $: isOnCd = (id: number, idx?: number) =>
+    (id !== autoattackId &&
+      selectedSkillIds.includes(id) &&
+      currentState.cdResetSkill !== id) ||
+    _.includes(roundCombo.usedSkills, id);
 
   function getCardNames(ids: number[]) {
     return ids.map((id) => {
@@ -92,11 +86,7 @@
   }
 
   function handleSelectSkill(id: number) {
-    if (
-      selectedSkillIds.length >= roundRotation.length ||
-      skillsOnCd.includes(id)
-    )
-      return;
+    if (selectedSkillIds.length >= roundRotation.length || isOnCd(id)) return;
 
     selectedSkillIds = [...selectedSkillIds, id];
 
@@ -205,19 +195,17 @@
 
     gameStage = 1;
     selectedSkillIds = [];
-    guessStates = [defaultGuessState];
+    let newStates = [defaultGuessState];
     roundCombo = combosList[roundIdx];
     roundRotation = roundCombo.rotations[0] || [];
 
     if (!!roundCombo.stacks) {
-      guessStates[0].stacks = roundCombo.stacks;
+      newStates[0].stacks = roundCombo.stacks;
     } else {
-      guessStates[0].stacks = 0;
+      newStates[0].stacks = 0;
     }
 
-    if (roundCombo.usedSkills && roundCombo.usedSkills.length) {
-      guessStates[0].usedSkills = roundCombo.usedSkills;
-    }
+    guessStates = newStates;
   }
 
   function handleCloseModal() {
@@ -276,8 +264,6 @@
     roundIdx = 0;
     combosList = shuffleRounds();
   }
-
-  $: console.log(currentState.usedSkills);
 </script>
 
 <svelte:head>
@@ -352,7 +338,7 @@
               bind:id={cardId}
               key={$keyBindings[`special${i + 1}`].key}
               onClick={handleSelectSkill}
-              isOnCd={skillsOnCd.includes(cardId)}
+              isOnCd={isOnCd(cardId)}
               isCard={true}
             />
           {/key}
@@ -408,7 +394,7 @@
           id={awakeningId}
           key={$keyBindings.awakening.key}
           onClick={handleSelectSkill}
-          isOnCd={skillsOnCd.includes(awakeningId)}
+          isOnCd={isOnCd(awakeningId)}
         />
         <!-- Autoattack -->
         <SkillKey
@@ -423,49 +409,49 @@
           id={$keyBindings.skill1.skillId}
           key={$keyBindings.skill1.key}
           onClick={handleSelectSkill}
-          isOnCd={skillsOnCd.includes($keyBindings.skill1.skillId)}
+          isOnCd={isOnCd($keyBindings.skill1.skillId)}
         />
         <SkillKey
           id={$keyBindings.skill2.skillId}
           key={$keyBindings.skill2.key}
           onClick={handleSelectSkill}
-          isOnCd={skillsOnCd.includes($keyBindings.skill2.skillId)}
+          isOnCd={isOnCd($keyBindings.skill2.skillId)}
         />
         <SkillKey
           id={$keyBindings.skill3.skillId}
           key={$keyBindings.skill3.key}
           onClick={handleSelectSkill}
-          isOnCd={skillsOnCd.includes($keyBindings.skill3.skillId)}
+          isOnCd={isOnCd($keyBindings.skill3.skillId)}
         />
         <SkillKey
           id={$keyBindings.skill4.skillId}
           key={$keyBindings.skill4.key}
           onClick={handleSelectSkill}
-          isOnCd={skillsOnCd.includes($keyBindings.skill4.skillId)}
+          isOnCd={isOnCd($keyBindings.skill4.skillId)}
         />
         <SkillKey
           id={$keyBindings.skill5.skillId}
           key={$keyBindings.skill5.key}
           onClick={handleSelectSkill}
-          isOnCd={skillsOnCd.includes($keyBindings.skill5.skillId)}
+          isOnCd={isOnCd($keyBindings.skill5.skillId)}
         />
         <SkillKey
           id={$keyBindings.skill6.skillId}
           key={$keyBindings.skill6.key}
           onClick={handleSelectSkill}
-          isOnCd={skillsOnCd.includes($keyBindings.skill6.skillId)}
+          isOnCd={isOnCd($keyBindings.skill6.skillId)}
         />
         <SkillKey
           id={$keyBindings.skill7.skillId}
           key={$keyBindings.skill7.key}
           onClick={handleSelectSkill}
-          isOnCd={skillsOnCd.includes($keyBindings.skill7.skillId)}
+          isOnCd={isOnCd($keyBindings.skill7.skillId)}
         />
         <SkillKey
           id={$keyBindings.skill8.skillId}
           key={$keyBindings.skill8.key}
           onClick={handleSelectSkill}
-          isOnCd={skillsOnCd.includes($keyBindings.skill8.skillId)}
+          isOnCd={isOnCd($keyBindings.skill8.skillId)}
         />
       </div>
       <div class="key-bindings-settings clickable">
