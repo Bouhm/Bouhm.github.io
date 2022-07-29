@@ -443,7 +443,7 @@
     background-color: #171026;
     background: linear-gradient(90deg, #171026, #201635, #171026);
     box-sizing: border-box;
-    overflow: hidden;
+    height: 100vh;
   }
 
   main {
@@ -451,8 +451,8 @@
     flex-flow: column;
     align-items: center;
     color: white;
-    height: 100vh;
     overflow-x: hidden;
+    height: 100%;
   }
 
   .background {

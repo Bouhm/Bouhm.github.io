@@ -10,6 +10,10 @@ body {
     margin: 0;
 }
 
+body > div {
+    height: 100%;
+}
+
 .clickable:hover {
     cursor: pointer;
 }
