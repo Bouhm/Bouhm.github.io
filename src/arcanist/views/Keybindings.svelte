@@ -1,16 +1,19 @@
 <script lang="ts">
   import { base } from "$app/paths";
   import _ from "lodash";
-  import {
-    usedSkills,
-    keyBindings,
-    type KeyBindingConfig,
-  } from "../stores/store";
-  import SkillKey from "../components/SkillKey.svelte";
-  import Modal from "../components/Modal.svelte";
+  import { keyBindings, type KeyBindingConfig } from "../stores/store";
 
-  let showSkillsModal: boolean;
-  let clickedSkillSlot: string;
+  function getKbName(i: number) {
+    if (i < 8) {
+      return "Skill " + (i + 1);
+    } else if (i === 8) {
+      return "Autoattack";
+    } else if (i === 9) {
+      return "Awakening";
+    } else {
+      return "Card " + (i - 9);
+    }
+  }
 
   function isExistingKey(key: string) {
     return _.filter($keyBindings, (kb) => kb.key === key).length > 1;
@@ -22,27 +25,36 @@
     );
   }
 
+  function dragStart(event: DragEvent, srcIdx: number) {
+    if (srcIdx > 7) return;
+
+    const data = { srcIdx };
+    event.dataTransfer!.setData("text/plain", JSON.stringify(data));
+  }
+
+  function drop(event: DragEvent, targetIdx: number) {
+    event.preventDefault();
+    if (targetIdx > 7) return;
+
+    const json = event.dataTransfer!.getData("text/plain");
+    const data = JSON.parse(json);
+
+    const newConfig = _.clone($keyBindings);
+    const srcConfig = newConfig[data.srcIdx];
+
+    newConfig[data.srcIdx] = newConfig[targetIdx];
+    newConfig[targetIdx] = srcConfig;
+    updateStorage(newConfig);
+  }
+
   function updateStorage(newConfig: KeyBindingConfig) {
     keyBindings.set(newConfig as KeyBindingConfig);
-    localStorage.setItem("keyBindings", JSON.stringify(newConfig));
+    localStorage.setItem("keyBindingsV2", JSON.stringify(newConfig));
   }
 
-  function handleSkillSelect(skillId: number, control?: string) {
-    const newConfig = _.clone($keyBindings);
-    newConfig[control!].skillId = skillId;
-    updateStorage(newConfig);
-    showSkillsModal = false;
-  }
-
-  function handleClickSkill(control: string) {
-    if (!control.startsWith("skill")) return;
-    clickedSkillSlot = control;
-    showSkillsModal = true;
-  }
-
-  function handleKeyChange(e: Event, control: string) {
+  function handleKeyChange(e: Event, i: number) {
     let newConfig = _.clone($keyBindings);
-    newConfig[control].key = (e.target as HTMLInputElement).value;
+    newConfig[i].key = (e.target as HTMLInputElement).value;
     updateStorage(newConfig);
   }
 
@@ -56,20 +68,6 @@
 </script>
 
 <div class="keybindings">
-  {#if showSkillsModal}
-    <Modal title="Select Skill" onClose={() => (showSkillsModal = false)}>
-      <div class="skill-selection">
-        {#each _.orderBy($usedSkills, (id) => id) as skill}
-          <img
-            class="clickable"
-            src="{base}/arcanist/{skill}.webp"
-            on:click={() => handleSkillSelect(skill, clickedSkillSlot)}
-            alt="skill"
-          />
-        {/each}
-      </div>
-    </Modal>
-  {/if}
   <table class="keybindings-content">
     <tr>
       <td class="keybinding-control">UNDO SKILL</td>
@@ -91,18 +89,25 @@
       </td>
     </tr>
     <br />
-    {#each Object.entries($keyBindings) as [control, skillKey], i}
+    {#each $keyBindings as kb, i}
       <tr>
-        <td class="keybinding-control">{control.toUpperCase()}</td>
-        <td class="keybinding-skill">
+        <td class="keybinding-control">{getKbName(i)}</td>
+        <td
+          class="keybinding-skill"
+          class:swappable={i < 8}
+          draggable={i < 8}
+          on:dragstart={(e) => dragStart(e, i)}
+          on:drop={(e) => drop(e, i)}
+          on:dragover={(e) => {
+            e.preventDefault();
+          }}
+        >
           <div
-            on:click={() => handleClickSkill(control)}
-            class:error={isExistingSkill($keyBindings[control].skillId)}
-            class:clickable={control.startsWith("skill")}
+            class:error={isExistingSkill(kb.skillId)}
             class="keybinding-skill-wrapper"
           >
             <img
-              src="{base}/arcanist/{getIcon(skillKey.skillId)}.webp"
+              src="{base}/arcanist/{getIcon(kb.skillId)}.webp"
               alt="skill-key"
             />
           </div>
@@ -110,10 +115,10 @@
         <td class="keybinding-input">
           <input
             type="text"
-            class:error={isExistingKey($keyBindings[control].key)}
+            class:error={isExistingKey(kb.key)}
             maxlength="1"
-            on:change={(e) => handleKeyChange(e, control)}
-            bind:value={$keyBindings[control].key}
+            on:change={(e) => handleKeyChange(e, i)}
+            bind:value={kb.key}
           />
         </td>
       </tr>
@@ -136,10 +141,15 @@
   }
   td.keybinding-control {
     text-align: right;
+    text-transform: uppercase;
   }
   td.keybinding-skill {
     padding-left: 2rem;
     text-align: left;
+  }
+  td.keybinding-skill.swappable:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    cursor: pointer;
   }
   td.keybinding-skill img {
     width: 64px;

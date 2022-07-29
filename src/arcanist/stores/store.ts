@@ -5,12 +5,9 @@ import  _ from 'lodash';
 import type { Combo } from "../data/types";
 
 export type KeyBindingConfig = {
-    [control: string]: {
-        key: string,
-        skillId: number,
-        index: number
-    }
-}
+    key: string,
+    skillId: number
+}[]
 
 
 export const skillIds: number[] = _.uniq(combosDb.reduce(
@@ -23,70 +20,58 @@ export const showStartInfo: Writable<boolean> = writable(browser ? (!localStorag
 export const usedSkills: Writable<number[]> = writable(skillIds);
 export const selectedView: Writable<number> = writable();
 
-export const defaultKeyBindings = {
-    skill1: {
-        index: 0,
+export const defaultKeyBindings = [
+    {
         key: 'q',
-        skillId: skillIds[0]
+        skillId: skillIds[0],
     },
-    skill2: {
-        index: 1,
+    {
         key: 'w',
         skillId: skillIds[1],
     },
-    skill3: {
-        index: 2,
+    {
         key: 'e',
-        skillId: skillIds[2]
+        skillId: skillIds[2],
     },
-    skill4: {
-        index: 3,
+    {
         key: 'r',
         skillId: skillIds[3],
     },
-    skill5: {
-        index: 4,
+    {
         key: 'a',
         skillId: skillIds[4],
     },
-    skill6: {
-        index: 5,
+    {
         key: 's',
         skillId: skillIds[5],
     },
-    skill7: {
-        index: 6,
+    {
         key: 'd',
         skillId: skillIds[6],
     },
-    skill8: {
-        index: 7,
+    {
         key: 'f',
         skillId: skillIds[7],
     },
-    autoattack: {
-        index: 0,
+    {
         key: 'c',
         skillId: 400,
     },
-    awakening: {
-        index: 0,
+    {
         key: 'v',
-        skillId: 301
+        skillId: 301,
     },
-    special1: {
-        index: 0,
+    {
         key: 'z',
-        skillId: -1
+        skillId: -1,
     },
-    special2: {
-        index: 1,
+    {
         key: 'x',
-        skillId: -1
+        skillId: -2,
     }
-};
+];
 
-export const keyBindings: Writable<KeyBindingConfig> = writable(browser ? (!localStorage.getItem('keyBindings') ? defaultKeyBindings : JSON.parse(localStorage.getItem('keyBindings')!)) : defaultKeyBindings);
+export const keyBindings: Writable<KeyBindingConfig> = writable(browser ? (!localStorage.getItem('keyBindingsV2') ? defaultKeyBindings : JSON.parse(localStorage.getItem('keyBindingsV2')!)) : defaultKeyBindings);
 
 if (browser) {
     showStartInfo.subscribe(val => {

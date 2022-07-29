@@ -1,12 +1,13 @@
 <script lang="ts">
   import { base } from "$app/paths";
   import { browser } from "$app/env";
-  import _, { round } from "lodash";
+  import _, { round, slice } from "lodash";
 
   import {
     showStartInfo,
     keyBindings,
     selectedView,
+    type KeyBindingConfig,
   } from "../arcanist/stores/store";
   import type { Combo, Skill } from "../arcanist/data/types";
   import arcanistDb from "../arcanist/data/arcanist.json";
@@ -118,7 +119,7 @@
     // Consume effects
     if (newState.cdResetSkill === id) {
       newState.cdResetSkill = -1;
-    } else if (newState.cdResetSkill === 0) {
+    } else if (newState.cdResetSkill === 0 && id > 199) {
       newState.cdResetSkill = id;
     }
 
@@ -162,7 +163,7 @@
       if (skillKey.skillId > -1) {
         pressedSkillId = skillKey.skillId;
       } else {
-        pressedSkillId = roundCombo.cards[skillKey.index];
+        pressedSkillId = roundCombo.cards[Math.abs(skillKey.skillId) - 1];
       }
     } else {
       switch (e.key) {
@@ -344,7 +345,7 @@
               <SkillKey
                 name={getSkillName(cardId)}
                 bind:id={cardId}
-                key={$keyBindings[`special${i + 1}`].key}
+                key={$keyBindings[i + 10].key}
                 onClick={handleSelectSkill}
                 isOnCd={isOnCd(cardId)}
                 isCard={true}
@@ -402,7 +403,7 @@
         <!-- Awakening -->
         <SkillKey
           id={awakeningId}
-          key={$keyBindings.awakening.key}
+          key={$keyBindings[9].key}
           onClick={handleSelectSkill}
           isOnCd={isOnCd(awakeningId)}
           name={getSkillName(awakeningId)}
@@ -410,69 +411,22 @@
         <!-- Autoattack -->
         <SkillKey
           id={autoattackId}
-          key={$keyBindings.autoattack.key}
+          key={$keyBindings[8].key}
           onClick={handleSelectSkill}
           name={getSkillName(autoattackId)}
         />
       </div>
       <div class="normal-skills">
-        <!-- I don't remember why I didn't just use an array -->
-        <SkillKey
-          id={$keyBindings.skill1.skillId}
-          key={$keyBindings.skill1.key}
-          onClick={handleSelectSkill}
-          isOnCd={isOnCd($keyBindings.skill1.skillId)}
-          name={getSkillName($keyBindings.skill1.skillId)}
-        />
-        <SkillKey
-          id={$keyBindings.skill2.skillId}
-          key={$keyBindings.skill2.key}
-          onClick={handleSelectSkill}
-          isOnCd={isOnCd($keyBindings.skill2.skillId)}
-          name={getSkillName($keyBindings.skill2.skillId)}
-        />
-        <SkillKey
-          id={$keyBindings.skill3.skillId}
-          key={$keyBindings.skill3.key}
-          onClick={handleSelectSkill}
-          isOnCd={isOnCd($keyBindings.skill3.skillId)}
-          name={getSkillName($keyBindings.skill3.skillId)}
-        />
-        <SkillKey
-          id={$keyBindings.skill4.skillId}
-          key={$keyBindings.skill4.key}
-          onClick={handleSelectSkill}
-          isOnCd={isOnCd($keyBindings.skill4.skillId)}
-          name={getSkillName($keyBindings.skill4.skillId)}
-        />
-        <SkillKey
-          id={$keyBindings.skill5.skillId}
-          key={$keyBindings.skill5.key}
-          onClick={handleSelectSkill}
-          isOnCd={isOnCd($keyBindings.skill5.skillId)}
-          name={getSkillName($keyBindings.skill5.skillId)}
-        />
-        <SkillKey
-          id={$keyBindings.skill6.skillId}
-          key={$keyBindings.skill6.key}
-          onClick={handleSelectSkill}
-          isOnCd={isOnCd($keyBindings.skill6.skillId)}
-          name={getSkillName($keyBindings.skill6.skillId)}
-        />
-        <SkillKey
-          id={$keyBindings.skill7.skillId}
-          key={$keyBindings.skill7.key}
-          onClick={handleSelectSkill}
-          isOnCd={isOnCd($keyBindings.skill7.skillId)}
-          name={getSkillName($keyBindings.skill7.skillId)}
-        />
-        <SkillKey
-          id={$keyBindings.skill8.skillId}
-          key={$keyBindings.skill8.key}
-          onClick={handleSelectSkill}
-          isOnCd={isOnCd($keyBindings.skill8.skillId)}
-          name={getSkillName($keyBindings.skill8.skillId)}
-        />
+        {#each $keyBindings.slice(0, 8) as kb}
+          <SkillKey
+            id={kb.skillId}
+            key={kb.key}
+            onClick={handleSelectSkill}
+            isOnCd={isOnCd(kb.skillId)}
+            name={getSkillName(kb.skillId)}
+            isComboSkill={kb.skillId === 211 || kb.skillId === 212}
+          />
+        {/each}
       </div>
       <div class="key-bindings-settings clickable">
         <img

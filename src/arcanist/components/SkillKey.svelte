@@ -8,7 +8,7 @@
   export let isCard = false;
   export let name: string;
   export let className = "";
-  export let isComboSkill = id === 211 || id === 212;
+  export let isComboSkill = false;
 
   function handleClick() {
     onClick(id);
