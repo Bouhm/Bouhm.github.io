@@ -1,6 +1,7 @@
 <script lang="ts">
   import Button from "./Button.svelte";
-  export let onStart: () => void;
+  export let onStart: (() => void) | null = null;
+  export let showStartButton = false;
 
   function handleClickStart() {
     onStart && onStart();
@@ -41,9 +42,11 @@
   <div>
     Refer to the Glossary for help if you need to review Arcanist skills.
   </div>
-  <div class="start-button">
-    <Button onClick={handleClickStart}>Start</Button>
-  </div>
+  {#if showStartButton}
+    <div class="start-button">
+      <Button onClick={handleClickStart}>Start</Button>
+    </div>
+  {/if}
 </div>
 
 <style>

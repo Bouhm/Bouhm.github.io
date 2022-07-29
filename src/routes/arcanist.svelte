@@ -288,7 +288,7 @@
     />
     {#if $showStartInfo}
       <Modal title="Before You Start" onClose={startGame}>
-        <StartInfo onStart={startGame} />
+        <StartInfo onStart={startGame} showStartButton />
       </Modal>
     {/if}
     {#if gameStage === 2}
@@ -493,6 +493,7 @@
     background-color: #171026;
     background: linear-gradient(90deg, #171026, #201635, #171026);
     box-sizing: border-box;
+    overflow: hidden;
   }
 
   h1 {
