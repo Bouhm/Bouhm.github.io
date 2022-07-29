@@ -165,7 +165,7 @@
         "id": 610,
         "cards": [102,100],
         "rotations": [
-            [212,202,102,223,211,100,400,400,225]
+            [212,202,102,223,100,211,400,400,225]
         ],
         "notes": "Use Spiral Edge to obtain 4 stacks before using Balance. Buff with Twisted Fate before alternating Ruin + full stacking with enhanced autoattacks from Three-Headed Snake."
     },
