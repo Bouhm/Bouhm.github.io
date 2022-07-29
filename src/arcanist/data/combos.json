@@ -111,7 +111,7 @@
         "rotations": [
             [212,202,105,223,106,211,225,210,226]
         ],
-        "notes": "Perform optimal stacking rotation with Balance and use Serendipity second with Cull."
+        "notes": "Perform optimal stacking rotation with Balance. Serendipity is the second Ruin skill used due to its synergy with Cull."
     },
     {
         "id": 604,
@@ -119,7 +119,7 @@
         "rotations": [
             [212,202,105,223,100,211,400,400,225]
         ],
-        "notes": "Perform optimal stacking rotation with Three-Headed Snake and use Serendipity second with Cull."
+        "notes": "Perform optimal stacking rotation with Three-Headed Snake. Serendipity is the second Ruin skill used due to its synergy with Cull."
     },
     {
         "id": 605,
@@ -127,7 +127,7 @@
         "rotations": [
             [211,210,202,105,223,212,225,109]
         ],
-        "notes": "Cull combo with Star after Ruin skills to reduce cooldowns. Use Serendipity second with Cull."
+        "notes": "Apply buff with Cull and use Star after Ruin skills to reduce cooldowns. Serendipity is the second Ruin skill used due to its synergy with Cull."
     },
     {
         "id": 606,
