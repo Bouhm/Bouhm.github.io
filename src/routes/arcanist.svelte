@@ -387,7 +387,7 @@
           {#if roundRotation.length > selectedSkillIds.length}
             {#each Array(roundRotation.length - selectedSkillIds.length) as _}
               <div class="skill-box">
-                <img src="{base}/arcanist/blankSkill.webp" />
+                <img src="{base}/arcanist/blankSkill.webp" alt="blank" />
               </div>
             {/each}
           {/if}
@@ -448,10 +448,6 @@
     background: linear-gradient(90deg, #171026, #201635, #171026);
     box-sizing: border-box;
     overflow: hidden;
-  }
-
-  h1 {
-    color: white;
   }
 
   main {

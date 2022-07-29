@@ -1,7 +1,10 @@
 <script lang="ts">
   import { base } from "$app/paths";
   import _ from "lodash";
+  import type { Skill } from "../data/types";
   import { keyBindings, type KeyBindingConfig } from "../stores/store";
+
+  export let skillData: Skill[];
 
   function getKbName(i: number) {
     if (i < 8) {
@@ -65,6 +68,11 @@
       return "blank";
     }
   }
+
+  function getSkillName(id: number) {
+    const card = _.find(skillData, (skill) => skill.id === id);
+    return card ? card.name : "";
+  }
 </script>
 
 <div class="keybindings">
@@ -110,6 +118,9 @@
               src="{base}/arcanist/{getIcon(kb.skillId)}.webp"
               alt="skill-key"
             />
+            {#if i < 8}<div class="skill-name">
+                {getSkillName(kb.skillId)}
+              </div>{/if}
           </div>
         </td>
         <td class="keybinding-input">
@@ -142,10 +153,12 @@
   td.keybinding-control {
     text-align: right;
     text-transform: uppercase;
+    font-size: 1.1em;
   }
   td.keybinding-skill {
     padding-left: 2rem;
     text-align: left;
+    min-width: 12rem;
   }
   td.keybinding-skill.swappable:hover {
     background-color: rgba(255, 255, 255, 0.06);
@@ -157,8 +170,6 @@
   td.keybinding-skill .lock {
     width: 16px;
     margin-left: 1.5rem;
-  }
-  td.keybinding-input {
   }
   td.keybinding-input input {
     text-transform: uppercase;
@@ -179,7 +190,14 @@
   .keybinding-skill-wrapper {
     position: relative;
     width: 64px;
+    display: flex;
+    align-items: center;
   }
+  .keybinding-skill-wrapper .skill-name {
+    margin-left: 2rem;
+    font-size: 0.9em;
+  }
+
   .keybinding-skill-wrapper.error > img {
     filter: grayscale(1);
   }
@@ -197,15 +215,13 @@
     background-color: rgba(193, 0, 13, 0.55);
   }
 
-  .skill-selection {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    flex-wrap: wrap;
-  }
+  @media (max-width: 600px) {
+    td.keybinding-skill {
+      min-width: 0;
+    }
 
-  .skill-selection img {
-    width: 64px;
+    .skill-name {
+      display: none;
+    }
   }
 </style>
