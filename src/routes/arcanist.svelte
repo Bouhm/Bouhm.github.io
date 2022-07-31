@@ -69,7 +69,10 @@
 
   function shuffleRounds() {
     return _.shuffle(
-      _.filter(comboData, (combo) => combo.rotations[0].length > 1)
+      _.map(
+        _.filter(comboData, (combo) => combo.rotations[0].length > 1),
+        (combo) => ({ ...combo, cards: _.shuffle(combo.cards) })
+      )
     ) as Combo[];
   }
 
@@ -337,7 +340,7 @@
     </div>
     <div class="game">
       <div class="cards">
-        {#each _.shuffle(roundCombo.cards) as cardId, i}
+        {#each roundCombo.cards as cardId, i}
           {#key roundIdx}
             <div
               class="card animate__animated animate__backInDown animate__faster"
