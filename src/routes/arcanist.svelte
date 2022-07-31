@@ -337,7 +337,7 @@
     </div>
     <div class="game">
       <div class="cards">
-        {#each roundCombo.cards as cardId, i}
+        {#each _.shuffle(roundCombo.cards) as cardId, i}
           {#key roundIdx}
             <div
               class="card animate__animated animate__backInDown animate__faster"
