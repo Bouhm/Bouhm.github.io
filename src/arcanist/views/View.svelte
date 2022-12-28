@@ -25,7 +25,7 @@
     {#if $selectedView === 0}
       <Glossary {db} {combos} />
     {:else if $selectedView === 1}
-      <Keybindings />
+      <Keybindings skillData={db} />
     {/if}
   </div>
 </div>
@@ -44,7 +44,7 @@
   }
 
   .view-content {
-    width: 60%;
+    width: 65%;
     margin: 0 auto;
   }
 

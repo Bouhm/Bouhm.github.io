@@ -1,16 +1,22 @@
 <script lang="ts">
   import { base } from "$app/paths";
   import _ from "lodash";
-  import {
-    usedSkills,
-    keyBindings,
-    type KeyBindingConfig,
-  } from "../stores/store";
-  import SkillKey from "../components/SkillKey.svelte";
-  import Modal from "../components/Modal.svelte";
+  import type { Skill } from "../data/types";
+  import { keyBindings, type KeyBindingConfig } from "../stores/store";
 
-  let showSkillsModal: boolean;
-  let clickedSkillSlot: string;
+  export let skillData: Skill[];
+
+  function getKbName(i: number) {
+    if (i < 8) {
+      return "Skill " + (i + 1);
+    } else if (i === 8) {
+      return "Autoattack";
+    } else if (i === 9) {
+      return "Awakening";
+    } else {
+      return "Card " + (i - 9);
+    }
+  }
 
   function isExistingKey(key: string) {
     return _.filter($keyBindings, (kb) => kb.key === key).length > 1;
@@ -22,27 +28,36 @@
     );
   }
 
+  function dragStart(event: DragEvent, srcIdx: number) {
+    if (srcIdx > 7) return;
+
+    const data = { srcIdx };
+    event.dataTransfer!.setData("text/plain", JSON.stringify(data));
+  }
+
+  function drop(event: DragEvent, targetIdx: number) {
+    event.preventDefault();
+    if (targetIdx > 7) return;
+
+    const json = event.dataTransfer!.getData("text/plain");
+    const data = JSON.parse(json);
+
+    const newConfig = _.clone($keyBindings);
+    const srcConfig = newConfig[data.srcIdx];
+
+    newConfig[data.srcIdx] = newConfig[targetIdx];
+    newConfig[targetIdx] = srcConfig;
+    updateStorage(newConfig);
+  }
+
   function updateStorage(newConfig: KeyBindingConfig) {
     keyBindings.set(newConfig as KeyBindingConfig);
-    localStorage.setItem("keyBindings", JSON.stringify(newConfig));
+    localStorage.setItem("keyBindingsV2", JSON.stringify(newConfig));
   }
 
-  function handleSkillSelect(skillId: number, control?: string) {
-    const newConfig = _.clone($keyBindings);
-    newConfig[control!].skillId = skillId;
-    updateStorage(newConfig);
-    showSkillsModal = false;
-  }
-
-  function handleClickSkill(control: string) {
-    if (!control.startsWith("skill")) return;
-    clickedSkillSlot = control;
-    showSkillsModal = true;
-  }
-
-  function handleKeyChange(e: Event, control: string) {
+  function handleKeyChange(e: Event, i: number) {
     let newConfig = _.clone($keyBindings);
-    newConfig[control].key = (e.target as HTMLInputElement).value;
+    newConfig[i].key = (e.target as HTMLInputElement).value;
     updateStorage(newConfig);
   }
 
@@ -53,59 +68,67 @@
       return "blank";
     }
   }
+
+  function getSkillName(id: number) {
+    const card = _.find(skillData, (skill) => skill.id === id);
+    return card ? card.name : "";
+  }
 </script>
 
 <div class="keybindings">
-  {#if showSkillsModal}
-    <Modal title="Select Skill" onClose={() => (showSkillsModal = false)}>
-      <div class="skill-selection">
-        {#each _.orderBy($usedSkills, (id) => id) as skill}
-          <img
-            class="clickable"
-            src="{base}/arcanist/{skill}.webp"
-            on:click={() => handleSkillSelect(skill, clickedSkillSlot)}
-          />
-        {/each}
-      </div>
-    </Modal>
-  {/if}
   <table class="keybindings-content">
     <tr>
       <td class="keybinding-control">UNDO SKILL</td>
-      <td />
+      <td class="keybinding-skill">
+        <img class="lock" src="{base}/arcanist/lock-solid.svg" alt="lock" />
+      </td>
       <td class="keybinding-input">
         <input type="text" value="Backspace" disabled />
       </td>
     </tr>
-    <br />
     <tr>
       <td class="keybinding-control">SUBMIT</td>
-      <td />
+      <td class="keybinding-skill">
+        <img class="lock" src="{base}/arcanist/lock-solid.svg" alt="lock" />
+      </td>
       <td class="keybinding-input">
         <input type="text" value="Enter" disabled />
       </td>
     </tr>
     <br />
-    {#each Object.entries($keyBindings) as [control, skillKey], i}
+    {#each $keyBindings as kb, i}
       <tr>
-        <td class="keybinding-control">{control.toUpperCase()}</td>
-        <td class="keybinding-skill">
+        <td class="keybinding-control">{getKbName(i)}</td>
+        <td
+          class="keybinding-skill"
+          class:swappable={i < 8}
+          draggable={i < 8}
+          on:dragstart={(e) => dragStart(e, i)}
+          on:drop={(e) => drop(e, i)}
+          on:dragover={(e) => {
+            e.preventDefault();
+          }}
+        >
           <div
-            on:click={() => handleClickSkill(control)}
-            class:error={isExistingSkill($keyBindings[control].skillId)}
-            class:clickable={control.startsWith("skill")}
+            class:error={isExistingSkill(kb.skillId)}
             class="keybinding-skill-wrapper"
           >
-            <img src="{base}/arcanist/{getIcon(skillKey.skillId)}.webp" />
+            <img
+              src="{base}/arcanist/{getIcon(kb.skillId)}.webp"
+              alt="skill-key"
+            />
+            {#if i < 8}<div class="skill-name">
+                {getSkillName(kb.skillId)}
+              </div>{/if}
           </div>
         </td>
         <td class="keybinding-input">
           <input
             type="text"
-            class:error={isExistingKey($keyBindings[control].key)}
+            class:error={isExistingKey(kb.key)}
             maxlength="1"
-            on:change={(e) => handleKeyChange(e, control)}
-            bind:value={$keyBindings[control].key}
+            on:change={(e) => handleKeyChange(e, i)}
+            bind:value={kb.key}
           />
         </td>
       </tr>
@@ -119,7 +142,6 @@
     flex-flow: column;
     color: white;
   }
-
   .keybindings-content {
     table-layout: fixed;
     text-align: center;
@@ -127,27 +149,43 @@
   td {
     width: 4rem;
   }
+  tr:nth-child(even):not(:nth-child(1)):not(:nth-child(2)) {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
   td.keybinding-control {
     text-align: right;
+    text-transform: uppercase;
+    font-size: 1.05em;
   }
   td.keybinding-skill {
     padding-left: 2rem;
+    text-align: left;
+    min-width: 12rem;
+  }
+  td.keybinding-skill.swappable:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    cursor: pointer;
   }
   td.keybinding-skill img {
     width: 64px;
   }
+  td.keybinding-skill .lock {
+    width: 16px;
+    margin-left: 1.5rem;
+  }
   td.keybinding-input {
-    width: 3rem;
+    text-align: start;
   }
   td.keybinding-input input {
     text-transform: uppercase;
-    color: white;
     font-weight: 700;
     width: 5rem;
-    background-color: #513e82;
-    border: none;
+    border: 2px solid rgba(0, 0, 0, 0.4);
+    text-align: center;
+    border-bottom-width: 5px;
+    background-color: rgba(255, 255, 255, 0.8);
     padding: 0.5rem;
-    border-radius: 6px;
+    border-radius: 7px;
     outline: none;
   }
   td.keybinding-input input.error {
@@ -157,7 +195,14 @@
   .keybinding-skill-wrapper {
     position: relative;
     width: 64px;
+    display: flex;
+    align-items: center;
   }
+  .keybinding-skill-wrapper .skill-name {
+    margin-left: 2rem;
+    font-size: 0.9em;
+  }
+
   .keybinding-skill-wrapper.error > img {
     filter: grayscale(1);
   }
@@ -175,13 +220,13 @@
     background-color: rgba(193, 0, 13, 0.55);
   }
 
-  .skill-selection {
-    display: flex;
-    width: 100%;
-    flex-wrap: wrap;
-  }
+  @media (max-width: 600px) {
+    td.keybinding-skill {
+      min-width: 0;
+    }
 
-  .skill-selection img {
-    width: 64px;
+    .skill-name {
+      display: none;
+    }
   }
 </style>

@@ -32,19 +32,20 @@
     {
         "id": 505,
         "cards": [100],
-        "rotations": [[100,211,400,400],[106,210,400,400]],
+        "rotations": [[100,211,400,400],[100,210,400,400]],
         "notes": "Use autoattacks to reach 4 stacks with the effect of Three-Headed Snake."
     },
     {
         "id": 506,
         "cards": [108],
-        "rotations": [[106,301],[106,223]],
+        "rotations": [[108,301],[108,223]],
         "stacks": 4,
         "notes": "Use within 30s of next Awakening use, otherwise use before Celestial Rain."
     },
     {
         "id": 507,
         "cards": [109],
+        "stacks": 4,
         "rotations": [[109,223],[223,109]],
         "notes": "Use after Ruin skill to reduce its cooldown. If in Boundless MP state (Nightmare Set effect), use before Celestial Rain hits after its cooldown starts."
     },
@@ -52,7 +53,7 @@
         "id": 508,
         "cards": [102],
         "rotations": [[211,210,202,102,223,212,226]],
-        "notes": "Standard 4 stacks, buff, and ruin skill combo."
+        "notes": "Standard 4 stacks, buff, and Ruin skill combo."
     },
     {
         "id": 509,
@@ -61,7 +62,7 @@
             [211,210,202,105,226,212,225],
             [211,210,202,105,223,212,225]
         ],
-        "notes": "With Cull, Serendipity becomes a viable option because it benefits a lot from the effects of Cull."
+        "notes": "With Cull, Serendipity becomes a viable option for the second Ruin Skill because it benefits a lot from its effects."
     },
     {
         "id": 510,
@@ -73,10 +74,10 @@
         "id": 511,
         "cards": [111],
         "rotations": [
-            [211,210,111,301,202,301,223],
+            [211,210,202,111,301,301,223],
             [211,210,202,111,223,212,223]
         ],
-        "notes": "In most cases Celestial Rain is more practical. The Awakening skill combo can be used for speedrunning easier content."
+        "notes": "In most cases Celestial Rain is more practical over the long run. The Awakening skill combo can be used for speedrunning easier content."
     },
     {
         "id": 600,
@@ -85,46 +86,116 @@
             [202,105,107,225,226,223],
             [202,105,107,225,223,226]
         ],
-        "notes": "Prioritized by damage. Serendipity benefits the most from both card effects."
+        "notes": "Ruin skills prioritized by damage. Serendipity benefits the most from both card effects."
     },
     {
         "id": 601,
-        "cards": [105, 111],
+        "cards": [105, 102],
         "rotations": [
-            [211,210,202,105,111,223,212,223]
+            [211,210,202,105,102,223,212,225],
+            [211,210,202,105,102,223,212,225]
         ],
-        "notes": "Apply Wheel of Fortune's cooldown reset on the highest priority Ruin skill."
+        "notes": "Use standard Stacking rotation and apply buffs before using Ruin skills. Serendipity is viable as the second Ruin skill since it benefits a lot from Cull."
     },
     {
         "id": 602,
+        "cards": [105, 111],
+        "rotations": [
+            [211,210,202,105,111,223,212,223],
+            [211,210,202,105,111,301,301,223]
+        ],
+        "notes": "Apply Wheel of Fortune's cooldown reset on priority Ruin skill or Awakening skill. Use the spacebar skill to animation cancel the first Awakening skill."
+    },
+    {
+        "id": 603,
         "cards": [105, 106],
         "rotations": [
             [212,202,105,223,106,211,225,210,226]
         ],
-        "notes": "Perform optimal stacking rotation with Balance and use Serendipity with Cull whenever viable."
+        "notes": "Perform optimal stacking rotation with Balance. Serendipity is the second Ruin skill used due to its synergy with Cull."
     },
     {
-        "id": 603,
+        "id": 604,
         "cards": [105, 100],
         "rotations": [
             [212,202,105,223,100,211,400,400,225]
         ],
-        "notes": "Perform optimal stacking rotation with Three-Headed Snake and use Serendipity with Cull whenever viable."
-    },
-    {
-        "id": 604,
-        "cards": [105, 109],
-        "rotations": [
-            [211,210,202,105,223,212,223,109]
-        ],
-        "notes": "Cull combo with Star after Ruin skills to reduce cooldowns."
+        "notes": "Perform optimal stacking rotation with Three-Headed Snake. Serendipity is the second Ruin skill used due to its synergy with Cull."
     },
     {
         "id": 605,
+        "cards": [105, 109],
+        "rotations": [
+            [211,210,202,105,223,212,225,109]
+        ],
+        "notes": "Apply buff with Cull and use Star after Ruin skills to reduce cooldowns. Serendipity is the second Ruin skill used due to its synergy with Cull."
+    },
+    {
+        "id": 606,
+        "cards": [107, 102],
+        "rotations": [
+            [202,107,102,225,223,226]
+        ],
+        "notes": "Apply buffs prior to using Ruin skills. Prioritize Serendipity with Judgment for double full-stack damage."
+    },
+    {
+        "id": 607,
         "cards": [107, 111],
         "rotations": [
             [202,107,111,225,223,225,226]
         ],
-        "notes": "Judgment combo with Wheel of Fortune cooldown reset on Serendipity double full-stack damage."
+        "notes": "Use Wheel of Fortune cooldown reset on Serendipity for double full-stack damage with Judgment."
+    },
+    {
+        "id": 608,
+        "cards": [107, 109],
+        "rotations": [
+            [202,107,225,223,226,109]
+        ],
+        "notes": "Prioritize Serendipity with Judgment for double full-stack damage and use Star at the end for cooldown reduction."
+    },
+    {
+        "id": 609,
+        "cards": [102,106],
+        "rotations": [
+            [212,202,102,223,106,211,226,210,225]
+        ],
+        "notes": "Use Spiral Edge to obtain 4 stacks before using Balance. Buff with Twisted Fate before alternating Ruin + full stacking with enhanced Stacking skills from Balance."
+    },
+    {
+        "id": 610,
+        "cards": [102,100],
+        "rotations": [
+            [212,202,102,223,100,211,400,400,225]
+        ],
+        "notes": "Use Spiral Edge to obtain 4 stacks before using Balance. Buff with Twisted Fate before alternating Ruin + full stacking with enhanced autoattacks from Three-Headed Snake."
+    },
+    {
+        "id": 611,
+        "cards": [102,111],
+        "usedSkills": [301],
+        "rotations": [
+            [211,210,202,102,111,223,212,223]
+        ],
+        "notes": "Perform basic stacking rotation and apply Twisted Fate buff before using Wheel of Fortune to use on priority Ruin skill twice."
+    },
+    {
+        "id": 612,
+        "cards": [102,109],
+        "rotations": [
+            [211,210,202,102,223,212,226,109],
+            [211,210,202,102,223,109,212,226]
+        ],
+        "notes": "Perform basic stacking rotation and apply Twisted Fate buff before using Star at the end for cooldown reduction. Star can also be used after Celestial Rain to optimize its cooldown."
+    },
+    {
+        "id": 613,
+        "cards": [111,109],
+        "usedSkills": [301],
+        "rotations": [
+            [211,210,202,111,223,212,223,109]
+        ],
+        "notes": "Perform basic stacking rotation and apply Wheel of Fortune on priority skills to use them twice. Use Star at the end to reduce cooldowns."
     }
+
 ]

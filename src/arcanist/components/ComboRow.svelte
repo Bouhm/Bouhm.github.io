@@ -13,7 +13,11 @@
 
 <div class="combo-row" class:centered>
   {#each rotation as skillId, i}
-    <div class={`wrapper c${correctness[i]}`}>
+    <div
+      class={`wrapper ${
+        correctness[i] !== undefined ? "c" + correctness[i] : ""
+      }`}
+    >
       <div
         class={`skill-box`}
         on:click={() => handleClick(i)}
@@ -24,8 +28,10 @@
   <!-- Empty slots when guessing -->
   {#if max && max > rotation.length}
     {#each Array(max - rotation.length) as _}
-      <div class="skill-box">
-        <img src="{base}/arcanist/blank.webp" />
+      <div class={`wrapper ${correctness.length ? "c0" : ""}`}>
+        <div class="skill-box">
+          <img src="{base}/arcanist/blankSkill.webp" />
+        </div>
       </div>
     {/each}
   {/if}
@@ -86,8 +92,13 @@
 
   @media (max-width: 600px) {
     .skill-box {
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
+    }
+
+    .skill-box img {
+      width: 36px;
+      height: 36px;
     }
   }
 </style>
