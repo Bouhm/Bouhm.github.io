@@ -1,11 +1,22 @@
 <script lang="ts">
   import { browser } from "$app/env"
   import { base } from '$app/paths';
+  import { tweened } from 'svelte/motion';
+  
   import BoardTile from "../brelshaza/components/Tile.svelte"
   import Button from "../brelshaza/components/Button.svelte"
-
+  
+  let original = 2 * 60; // TYPE NUMBER OF SECONDS HERE
+	let timer = tweened(original)
   let currentHp = 100;
-  let timer = 200;
+
+
+  setInterval(() => {
+    if ($timer > 0) $timer--;
+  }, 1000);
+
+  $: minutes = Math.floor($timer / 60);
+  $: seconds = Math.floor($timer - minutes * 60)
   
   function handleBoardChange() {
     
@@ -43,7 +54,7 @@
     <div class="hp-hud">
       <img class="hp-bar" src={`${base}/brelshaza/hpbar.webp`} alt="hp-bar" />
       <div class="hp-number">{currentHp}x</div>
-      <div class="timer">{timer}</div>
+      <div class="timer">{`${minutes}m ${seconds}s`}</div>
     </div>
     <div class="board"> 
       {#each Array(9) as _}
@@ -87,7 +98,7 @@
     position: relative;
     font-size: 1.4rem;
     color: white;
-    left: 3.2rem;
+    left: 2.2rem;
     top: -2.4rem;
   }
 
