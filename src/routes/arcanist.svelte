@@ -296,7 +296,7 @@
           {#if roundRotation.length > selectedSkillIds.length}
               {#each Array(roundRotation.length - selectedSkillIds.length) as _}
                   <div class="skill-box">
-                    <img src="{base}/arcanist/blankSkill.webp" />
+                    <img src="{base}/arcanist/blankSkill.webp" alt="blank-skill"/>
                   </div>
               {/each}
           {/if}
