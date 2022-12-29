@@ -7,43 +7,39 @@
   import BoardTile from "../brelshaza/components/Tile.svelte"
   import Button from "../brelshaza/components/Button.svelte"
   
-  let startTime = 2 * 60
+  let startTime = 60
   let startHp = 188
-	let blueTimer = tweened(startTime)
-  let currentHp = tweened(startHp)
+	let blueTimer = startTime
+  let currentHp = startHp
+  let hasStarted = false
 
   const damageValue = 15
   const damageTime = 5
   const waitTime = 15
 
   setInterval(() => {
-    // if ($blueTimer > 0) $blueTimer--;
+    if (blueTimer > 0 && hasStarted) blueTimer--;
   }, 1000);
 
-  $: minutes = Math.floor($blueTimer / 60);
-  $: seconds = Math.floor($blueTimer - minutes * 60)
+  $: minutes = Math.floor(blueTimer / 60);
+  $: seconds = Math.floor(blueTimer - minutes * 60)
   
   function handleBoardChange(idx: number) {
     
   }
 
-  function handleClickPush() {
-    $blueTimer -= damageTime
-    $currentHp -= damageValue
-    if ($blueTimer < 0) $blueTimer = 0
+  function handleClickStart() {
+    hasStarted = true;
   }
 
-  function handleClickWait() {
-    $blueTimer -= waitTime
-    if ($blueTimer < 0) $blueTimer = 0
+  function handleAddTime(time: number) {
+    blueTimer += time
   }
 
-  function handleClickMeteor() {
-
-  }
 
   function handleClickReset() {
-
+    hasStarted = false
+    blueTimer = startTime
   }
 </script>
 
@@ -60,10 +56,24 @@
     <div class="container">
       <div class="hp-hud">
         <img class="hp-bar" src={`${base}/brelshaza/hpbar.webp`} alt="hp-bar" />
-        <div class="hp-number">{Math.round($currentHp)}x</div>
+        <div class="hp-number">{Math.round(currentHp)}x</div>
         <div class="timer">
-          <div class="timer-label">Next blue meteor spawn:</div>
-          <div class="timer-value">{`${minutes}m ${seconds}s`}</div>
+          <div class="timer-label">Next blue meteor:</div>
+          <div class="timer-value">
+            {#if minutes !== 0}
+              {`${minutes}m`}
+            {/if}
+            {#if seconds !== 0}
+              {`${seconds}s`}
+            {/if}
+          </div>
+          <div class="timer-button">
+            {#if hasStarted}
+              <Button primary="Reset" onClick={handleClickReset}/>
+            {:else}
+              <Button primary="Start" onClick={handleClickStart}/>
+            {/if}
+          </div>
         </div>
       </div>
   
@@ -80,9 +90,9 @@
       </div>
   
       <div class="toolbar">
-        <Button onClick={handleClickPush} primary="Golden Meteor" secondary="+20s" />
-        <Button onClick={handleClickPush} primary="Worship" secondary="+2m 15s" />
-        <Button onClick={handleClickPush} primary="Tornado" secondary="+20s" />
+        <Button disabled={!hasStarted} onClick={() => handleAddTime(20)} primary="Golden Meteor" secondary="+20s" />
+        <Button disabled={!hasStarted} nClick={() => handleAddTime(60*2 + 15)} primary="Worship" secondary="+2m 15s" />
+        <Button disabled={!hasStarted} onClick={() => handleAddTime(20)} primary="Tornado" secondary="+20s" />
       </div>
     </div>
   </main>
@@ -146,8 +156,11 @@
     position: absolute;
     font-size: 1.4rem;
     color: white;
-    left: -2.2rem;
+    left: -1rem;
     top: 7.5rem;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
   }
 
   .timer-label {
@@ -162,6 +175,11 @@
 
   .timer > div {
     text-align: center;
+  }
+
+  .timer-button {
+    text-align: center;
+    font-size: 1rem;
   }
 
   .board {

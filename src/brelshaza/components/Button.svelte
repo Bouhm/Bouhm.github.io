@@ -3,6 +3,7 @@
   export let className = ""
   export let primary = ""
   export let secondary = ""
+  export let disabled = false
 
   function handleClick() {
       onClick();
@@ -21,7 +22,7 @@
       border: 2px solid white;
       padding: 0.5rem;
       text-align: center;
-      margin: 2rem 0.5rem 0 0.5rem;
+      margin: 1rem 0.5rem 0 0.5rem;
       color: white;
   }
 
