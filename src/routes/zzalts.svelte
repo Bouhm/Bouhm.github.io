@@ -41,25 +41,27 @@
 <main>
     <!-- 2 videos for smooth transitions -->
     <div class="video-background">
+        <!-- svelte-ignore a11y-media-has-caption -->
         <video
             src={`${base}/zzalts/idle.webm`}
-            type='video/webm'
             autoplay
             loop
         />
+        <!-- svelte-ignore a11y-media-has-caption -->
         <video
             class="freedeo"
             class:show={isFree} 
             bind:this={freeVideo}
             src={`${base}/zzalts/free.webm`}
-            type='video/webm'
         />
     </div> 
     <div class="input-area">
         <h1>#FREE</h1>
+        <!-- svelte-ignore a11y-autofocus -->
         <input type="text" bind:value={name} on:keypress={handleKeyPress} on:input={() => isGuessing = true} autofocus />
     </div>
     <div class:disabled={name.length===0} class="button" on:click={checkName}>{name.toUpperCase() === "ZZANG" ? "DUH" : "IS IT ZZANG?"}</div>
+    <!-- svelte-ignore a11y-missing-attribute -->
     <img class:faded={isGuessing} class={isValid ? "correct" : "incorrect"} src={`${base}/zzalts/thumbsup.png`} />
 </main>
 

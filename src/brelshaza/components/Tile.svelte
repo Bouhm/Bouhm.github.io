@@ -13,10 +13,8 @@
 
 <style>
   .board-tile {
-    display: relative;
     background-color: white;
-    border: 2px solid black;
-    width: 170px;
-    height: 170px
+    width: 135px;
+    height: 135px
   }
 </style>
