@@ -33,7 +33,6 @@
 
   $: currentHp = goldMeteorHp[goldMeteorNum]
   $: suggestedTiles = boardState[2] > 1 ? recTiles[1] : boardState[6] > 1 ? recTiles[0] : recTiles[2] 
-  $: console.log(suggestedTiles)
   $: deadTiles = boardState[2] === 0 ? recTiles[blueMeteorNum % 2] : recTiles[1 - blueMeteorNum % 2]
   
   setInterval(() => {
@@ -125,7 +124,7 @@
 </script>
 
 <svelte:head>
-  <title>Brelshaza Gate 6 Practice Tool</title>
+  <title>Brelshaza G6 Thingy</title>
   <meta name="viewport" content="user-scalable=0" />
 </svelte:head>
 
