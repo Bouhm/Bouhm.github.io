@@ -160,6 +160,7 @@
     setTimeout(() => {
       clearInterval(goldenDropInterval)
       
+      clearInterval(respawnInterval)
       respawnInterval = setInterval(() => {
         if (TURBO) respawnTimer -= 10       
         else respawnTimer--
