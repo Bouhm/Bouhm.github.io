@@ -47,6 +47,7 @@
 
   .hp-0 {
     opacity: 0.3;
+    background-color: black;
     background-image: none;
   }
 </style>

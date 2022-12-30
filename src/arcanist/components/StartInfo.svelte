@@ -9,6 +9,7 @@
 </script>
 
 <div class="start-content">
+  <h3>AS OF THE BALANCE CHANGES IN 11/16/2022 THIS GUIDE IS NO LONGER UP-TO-DATE</h3>
   <h3>
     These are combos for intended for 332 (3 Stack skills, 3 Ruin skills, 2
     Normal skills) Empress Arcanist.

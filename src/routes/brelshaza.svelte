@@ -8,6 +8,7 @@
   import BoardTile from "../brelshaza/components/Tile.svelte"
   import Button from "../brelshaza/components/Button.svelte"
   import Timer from "../brelshaza/components/Timer.svelte"
+  import Checkbox from "../brelshaza/components/Checkbox.svelte";
   
   let TURBO = false;
 
@@ -61,12 +62,14 @@
   let goldenMeteorNum = 0
   let blueMeteorNum = 0
 
-	let blueTimer = startTime
+	let blueTimer = startTime + 27
   let respawnTimer = respawnLength
   let meteorDropTimer = -1
   let goldenMeteorDropTimer = -1
   let currentHp = startHp
   let hasStarted = false
+
+  let showSuggestions = true
 
   let blueSpawnInterval: ReturnType<typeof setInterval>
   let blueDropInterval: ReturnType<typeof setInterval>
@@ -231,6 +234,26 @@
     TURBO = !TURBO
     handleClickReset()
   }
+
+  function handleToggleSuggestions(checked: boolean) {
+    showSuggestions = checked;
+  }
+
+  function randomNumber(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min + 1)) + min
+  }
+
+  const STAR_COUNT = 100
+  let style = "box-shadow: "
+  for(let i = 0; i < STAR_COUNT; i++){
+      style += `${randomNumber(-50, 50)}vw ${randomNumber(-50, 50)}vh ${randomNumber(0, 3)}px ${randomNumber(0, 3)}px #fff`
+
+      if (i+1 !== STAR_COUNT) {
+        style += ','
+      } else {
+        style += ';'
+      }
+  }
 </script>
 
 <svelte:head>
@@ -240,13 +263,14 @@
 
 {#if browser}
   <main>
-    <div class="bg" style="--bg: url({base}/brelshaza/bg.webp)"></div>
+    <div class="bg" />
     <img class="planet" src="{base}/brelshaza/planet.webp" alt="planet"/>
+    <div class="stars" style={style} />
 
     <div class="container">
       <div class="hud">
-        <img class="hp-bar" src={`${base}/brelshaza/hpbar.webp`} alt="hp-bar" />
-        <div class="hp-number">{Math.round(currentHp)}x</div>
+        <!-- <img class="hp-bar" src={`${base}/brelshaza/hpbar.webp`} alt="hp-bar" /> -->
+        <!-- <div class="hp-number">{Math.round(currentHp)}x</div> -->
         <div class="timer-controls">
           <div class="blue-timer">
             <div class="timer-label">Next blue meteors:</div>
@@ -264,13 +288,18 @@
               <Button primary="TURBO" onClick={handleClickTurbo} active={TURBO}/>
             </div>
           </div>
-          <div class="respawn-timer">
-            {#if respawnTimer > 0}
-              <div class="respawn-label">Platform respawn:</div>
-              <div class="respawn-value">
-                <Timer time={respawnTimer} size={1.4} />
-              </div>
-            {/if}
+          <div class="other-controls">
+            <div class="respawn-timer">
+              {#if respawnTimer > 0}
+                <div class="respawn-label">Platform respawn:</div>
+                <div class="respawn-value">
+                  <Timer time={respawnTimer} size={1.4} />
+                </div>
+              {/if}
+            </div>
+            <div class="suggestions-checkbox">
+              <Checkbox label="Show suggestions" value={showSuggestions} onChange={handleToggleSuggestions} />
+            </div>
           </div>
       </div>
     </div>
@@ -285,7 +314,7 @@
         </div>
         <div class="board"> 
           {#each Array(9) as _, i}
-              <BoardTile i={i} hp={boardState[i]} selected={includes(recTiles[blueMeteorNum].map(tile => tile.idx), i)}/>
+              <BoardTile i={i} hp={boardState[i]} selected={showSuggestions && includes(recTiles[blueMeteorNum].map(tile => tile.idx), i)}/>
           {/each}
         </div>
       </div>
@@ -307,6 +336,39 @@
     height: 100vh;
     width: 100%;
     color: white;
+  }
+
+  .bg {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: linear-gradient(230deg,#1f0636,#000e2c); 
+    background-color: #140032;
+    z-index: -3;
+  }
+
+  .stars {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    height: 1px;
+    width: 1px;
+    background-color: #fff;
+    border-radius: 50%;
+    opacity: 0.5;
+    z-index: -2;
+  }
+
+  .planet {
+    position: fixed;
+    opacity: 0.5;
+    bottom: 0;
+    left: 51%;
+    transform: translateX(-50%);
+    z-index: -2;
+    background-blend-mode: multiply;
   }
 
   .container {
@@ -343,11 +405,23 @@
   }
 
   .timer-controls {
-    position: absolute;
     display: flex;
+    justify-content: space-evenly;
     width: 100%;
-    left: -2rem;
-    top: 6rem;
+    margin-top: 2rem;
+  }
+
+  .other-controls {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+  }
+
+  .suggestions-checkbox {
+    margin-top: 1rem;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
   }
 
   .hp-bar {
@@ -416,25 +490,5 @@
 
   .respawn-label {
     text-transform: uppercase;
-  }
-
-  .bg {
-    background: var(--bg);
-    background-repeat: no-repeat;
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: -3;
-  }
-
-  .planet {
-    position: fixed;
-    opacity: 0.5;
-    bottom: 0;
-    left: 51%;
-    transform: translateX(-50%);
-    z-index: -2;
   }
 </style>
