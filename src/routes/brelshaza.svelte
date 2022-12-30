@@ -12,7 +12,7 @@
   let TURBO = false;
 
   const goldMeteorHp = [188, 137, 87, 37]
-  const recTiles = [[3,6,7],[1, 2, 5],[0,7]]
+  const recTiles = [[3,6,7],[1, 2, 5],[0,8]]
   const startTime = 60
   const respawnDelay = 12
   const respawnTime = 100
