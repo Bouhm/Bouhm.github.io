@@ -4,13 +4,14 @@
   export let primary = ""
   export let secondary = ""
   export let disabled = false
+  export let active = false
 
   function handleClick() {
       onClick();
   }
 </script>
 
-<div class:disabled={disabled} class={`${className} button clickable`} on:click={handleClick}>
+<div class:active={active} class:disabled={disabled} class={`${className} button clickable`} on:click={handleClick}>
   <div class="primary">{primary}</div>
   {#if secondary}<div class="secondary">{secondary}</div>{/if}
 </div>
@@ -36,5 +37,10 @@
     font-size: 0.8rem;
     color: greenyellow;
     opacity: 0.8;
+  }
+
+  .active {
+    background-color: rgba(255,255,255,0.8);
+    color: black;
   }
 </style>

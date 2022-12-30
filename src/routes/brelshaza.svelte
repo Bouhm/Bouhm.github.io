@@ -2,30 +2,67 @@
   import { browser } from "$app/env"
   import { base } from '$app/paths'
   import { tweened } from 'svelte/motion'
-  import { cubicOut } from 'svelte/easing';
-  
+  import { cubicOut } from 'svelte/easing'
+  import { includes } from 'lodash'
+
   import BoardTile from "../brelshaza/components/Tile.svelte"
   import Button from "../brelshaza/components/Button.svelte"
+  import Timer from "../brelshaza/components/Timer.svelte"
   
+  let TURBO = false;
+
+  const goldMeteorHp = [188, 137, 87, 37]
+  const recTiles = [[3,6,7],[1, 2, 5]]
   const startTime = 60
-  const startHp = 188
+  const respawnDelay = 12
+  const respawnTime = 100
+  const startHp = goldMeteorHp[0]
   const meteorDropTime = 10
+  const initialBoardState=[3,0,0,3,14,0,3,3,3]
+
+  let boardState=initialBoardState
+  let event = ""
+  let goldMeteorNum = 0;
+  let blueMeteorNum = 0;
 
 	let blueTimer = startTime
+  let respawnTimer = respawnTime
+  let meteorDropTimer = 0;
   let currentHp = startHp
   let hasStarted = false
 
+  $: currentHp = goldMeteorHp[goldMeteorNum];
+  
   setInterval(() => {
     if (hasStarted) {
-      blueTimer--
-    } else if (blueTimer < -1*meteorDropTime) {
+      if (TURBO) blueTimer -= 15
+      else blueTimer--
+
+      if (TURBO) respawnTimer -= 15
+      else respawnTimer--
+
+      if (blueTimer < 0) blueTimer = 0
+    } 
+
+    if (meteorDropTimer >= meteorDropTime) {
       blueTimer = startTime
+      event = ""
+      meteorDropTimer = 0
     }
+
+    if (blueTimer === 0) {
+      event="SPAWN_METEOR"
+      
+      if (TURBO) meteorDropTimer += 4
+      else meteorDropTimer++
+    }
+
+    if (respawnTimer < 0) {
+      respawnTimer=respawnTime
+    } 
   }, 1000);
 
-  $: minutes = Math.floor(blueTimer / 60);
-  $: seconds = Math.floor(blueTimer - minutes * 60)
-  
+
   function handleBoardChange(idx: number) {
     
   }
@@ -38,10 +75,37 @@
     blueTimer += time
   }
 
+  function handleClickGoldMeteor() {
+    handleAddTime(20);
+    goldMeteorNum++;
+    if (goldMeteorNum > goldMeteorHp.length-1) goldMeteorNum = goldMeteorHp.length-1;
+  }
+
+  function getSuggestedTiles() {
+    return recTiles[blueMeteorNum % 2]
+  }
+
+  function isSuggestedTile(i: number) {
+    let recommended = getSuggestedTiles()
+    return event==="SPAWN_METEOR" && includes(recommended, i);
+  }
+
+  function getDeadTiles() {
+    return blueMeteorNum > 0 && getSuggestedTiles()
+  }
+
 
   function handleClickReset() {
     hasStarted = false
     blueTimer = startTime
+    currentHp = startHp
+    goldMeteorNum = 0
+    event=""
+    boardState=initialBoardState
+  }
+
+  function handleClickTurbo() {
+    TURBO = !TURBO
   }
 </script>
 
@@ -56,24 +120,21 @@
     <img class="planet" src="{base}/brelshaza/planet.webp" alt="planet"/>
 
     <div class="container">
-      <div class="hp-hud">
+      <div class="hud">
         <img class="hp-bar" src={`${base}/brelshaza/hpbar.webp`} alt="hp-bar" />
         <div class="hp-number">{Math.round(currentHp)}x</div>
-        <div class="timer">
-          {#if blueTimer < 0}
-            <div class="timer-meteor">
-              Meteor Spawning
-            </div>
-          {:else}
-            <div class="timer-label">Next blue meteor:</div>
-            <div class="timer-value">
-              {#if minutes !== 0}
-                {`${minutes}m`}
-              {/if}
-              {#if seconds !== 0}
-                {`${seconds}s`}
-              {/if}
-            </div>
+        <div class="timer-controls">
+          <div class="blue-timer">
+            {#if event==="SPAWN_METEOR"}
+              <div class="timer-meteor">
+                Meteor Spawning
+              </div>
+            {:else}
+              <div class="timer-label">Next blue meteor:</div>
+              <div class="timer-value">
+                <Timer time={blueTimer} size={2} />
+              </div>
+            {/if}
             <div class="timer-button">
               {#if hasStarted}
                 <Button primary="Reset" onClick={handleClickReset}/>
@@ -81,20 +142,27 @@
                 <Button primary="Start" onClick={handleClickStart}/>
               {/if}
             </div>
-          {/if}
-        </div>
+            <div class="turbo">
+              <Button primary="TURBO" onClick={handleClickTurbo} active={TURBO}/>
+            </div>
+          </div>
+      </div>
     </div>
   
       <div class="board-container">
+        <div class="tile-respawn">
+          Platform respawn: <br />
+          <Timer time={respawnTimer} />
+        </div>
         <div class="board"> 
           {#each Array(9) as _, i}
-              <BoardTile i={i} hp={Math.floor(Math.random() * 4)}} />
+              <BoardTile i={i} hp={boardState[i]} selected={isSuggestedTile(i)} />
           {/each}
         </div>
       </div>
   
       <div class="toolbar">
-        <Button disabled={!hasStarted} onClick={() => handleAddTime(20)} primary="Golden Meteor" secondary="+20s" />
+        <Button disabled={!hasStarted} onClick={handleClickGoldMeteor} primary="Golden Meteor" secondary="+20s" />
         <Button disabled={!hasStarted} onClick={() => handleAddTime(60*2 + 15)} primary="Worship" secondary="+2m 15s" />
         <Button disabled={!hasStarted} onClick={() => handleAddTime(20)} primary="Tornado" secondary="+20s" />
       </div>
@@ -109,6 +177,7 @@
     overflow-y: hidden;
     height: 100vh;
     width: 100%;
+    color: white;
   }
 
   .container {
@@ -122,11 +191,11 @@
   .board-container {
     position: relative;
     display: flex;
-    justify-content: center;
+    flex-flow: column;
+    justify-content: flex-end;
     align-items: center;
     width: 100%;
-    height: 100%;
-    flex: 3;
+    flex: 5;
   } 
 
   .toolbar{
@@ -136,11 +205,12 @@
     flex: 1;
   }
   
-  .hp-hud {
+  .hud {
     position: relative;
-    width: 800px;
+    width: 600px;
     height: auto;
     flex: 1;
+    z-index: 2;
   }
 
   .hp-bar {
@@ -151,18 +221,19 @@
   .hp-number {
     position: relative;
     width: 100%;
-    top: -4.6rem;
+    top: -3.6rem;
     text-align: center;
     color: white;
-    font-size: 2rem;
+    font-size: 1.6rem;
   }
 
-  .timer {
+  .blue-timer {
+    width: 20rem;
     position: absolute;
     font-size: 1.4rem;
     color: white;
-    left: -1rem;
-    top: 7.5rem;
+    left: -6.7rem;
+    top: 6rem;
     display: flex;
     flex-flow: column;
     align-items: center;
@@ -193,9 +264,11 @@
   }
 
   .board {
+    position: relative;
     box-sizing: border-box;
+    outline: 2px solid black;
     display: grid;
-    grid-gap: 1px;
+    grid-gap: 2px;
     
     grid-template-columns: repeat(3, 135px);
     grid-template-columns: repeat(3, 135px);
@@ -204,6 +277,12 @@
     transform-origin: center;
     transform: rotateX(45deg) rotateY(0deg) rotateZ(-45deg);
     transform-style: preserve-3d;
+  }
+
+  .tile-respawn {
+    text-transform: uppercase;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
   }
 
   .bg {

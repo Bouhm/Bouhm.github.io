@@ -12,7 +12,6 @@
 </script>
 
 <div 
-  class:clickable={hp===0} 
   class:selected={selected} 
   class="board-tile hp-{hp}"
   style="--bg: url({base}/brelshaza/pattern{i+1}.webp)"
@@ -21,12 +20,13 @@
 <style>
   .board-tile {
     background-color: #354BA5;
-    outline: 2px solid black;
+    outline: 1px solid black;
     width: 135px;
     height: 135px;
     background-image: var(--bg);
     background-blend-mode: soft-light;
     background-size: 135px;
+    z-index: 1;
   }
 
   .selected { 
@@ -34,15 +34,15 @@
   }
 
   .hp-2 {
-    outline: 2px solid #C6A195;
-    box-shadow: inset 0 0 30px #C6A195;
-    background-image: var(--bg);
+    outline: 1px solid #ccaea4;
+    box-shadow: inset 0px 0px 30px #C6A195;
     background-blend-mode: normal;
+    z-index: 1;
   }
   
   .hp-1 {
-    background-image: var(--bg);
     background-blend-mode: normal;
+    z-index: 2;
   }
 
   .hp-0 {
