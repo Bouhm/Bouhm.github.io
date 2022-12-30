@@ -94,8 +94,6 @@
       if (TURBO) blueTimer -= 10
       else blueTimer--
 
-      if (blueTimer < 0) blueTimer = 0
-
       if (blueTimer === 0) {
         events = [...events, Event.DropBlueMeteors]
         meteorDropTimer = meteorDropLength
