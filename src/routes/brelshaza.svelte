@@ -12,7 +12,7 @@
   let TURBO = false;
 
   const goldMeteorHp = [188, 137, 87, 37]
-  const recTiles = [[3,6,7],[1, 2, 5]]
+  const recTiles = [[3,6,7],[1, 2, 5],[0,7]]
   const startTime = 60
   const respawnDelay = 12
   const respawnTime = 100
@@ -22,23 +22,26 @@
 
   let boardState=initialBoardState
   let event = ""
-  let goldMeteorNum = 0;
-  let blueMeteorNum = 0;
+  let goldMeteorNum = 0
+  let blueMeteorNum = 0
 
 	let blueTimer = startTime
   let respawnTimer = respawnTime
-  let meteorDropTimer = 0;
+  let meteorDropTimer = 0
   let currentHp = startHp
   let hasStarted = false
 
-  $: currentHp = goldMeteorHp[goldMeteorNum];
+  $: currentHp = goldMeteorHp[goldMeteorNum]
+  $: suggestedTiles = boardState[2] > 1 ? recTiles[1] : boardState[6] > 1 ? recTiles[0] : recTiles[2] 
+  $: console.log(suggestedTiles)
+  $: deadTiles = boardState[2] === 0 ? recTiles[blueMeteorNum % 2] : recTiles[1 - blueMeteorNum % 2]
   
   setInterval(() => {
     if (hasStarted) {
-      if (TURBO) blueTimer -= 15
+      if (TURBO) blueTimer -= 10
       else blueTimer--
 
-      if (TURBO) respawnTimer -= 15
+      if (TURBO) respawnTimer -= 10
       else respawnTimer--
 
       if (blueTimer < 0) blueTimer = 0
@@ -48,17 +51,25 @@
       blueTimer = startTime
       event = ""
       meteorDropTimer = 0
+      blueMeteorNum++
+      handleDropMeteors()
     }
 
     if (blueTimer === 0) {
       event="SPAWN_METEOR"
       
-      if (TURBO) meteorDropTimer += 4
+      if (TURBO) meteorDropTimer += 10
       else meteorDropTimer++
     }
 
     if (respawnTimer < 0) {
       respawnTimer=respawnTime
+      let newBoard = [...boardState]
+
+      for (let i = 0; i < boardState.length; i++) {
+        if (newBoard[i] === 0) newBoard[i] = 3
+      }
+      boardState = newBoard
     } 
   }, 1000);
 
@@ -79,21 +90,25 @@
     handleAddTime(20);
     goldMeteorNum++;
     if (goldMeteorNum > goldMeteorHp.length-1) goldMeteorNum = goldMeteorHp.length-1;
+
+    let newBoard = [...boardState]
+
+    for (let i = 0; i < boardState.length; i++) {
+      if (includes(suggestedTiles, i)) newBoard[i] = 0
+    }
+
+    boardState = newBoard
   }
 
-  function getSuggestedTiles() {
-    return recTiles[blueMeteorNum % 2]
-  }
+  function handleDropMeteors() {
+    let newBoard = [...boardState]
 
-  function isSuggestedTile(i: number) {
-    let recommended = getSuggestedTiles()
-    return event==="SPAWN_METEOR" && includes(recommended, i);
-  }
+    for (let i = 0; i < boardState.length; i++) {
+      if (includes(suggestedTiles, i)) newBoard[i] = newBoard[i]-1
+    }
 
-  function getDeadTiles() {
-    return blueMeteorNum > 0 && getSuggestedTiles()
+    boardState = newBoard
   }
-
 
   function handleClickReset() {
     hasStarted = false
@@ -156,7 +171,7 @@
         </div>
         <div class="board"> 
           {#each Array(9) as _, i}
-              <BoardTile i={i} hp={boardState[i]} selected={isSuggestedTile(i)} />
+              <BoardTile i={i} hp={boardState[i]} selected={includes(suggestedTiles, i)} />
           {/each}
         </div>
       </div>

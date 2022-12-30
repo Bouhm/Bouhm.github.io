@@ -34,13 +34,13 @@
   }
 
   .hp-2 {
-    outline: 1px solid #ccaea4;
-    box-shadow: inset 0px 0px 30px #C6A195;
     background-blend-mode: normal;
     z-index: 1;
   }
   
   .hp-1 {
+    outline: 1px solid #ccaea4;
+    box-shadow: inset 0px 0px 30px #C6A195;
     background-blend-mode: normal;
     z-index: 2;
   }
