@@ -3,7 +3,7 @@
   import { base } from '$app/paths'
   import { tweened } from 'svelte/motion'
   import { cubicOut } from 'svelte/easing'
-  import { filter, find, includes, map, pull } from 'lodash'
+  import { filter, find, includes } from 'lodash'
 
   import BoardTile from "../brelshaza/components/Tile.svelte"
   import Button from "../brelshaza/components/Button.svelte"
@@ -74,7 +74,7 @@
   let respawnInterval: ReturnType<typeof setInterval>
 
   $: currentHp = goldenMeteorHp[goldenMeteorNum]
-  $: deadTiles = map(boardState, hp => hp === 0)
+  $: deadTiles = boardState.map(hp => hp === 0)
 
   function getEventLog(ev: Event) {
     switch (ev) {
@@ -182,7 +182,7 @@
 
   function handleDropBlueMeteors(tiles: RecommendedTile[]) {
     let newBoard = [...boardState]
-    let tileIdxs = map(tiles, tile => tile.idx)
+    let tileIdxs = tiles.map(tile => tile.idx)
 
     for (let i = 0; i < boardState.length; i++) {
       if (includes(tileIdxs, i)) newBoard[i] = newBoard[i]-find(tiles,tile=>tile.idx===i)!.value
@@ -284,7 +284,7 @@
         </div>
         <div class="board"> 
           {#each Array(9) as _, i}
-              <BoardTile i={i} hp={boardState[i]} selected={includes(map(recTiles[blueMeteorNum], tile => tile.idx), i)}/>
+              <BoardTile i={i} hp={boardState[i]} selected={includes(recTiles[blueMeteorNum].map(tile => tile.idx), i)}/>
           {/each}
         </div>
       </div>
