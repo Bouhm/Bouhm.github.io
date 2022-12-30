@@ -103,6 +103,7 @@
           else meteorDropTimer--
 
           if (meteorDropTimer === 0) {
+            let tiles = recTiles[blueMeteorNum] ? recTiles[blueMeteorNum] : [{ idx: 0, value: 1 }, { idx: 8, value: 1 }]
             handleDropBlueMeteors(recTiles[blueMeteorNum])
             events = filter(events, ev => ev !== Event.DropBlueMeteors)
             blueTimer = startTime
