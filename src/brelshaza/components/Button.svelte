@@ -43,4 +43,20 @@
     background-color: rgba(255,255,255,0.8);
     color: black;
   }
+
+  @media (max-width: 680px) {
+    .button {
+      width: 12rem;
+      border: 2px solid white;
+      margin: 1rem 0.3rem 0 0.3rem;
+    }
+
+    .primary {
+      font-size: 1.2rem
+    }
+
+    .secondary {
+      font-size: 1rem;
+    }
+  }
 </style>

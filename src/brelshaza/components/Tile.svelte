@@ -50,4 +50,12 @@
     background-color: black;
     background-image: none;
   }
+
+  @media (max-width: 680px) {
+    .board-tile {
+      width: 100px;
+      height: 100px;
+      background-size: 100px;
+    }
+  }
 </style>

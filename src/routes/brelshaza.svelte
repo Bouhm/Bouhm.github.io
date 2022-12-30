@@ -383,7 +383,7 @@
     position: relative;
     display: flex;
     flex-flow: column;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     width: 100%;
     flex: 5;
@@ -476,7 +476,6 @@
     
     grid-template-columns: repeat(3, 135px);
     grid-template-columns: repeat(3, 135px);
-    max-height: 410px;
 
     transform-origin: center;
     transform: rotateX(45deg) rotateY(0deg) rotateZ(-45deg);
@@ -490,5 +489,18 @@
 
   .respawn-label {
     text-transform: uppercase;
+  }
+
+  @media (max-width: 680px) {
+    .board {
+      grid-template-columns: repeat(3, 100px);
+      grid-template-columns: repeat(3, 100px);
+    }
+
+    .toolbar {
+      flex-flow: column;
+      align-items: center;
+      justify-content: center;
+    }
   }
 </style>
