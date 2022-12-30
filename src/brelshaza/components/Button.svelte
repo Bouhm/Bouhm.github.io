@@ -10,9 +10,9 @@
   }
 </script>
 
-<div class={`${className} button clickable`} on:click={handleClick}>
+<div class:disabled={disabled} class={`${className} button clickable`} on:click={handleClick}>
   <div class="primary">{primary}</div>
-  <div class="secondary">{secondary}</div>
+  {#if secondary}<div class="secondary">{secondary}</div>{/if}
 </div>
 
 <style>
@@ -24,6 +24,11 @@
       text-align: center;
       margin: 1rem 0.5rem 0 0.5rem;
       color: white;
+  }
+
+  .button.disabled {
+    opacity: 0.5;
+    pointer-events: none;
   }
 
   .secondary {
