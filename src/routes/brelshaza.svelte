@@ -3,7 +3,7 @@
   import { base } from '$app/paths'
   import { tweened } from 'svelte/motion'
   import { cubicOut } from 'svelte/easing'
-  import { includes } from 'lodash'
+  import { filter, includes, map, pull } from 'lodash'
 
   import BoardTile from "../brelshaza/components/Tile.svelte"
   import Button from "../brelshaza/components/Button.svelte"
@@ -11,67 +11,76 @@
   
   let TURBO = false;
 
-  const goldMeteorHp = [188, 137, 87, 37]
-  const recTiles = [[3,6,7],[1, 2, 5],[0,8]]
+  const goldenMeteorHp = [188, 137, 87, 37]
+  const recTiles = [[3,7],[3,6,7],[3],[3,6,7],[3,6,7]]
+  const goldenTiles = [6,2,6]
   const startTime = 60
-  const respawnDelay = 12
-  const respawnTime = 100
-  const startHp = goldMeteorHp[0]
-  const meteorDropTime = 10
+  const goldenMeteorDropLength = 12
+  const respawnLength = 100
+  const startHp = goldenMeteorHp[0]
+  const meteorDropLength = 10
   const initialBoardState=[3,0,0,3,14,0,3,3,3]
 
+  enum Event {
+    DropBlueMeteors = "DropBlueMeteors",
+    DropGoldenMeteor = "DropGoldenMeteor"
+  }
+
+  $: console.log(events);
+
   let boardState=initialBoardState
-  let event = ""
-  let goldMeteorNum = 0
+  let events: Event[] = []
+  let goldenMeteorNum = 0
   let blueMeteorNum = 0
 
 	let blueTimer = startTime
-  let respawnTimer = respawnTime
-  let meteorDropTimer = 0
+  let respawnTimer = -1
+  let meteorDropTimer = -1
+  let goldenMeteorDropTimer = -1
   let currentHp = startHp
   let hasStarted = false
 
-  $: currentHp = goldMeteorHp[goldMeteorNum]
-  $: suggestedTiles = boardState[2] > 1 ? recTiles[1] : boardState[6] > 1 ? recTiles[0] : recTiles[2] 
-  $: deadTiles = boardState[2] === 0 ? recTiles[blueMeteorNum % 2] : recTiles[1 - blueMeteorNum % 2]
+  $: currentHp = goldenMeteorHp[goldenMeteorNum]
+  $: deadTiles = map(boardState, hp => hp === 0)
   
   setInterval(() => {
     if (hasStarted) {
       if (TURBO) blueTimer -= 10
       else blueTimer--
 
-      if (TURBO) respawnTimer -= 10
-      else respawnTimer--
-
       if (blueTimer < 0) blueTimer = 0
     } 
 
-    if (meteorDropTimer >= meteorDropTime) {
-      blueTimer = startTime
-      event = ""
-      meteorDropTimer = 0
-      blueMeteorNum++
-      handleDropMeteors()
-    }
-
     if (blueTimer === 0) {
-      event="SPAWN_METEOR"
-      
-      if (TURBO) meteorDropTimer += 10
-      else meteorDropTimer++
+      events = [...events, Event.DropBlueMeteors]
+      meteorDropTimer = meteorDropLength
+
+      const meteorDropInterval = setInterval(() => {
+        if (TURBO) meteorDropTimer -= meteorDropLength
+        else meteorDropTimer--
+
+        if (meteorDropTimer === 0) {
+          events = filter(events, ev => ev !== Event.DropBlueMeteors)
+          blueTimer = startTime
+          blueMeteorNum++
+          meteorDropTimer = -1
+        }
+      }, 1000)
+
+      setTimeout(() => clearInterval(meteorDropInterval), TURBO ? 2000 : (meteorDropLength+1) * 1000)
     }
-
-    if (respawnTimer < 0) {
-      respawnTimer=respawnTime
-      let newBoard = [...boardState]
-
-      for (let i = 0; i < boardState.length; i++) {
-        if (newBoard[i] === 0) newBoard[i] = 3
-      }
-      boardState = newBoard
-    } 
   }, 1000);
 
+  function getEventLog(ev: Event) {
+    switch (ev) {
+      case Event.DropBlueMeteors:
+        return "Drop Blue Meteors"
+      case Event.DropGoldenMeteor:
+        return "Drop Golden Meteor"
+      default:
+        return ""
+    }
+  }
 
   function handleBoardChange(idx: number) {
     
@@ -85,25 +94,53 @@
     blueTimer += time
   }
 
-  function handleClickGoldMeteor() {
+  function handleClickGoldenMeteor() {
     handleAddTime(20);
-    goldMeteorNum++;
-    if (goldMeteorNum > goldMeteorHp.length-1) goldMeteorNum = goldMeteorHp.length-1;
+    goldenMeteorDropTimer = goldenMeteorDropLength 
+    events = [...events, Event.DropGoldenMeteor]
 
-    let newBoard = [...boardState]
+    const goldenMeteorDropInterval = setInterval(() => {
+      if (TURBO) goldenMeteorDropTimer -= goldenMeteorDropLength
+      else goldenMeteorDropTimer--
 
-    for (let i = 0; i < boardState.length; i++) {
-      if (includes(suggestedTiles, i)) newBoard[i] = 0
-    }
+      if (goldenMeteorDropTimer === 0) {
+        events = filter(events, ev => ev !== Event.DropGoldenMeteor)
 
-    boardState = newBoard
+        respawnTimer = respawnLength
+        goldenMeteorDropTimer=-1
+        goldenMeteorNum++
+      }
+
+    }, 1000)
+
+    setTimeout(() => {
+      clearInterval(goldenMeteorDropInterval)
+      
+      const respawnInterval = setInterval(() => {
+        if (TURBO) respawnTimer -= 10       
+        else respawnTimer--
+
+        console.log(respawnTimer)
+        if (respawnTimer === 0) { 
+          respawnTimer = -1
+          let newBoard = [...boardState]
+
+          for (let i = 0; i < boardState.length; i++) {
+            if (newBoard[i] === 0) newBoard[i] = 3
+          }
+          boardState = newBoard
+        } 
+      }, 1000)
+
+      setTimeout(() => clearInterval(respawnInterval), TURBO ? (respawnLength/10 + 1) * 1000 : (respawnLength + 1) * 1000)
+    }, TURBO ? 2000 : (goldenMeteorDropLength+1) * 1000);
   }
 
   function handleDropMeteors() {
     let newBoard = [...boardState]
 
     for (let i = 0; i < boardState.length; i++) {
-      if (includes(suggestedTiles, i)) newBoard[i] = newBoard[i]-1
+      if (includes(recTiles[blueMeteorNum], i)) newBoard[i] = newBoard[i]-1
     }
 
     boardState = newBoard
@@ -113,13 +150,19 @@
     hasStarted = false
     blueTimer = startTime
     currentHp = startHp
-    goldMeteorNum = 0
-    event=""
+    blueMeteorNum = 0
+    goldenMeteorNum = 0
+    respawnTimer = -1
+    meteorDropTimer = -1
+    goldenMeteorDropTimer = -1
+
+    events=[]
     boardState=initialBoardState
   }
 
   function handleClickTurbo() {
     TURBO = !TURBO
+    handleClickReset()
   }
 </script>
 
@@ -139,16 +182,10 @@
         <div class="hp-number">{Math.round(currentHp)}x</div>
         <div class="timer-controls">
           <div class="blue-timer">
-            {#if event==="SPAWN_METEOR"}
-              <div class="timer-meteor">
-                Meteor Spawning
-              </div>
-            {:else}
-              <div class="timer-label">Next blue meteor:</div>
-              <div class="timer-value">
-                <Timer time={blueTimer} size={2} />
-              </div>
-            {/if}
+            <div class="timer-label">Next blue meteors:</div>
+            <div class="timer-value">
+              <Timer time={blueTimer} size={3} />
+            </div>
             <div class="timer-button">
               {#if hasStarted}
                 <Button primary="Reset" onClick={handleClickReset}/>
@@ -160,23 +197,34 @@
               <Button primary="TURBO" onClick={handleClickTurbo} active={TURBO}/>
             </div>
           </div>
+          <div class="respawn-timer">
+            {#if goldenMeteorNum > 0 && respawnTimer > 0}
+              <div class="respawn-label">Platform respawn:</div>
+              <div class="respawn-value">
+                <Timer time={respawnTimer} size={1.4} />
+              </div>
+            {/if}
+          </div>
       </div>
     </div>
   
       <div class="board-container">
-        <div class="tile-respawn">
-          Platform respawn: <br />
-          <Timer time={respawnTimer} />
+        <div class="events-log">
+          {#each events as ev}
+            <div class="event-{ev}">
+              {getEventLog(ev)}
+            </div>
+          {/each}
         </div>
         <div class="board"> 
           {#each Array(9) as _, i}
-              <BoardTile i={i} hp={boardState[i]} selected={includes(suggestedTiles, i)} />
+              <BoardTile i={i} hp={boardState[i]} selected={includes(recTiles[blueMeteorNum], i)} />
           {/each}
         </div>
       </div>
   
       <div class="toolbar">
-        <Button disabled={!hasStarted} onClick={handleClickGoldMeteor} primary="Golden Meteor" secondary="+20s" />
+        <Button disabled={!hasStarted || goldenMeteorDropTimer > -1 || goldenMeteorNum >= 3} onClick={handleClickGoldenMeteor} primary="Golden Meteor" secondary="+20s" />
         <Button disabled={!hasStarted} onClick={() => handleAddTime(60*2 + 15)} primary="Worship" secondary="+2m 15s" />
         <Button disabled={!hasStarted} onClick={() => handleAddTime(20)} primary="Tornado" secondary="+20s" />
       </div>
@@ -227,6 +275,14 @@
     z-index: 2;
   }
 
+  .timer-controls {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    left: -2rem;
+    top: 6rem;
+  }
+
   .hp-bar {
     position: relative;
     width: 100%;
@@ -242,15 +298,12 @@
   }
 
   .blue-timer {
-    width: 20rem;
-    position: absolute;
     font-size: 1.4rem;
     color: white;
-    left: -6.7rem;
-    top: 6rem;
     display: flex;
     flex-flow: column;
     align-items: center;
+    margin-right: 6rem;
   }
 
   .timer-meteor {
@@ -266,10 +319,6 @@
   .timer-value {
     font-size: 2.4rem;
     font-weight: 700;
-  }
-
-  .timer > div {
-    text-align: center;
   }
 
   .timer-button {
@@ -293,10 +342,13 @@
     transform-style: preserve-3d;
   }
 
-  .tile-respawn {
+  .events-log {
     text-transform: uppercase;
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .respawn-label {
+    text-transform: uppercase;
   }
 
   .bg {
