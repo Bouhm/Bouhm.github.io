@@ -251,14 +251,17 @@
         newBoard[1] = 0
         newBoard[2] = 0
         newBoard[5] = 0
+        break;
       case 6:
         newBoard[3] = 0
         newBoard[6] = 0
         newBoard[7] = 0
+        break;
       case 8:
         newBoard[5] = 0
         newBoard[7] = 0
         newBoard[8] = 0
+        break;
       default: 
         break;
     }
