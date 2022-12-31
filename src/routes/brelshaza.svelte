@@ -17,6 +17,11 @@
   const goldenMeteorHp = [188, 137, 87, 37]
   const recTiles = [
     [
+      { idx: 1, value: 2 },
+      { idx: 2, value: 2 },
+      { idx: 5, value: 3 } 
+    ],
+    [
       { idx: 3, value: 1 },
       { idx: 7, value: 1 }  
     ],
@@ -44,7 +49,8 @@
       { idx: 7, value: 1 }    
     ],
   ]
-  const goldenTiles = [6,2,6]
+  const numMeteors = [7,2,3,4]
+  const goldenTiles = [2,6,2,6]
   const startTime = 60
   const goldenMeteorDropLength = 12
   const respawnLength = 100
@@ -59,8 +65,8 @@
 
   let boardState=initialBoardState
   let events: Event[] = []
-  let goldenMeteorNum = 0
-  let blueMeteorNum = 0
+  let goldenMeteorNum = 1
+  let blueMeteorNum = 1
 
 	let blueTimer = startTime + 27
   let respawnTimer = respawnLength
@@ -77,18 +83,18 @@
   let respawnInterval: ReturnType<typeof setInterval>
 
   $: currentHp = goldenMeteorHp[goldenMeteorNum]
-  $: deadTiles = boardState.map(hp => hp === 0)
-
-  function getEventLog(ev: Event) {
+  $: nextMeteorsNum = getNumMeteors(blueMeteorNum)
+  $: currentEventLog = (ev: Event) => {
     switch (ev) {
       case Event.DropBlueMeteors:
-        return "Drop Blue Meteors"
+        return "DROP BLUE METEORS" + ` (${meteorDropTimer}s)`
       case Event.DropGoldenMeteor:
-        return "Drop Golden Meteor"
+        return "DROP GOLDEN METEOR" + ` (${goldenMeteorDropTimer}s)`
       default:
         return ""
     }
   }
+  $: deadTiles = boardState.map(hp => hp === 0)
 
   function handleClickStart() {
     hasStarted = true;
@@ -106,8 +112,7 @@
           else meteorDropTimer--
 
           if (meteorDropTimer === 0) {
-            let tiles = recTiles[blueMeteorNum] ? recTiles[blueMeteorNum] : [{ idx: 0, value: 1 }, { idx: 8, value: 1 }]
-            handleDropBlueMeteors(recTiles[blueMeteorNum])
+            // handleDropBlueMeteors(recTiles[blueMeteorNum])
             events = filter(events, ev => ev !== Event.DropBlueMeteors)
             blueTimer = startTime
             blueMeteorNum++
@@ -151,7 +156,7 @@
       else goldenMeteorDropTimer--
 
       if (goldenMeteorDropTimer === 0) {
-        handleDropGoldenMeteor(goldenTiles[goldenMeteorNum])
+        // handleDropGoldenMeteor(goldenTiles[goldenMeteorNum])
         events = filter(events, ev => ev !== Event.DropGoldenMeteor)
 
         respawnTimer = respawnLength
@@ -184,6 +189,21 @@
     }, TURBO ? 2000 : (goldenMeteorDropLength+1) * 1000);
   }
 
+  function handleClickTile(i: number) {
+    let newBoard = [...boardState]
+    newBoard[i]--
+
+    if (newBoard[i] < 0) {
+      if (i === 4) {
+        newBoard[i] = 14
+      } else {
+        newBoard[i] = 3
+      }
+    }
+
+    boardState = newBoard
+  }
+
   function handleDropBlueMeteors(tiles: RecommendedTile[]) {
     let newBoard = [...boardState]
     let tileIdxs = tiles.map(tile => tile.idx)
@@ -213,10 +233,10 @@
 
   function handleClickReset() {
     hasStarted = false
-    blueTimer = startTime
+    blueTimer = startTime + 27
     currentHp = startHp
-    blueMeteorNum = 0
-    goldenMeteorNum = 0
+    blueMeteorNum = 1
+    goldenMeteorNum = 1
     respawnTimer = respawnLength
     meteorDropTimer = -1
     goldenMeteorDropTimer = -1
@@ -233,10 +253,30 @@
   function handleClickTurbo() {
     TURBO = !TURBO
     handleClickReset()
+    blueTimer += 3
   }
 
   function handleToggleSuggestions(checked: boolean) {
     showSuggestions = checked;
+  }
+
+  function getEventLog(ev: Event) {
+    switch (ev) {
+      case Event.DropBlueMeteors:
+        return "DROP BLUE METEORS" + ` (${meteorDropTimer}s)`
+      case Event.DropGoldenMeteor:
+        return "DROP GOLDEN METEOR" + ` (${goldenMeteorDropTimer}s)`
+      default:
+        return ""
+    }
+  }
+
+  function getNumMeteors(num: number) {
+    if (num > 3) {
+      return numMeteors[(num - 3) % 2 + 2]
+    } else {
+      return numMeteors[num]
+    }
   }
 
   function randomNumber(min: number, max: number) {
@@ -273,7 +313,7 @@
         <!-- <div class="hp-number">{Math.round(currentHp)}x</div> -->
         <div class="timer-controls">
           <div class="blue-timer">
-            <div class="timer-label">Next blue meteors:</div>
+            <div class="timer-label">{nextMeteorsNum} blue meteors:</div>
             <div class="timer-value">
               <Timer time={blueTimer} size={3} />
             </div>
@@ -308,13 +348,18 @@
         <div class="events-log">
           {#each events as ev}
             <div class="event-{ev}">
-              {getEventLog(ev)}
+              {currentEventLog(ev)}
             </div>
           {/each}
         </div>
         <div class="board"> 
           {#each Array(9) as _, i}
-              <BoardTile i={i} hp={boardState[i]} selected={showSuggestions && includes(recTiles[blueMeteorNum].map(tile => tile.idx), i)}/>
+              <BoardTile 
+                i={i} 
+                hp={boardState[i]} 
+                selected={showSuggestions && includes(recTiles[blueMeteorNum].map(tile => tile.idx), i)}
+                onClick={handleClickTile}
+              />
           {/each}
         </div>
       </div>
@@ -406,7 +451,7 @@
 
   .timer-controls {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     width: 100%;
     margin-top: 2rem;
   }
@@ -483,7 +528,6 @@
   }
 
   .events-log {
-    text-transform: uppercase;
     margin-bottom: 1rem;
   }
 

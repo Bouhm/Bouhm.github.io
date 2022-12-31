@@ -1,20 +1,25 @@
 <script lang="ts">
   import { base } from '$app/paths';
-  // export let id: number;
-  // export let onClick: (id: number) => void;
   export let i: number;
+  export let onClick: (i: number) => void;
   export let hp = 3;
   export let selected = false;
 
   // function handleClick() {
   //     onClick(id);
   // }
+
+  function handleClick(e: Event) {
+    onClick(i)
+  }
 </script>
 
 <div 
   class:selected={selected} 
+  class:clickable={hp>0}
   class="board-tile hp-{hp}"
   style="--bg: url({base}/brelshaza/pattern{i+1}.webp)"
+  on:click={handleClick}
 />
 
 <style>
