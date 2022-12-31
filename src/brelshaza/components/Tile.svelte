@@ -5,7 +5,8 @@
   export let onRightClick: (i: number) => void;
   export let hp = 3;
   export let meteors = 0;
-  export let selected = false;
+  export let golden = false;
+  export let suggested = false;
   export let disabled = false;
 
   // function handleClick() {
@@ -23,7 +24,7 @@
 </script>
 
 <div 
-  class:selected={selected} 
+  class:suggested={suggested} 
   class="board-tile clickable hp-{hp}"
   class:disabled={disabled}
   style="--bg: url({base}/brelshaza/pattern{i+1}.webp)"
@@ -34,6 +35,9 @@
     {#each Array(meteors) as meteor}
       <div class="tile-meteor" />
     {/each}
+    {#if golden}
+      <div class="tile-meteor golden" />
+    {/if}
   </div>
 </div>
 
@@ -77,7 +81,11 @@
     margin: 0.05rem;
   }
 
-  .selected { 
+  .tile-meteor.golden {
+    background-color: gold;
+  }
+
+  .suggested { 
     background-color: #15A30B;
   }
 

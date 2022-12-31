@@ -77,6 +77,7 @@
 
   let showSuggestions = true
   let isPlacingGoldenMeteor = false
+  let goldenMeteorTile = -1
 
   let blueSpawnInterval: ReturnType<typeof setInterval>
   let blueDropInterval: ReturnType<typeof setInterval>
@@ -156,6 +157,7 @@
 
       if (goldenDropTimer === 0) {
         dropGoldenMeteor(i)
+        goldenMeteorTile = -1
         events = filter(events, ev => ev !== Event.DropGoldenMeteor)
 
         respawnTimer = respawnLength
@@ -194,6 +196,7 @@
   function handleClickTile(i: number) {
     if (isPlacingGoldenMeteor) {
       placeGoldenMeteor(i)
+      goldenMeteorTile = i
     } else {
       let currSum = sum(meteorPlacements)
       let newPlacements = [...meteorPlacements]
@@ -399,7 +402,8 @@
                 i={i} 
                 hp={boardState[i]} 
                 meteors={meteorPlacements[i]}
-                selected={showSuggestions && includes(recTiles[blueMeteorNum].map(tile => tile.idx), i)}
+                suggested={showSuggestions && includes(recTiles[blueMeteorNum].map(tile => tile.idx), i)}
+                golden={i === goldenMeteorTile}
                 onClick={handleClickTile}
                 onRightClick={handleRightClickTile}
                 disabled={!hasStarted || ((isPlacingGoldenMeteor && i % 2 !== 0) || i == 4)}
