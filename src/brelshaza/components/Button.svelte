@@ -18,13 +18,14 @@
 
 <style>
   .button {
-      border-radius: 4px;
-      width: 8rem;
-      border: 2px solid white;
-      padding: 0.5rem;
-      text-align: center;
-      margin: 1rem 0.5rem 0 0.5rem;
-      color: white;
+    border-radius: 4px;
+    width: 8rem;
+    border: 2px solid white;
+    padding: 0.5rem;
+    text-align: center;
+    margin: 1rem 0.5rem 0 0.5rem;
+    color: white;
+    font-size: 1rem;
   }
 
   .button.disabled {
@@ -42,6 +43,10 @@
   .active {
     background-color: rgba(255,255,255,0.8);
     color: black;
+  }
+
+  .active .secondary {
+    color: darkolivegreen;
   }
 
   @media (max-width: 680px) {
