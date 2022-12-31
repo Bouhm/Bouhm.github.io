@@ -105,6 +105,7 @@
       blueTimer--
 
       if (blueTimer === 0) {
+        blueTimer = startTime
         events = [...events, Event.DropBlueMeteors]
         blueDropTimer = meteorDropLength
 
@@ -115,7 +116,6 @@
             dropBlueMeteors()
             meteorPlacements = initialMeteorPlacements
             events = filter(events, ev => ev !== Event.DropBlueMeteors)
-            blueTimer = startTime
             blueMeteorNum++
             blueDropTimer = -1
           }
