@@ -13,7 +13,7 @@
   // }
 
   function handleClick(e: Event) {
-    onClick(i)
+    if (hp > 0) onClick(i)
   }
 
   function handleRightClick(e: Event) {

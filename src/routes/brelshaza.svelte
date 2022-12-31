@@ -402,7 +402,7 @@
                 selected={showSuggestions && includes(recTiles[blueMeteorNum].map(tile => tile.idx), i)}
                 onClick={handleClickTile}
                 onRightClick={handleRightClickTile}
-                disabled={(isPlacingGoldenMeteor && i % 2 !== 0) || i == 4}
+                disabled={!hasStarted || ((isPlacingGoldenMeteor && i % 2 !== 0) || i == 4)}
               />
           {/each}
         </div>
