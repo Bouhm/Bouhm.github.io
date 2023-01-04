@@ -106,11 +106,17 @@
     background-image: none;
   }
 
-  @media (max-width: 430px) {
+  @media only screen and (max-device-width: 912px) {
     .board-tile {
       width: 210px;
       height: 210px;
       background-size: 210px;
+    }
+
+    .tile-meteor {
+      border: 4px solid black;
+      width: 40px;
+      height: 40px;
     }
   }
 </style>

@@ -1,12 +1,11 @@
 <script lang="ts">
   export let time: number;
-  export let size = 1.3;
 
   $: minutes = Math.floor(time / 60);
-  $: seconds = Math.floor(time - minutes * 60)
+  $: seconds = Math.floor(time - minutes * 60);
 </script>
 
-<div class="timer" style={`font-size: ${size}rem`} class:hidden={time <= 0} >
+<div class="timer" class:hidden={time <= 0}>
   {#if minutes !== 0}
     {`${minutes}m`}
   {/if}
@@ -23,9 +22,16 @@
     text-align: center;
     margin: 0.5rem 0 0.5rem 0;
     text-transform: none;
+    font-size: 3rem;
   }
 
   .hidden {
     visibility: hidden;
+  }
+
+  @media only screen and (max-device-width: 912px) {
+    .timer {
+      font-size: 5rem;
+    }
   }
 </style>

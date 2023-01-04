@@ -378,13 +378,13 @@
           <div class="blue-timer">
             <div class="timer-label">{nextMeteorsNum} blue meteors:</div>
             <div class="timer-value">
-              <Timer time={blueTimer} size={3} />
+              <Timer time={blueTimer} />
             </div>
             <div class="timer-button">
               {#if hasStarted}
-                <Button primary="Reset" onClick={handleClickReset} />
+                <Button primary="Reset" onClick={handleClickReset} size="s" />
               {:else}
-                <Button primary="Start" onClick={handleClickStart} />
+                <Button primary="Start" onClick={handleClickStart} size="s" />
               {/if}
             </div>
             <div class="skip">
@@ -392,6 +392,7 @@
                 primary="Skip"
                 onClick={handleClickSkip}
                 disabled={!hasStarted}
+                size="s"
               />
             </div>
           </div>
@@ -405,9 +406,9 @@
             </div> -->
             <div class="respawn-timer">
               {#if respawnTimer > 0}
-                <div class="respawn-label">Platform respawn:</div>
+                <div class="timer-label">Platform respawn:</div>
                 <div class="respawn-value">
-                  <Timer time={respawnTimer} size={3} />
+                  <Timer time={respawnTimer} />
                 </div>
               {/if}
             </div>
@@ -549,19 +550,28 @@
   .toolbar {
     display: flex;
     align-items: flex-end;
-    padding-bottom: 2rem;
+    margin: 1rem;
+    width: 100%;
     flex: 1;
+  }
+
+  .golden-meteor-btns {
+    align-items: flex-end;
+  }
+  .mech-btns {
+    align-items: flex-start;
   }
 
   .golden-meteor-btns,
   .mech-btns {
     display: flex;
     flex-flow: column;
+    width: 100%;
   }
 
   .hud {
     position: relative;
-    width: 600px;
+    width: 100%;
     height: auto;
     flex: 1;
     z-index: 2;
@@ -607,10 +617,14 @@
     display: flex;
     flex-flow: column;
     align-items: center;
-    margin-right: 6rem;
   }
 
-  .timer-meteor {
+  .blue-timer,
+  .other-controls {
+    margin: 0 2rem;
+  }
+
+  .blu .timer-meteor {
     color: royalblue;
     font-size: 2rem;
   }
@@ -618,6 +632,7 @@
   .timer-label {
     text-transform: uppercase;
     font-size: 1rem;
+    text-align: center;
   }
 
   .timer-value {
@@ -652,10 +667,15 @@
     text-transform: uppercase;
   }
 
-  @media (max-width: 430px) {
+  @media only screen and (max-device-width: 912px) {
     .board {
       grid-template-columns: repeat(3, 210px);
       grid-template-columns: repeat(3, 210px);
+    }
+
+    .timer-label {
+      font-size: 1.8rem;
+      width: 100%;
     }
   }
 </style>

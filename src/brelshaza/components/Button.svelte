@@ -5,6 +5,7 @@
   export let secondary = "";
   export let disabled = false;
   export let active = false;
+  export let size = "m";
 
   function handleClick() {
     onClick();
@@ -14,6 +15,7 @@
 <div
   class:active
   class:disabled
+  class:small={size === "s"}
   class={`${className} button clickable`}
   on:click={handleClick}
 >
@@ -24,7 +26,8 @@
 <style>
   .button {
     border-radius: 4px;
-    width: 10rem;
+    min-width: 10rem;
+    max-width: 10rem;
     border: 2px solid white;
     padding: 0.5rem;
     text-align: center;
@@ -54,11 +57,13 @@
     color: darkolivegreen;
   }
 
-  @media (max-width: 430px) {
+  @media only screen and (max-device-width: 912px) {
     .button {
-      width: 26rem;
-      border: 4px solid white;
+      border: 5px solid white;
       border-radius: 8px;
+      padding: 1rem;
+      width: 88%;
+      max-width: none;
     }
 
     .primary {
@@ -67,6 +72,14 @@
 
     .secondary {
       font-size: 2rem;
+    }
+
+    .button.small {
+      width: 60%;
+    }
+
+    .small .primary {
+      font-size: 2.2rem;
     }
   }
 </style>
