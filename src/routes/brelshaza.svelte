@@ -383,14 +383,14 @@
                 <Button primary="Start" onClick={handleClickStart} size="s" />
               {/if}
             </div>
-            <div class="skip">
+            <!-- <div class="skip">
               <Button
                 primary="Skip"
                 onClick={handleClickSkip}
                 disabled={!hasStarted}
                 size="s"
               />
-            </div>
+            </div> -->
           </div>
           <div class="other-controls">
             <!-- <div class="suggestions-checkbox">
@@ -619,7 +619,7 @@
     margin: 0 2rem;
   }
 
-  .blu .timer-meteor {
+  .blue-timer-meteor {
     color: royalblue;
     font-size: 2rem;
   }
