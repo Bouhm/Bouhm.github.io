@@ -617,7 +617,7 @@
 
   .blue-timer,
   .other-controls {
-    margin: 0 2rem;
+    margin: 0 4rem;
   }
 
   .blue-timer-meteor {
