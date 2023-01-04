@@ -284,6 +284,7 @@
     currentHp = startHp;
     blueMeteorNum = 1;
     goldenMeteorNum = 1;
+    goldenMeteorTile = -1;
     respawnTimer = respawnLength;
     blueDropTimer = -1;
     goldenDropTimer = -1;
