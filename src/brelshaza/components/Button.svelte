@@ -1,17 +1,22 @@
 <script lang="ts">
-  export let onClick: ()=>void
-  export let className = ""
-  export let primary = ""
-  export let secondary = ""
-  export let disabled = false
-  export let active = false
+  export let onClick: () => void;
+  export let className = "";
+  export let primary = "";
+  export let secondary = "";
+  export let disabled = false;
+  export let active = false;
 
   function handleClick() {
-      onClick();
+    onClick();
   }
 </script>
 
-<div class:active={active} class:disabled={disabled} class={`${className} button clickable`} on:click={handleClick}>
+<div
+  class:active
+  class:disabled
+  class={`${className} button clickable`}
+  on:click={handleClick}
+>
   <div class="primary">{primary}</div>
   {#if secondary}<div class="secondary">{secondary}</div>{/if}
 </div>
@@ -19,7 +24,7 @@
 <style>
   .button {
     border-radius: 4px;
-    width: 8rem;
+    width: 9rem;
     border: 2px solid white;
     padding: 0.5rem;
     text-align: center;
@@ -41,7 +46,7 @@
   }
 
   .active {
-    background-color: rgba(255,255,255,0.8);
+    background-color: rgba(255, 255, 255, 0.8);
     color: black;
   }
 
@@ -57,7 +62,7 @@
     }
 
     .primary {
-      font-size: 1.2rem
+      font-size: 1.2rem;
     }
 
     .secondary {

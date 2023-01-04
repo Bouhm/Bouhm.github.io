@@ -1,210 +1,221 @@
 <script lang="ts">
-  import { browser } from "$app/env"
-  import { base } from '$app/paths'
-  import { tweened } from 'svelte/motion'
-  import { cubicOut } from 'svelte/easing'
-  import { filter, find, includes, sum } from 'lodash'
+  import { browser } from "$app/env";
+  import { base } from "$app/paths";
+  import { tweened } from "svelte/motion";
+  import { cubicOut } from "svelte/easing";
+  import { filter, find, includes, sum } from "lodash";
 
-  import BoardTile from "../brelshaza/components/Tile.svelte"
-  import Button from "../brelshaza/components/Button.svelte"
-  import Timer from "../brelshaza/components/Timer.svelte"
+  import BoardTile from "../brelshaza/components/Tile.svelte";
+  import Button from "../brelshaza/components/Button.svelte";
+  import Timer from "../brelshaza/components/Timer.svelte";
   import Checkbox from "../brelshaza/components/Checkbox.svelte";
-  
-  type RecommendedTile = { idx: number, value: number }
 
-  const goldenMeteorHp = [188, 137, 87, 37]
+  type RecommendedTile = { idx: number; value: number };
+
+  const goldenMeteorHp = [188, 137, 87, 37];
   const recTiles = [
     [
       { idx: 1, value: 2 },
       { idx: 2, value: 2 },
-      { idx: 5, value: 3 } 
+      { idx: 5, value: 3 },
     ],
     [
       { idx: 3, value: 1 },
-      { idx: 7, value: 1 }  
+      { idx: 7, value: 1 },
     ],
     [
       { idx: 3, value: 1 },
       { idx: 6, value: 1 },
-      { idx: 7, value: 1 }    
+      { idx: 7, value: 1 },
     ],
-    [
-      { idx: 3, value: 4 }
-    ],
+    [{ idx: 3, value: 4 }],
     [
       { idx: 1, value: 1 },
       { idx: 2, value: 1 },
-      { idx: 5, value: 1 }    
+      { idx: 5, value: 1 },
     ],
     [
       { idx: 3, value: 1 },
       { idx: 6, value: 1 },
-      { idx: 7, value: 2 }    
+      { idx: 7, value: 2 },
     ],
-        [
+    [
       { idx: 3, value: 1 },
       { idx: 6, value: 1 },
-      { idx: 7, value: 1 }    
+      { idx: 7, value: 1 },
     ],
-  ]
-  const numMeteors = [7,2,3,4]
-  const goldenTiles = [2,6,2,6]
-  const startTime = 60
-  const goldenMeteorDropLength = 12
-  const respawnLength = 100
-  const startHp = goldenMeteorHp[0]
-  const meteorDropLength = 10
-  const initialBoardState=[3,0,0,3,14,0,3,3,3]
-  const initialMeteorPlacements = [0,0,0,0,0,0,0,0,0,0]
+  ];
+  const numMeteors = [7, 2, 3, 4];
+  const goldenTiles = [2, 6, 2, 6];
+  const startTime = 60;
+  const goldenMeteorDropLength = 12;
+  const respawnLength = 100;
+  const startHp = goldenMeteorHp[0];
+  const meteorDropLength = 10;
+  const initialBoardState = [3, 0, 0, 3, 14, 0, 3, 3, 3];
+  const initialMeteorPlacements = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
   enum Event {
     DropBlueMeteors = "DropBlueMeteors",
-    DropGoldenMeteor = "DropGoldenMeteor"
+    DropGoldenMeteor = "DropGoldenMeteor",
   }
 
-  let meteorPlacements=initialMeteorPlacements
-  let boardState=initialBoardState
-  let events: Event[] = []
-  let goldenMeteorNum = 1
-  let blueMeteorNum = 1
+  let meteorPlacements = initialMeteorPlacements;
+  let boardState = initialBoardState;
+  let events: Event[] = [];
+  let goldenMeteorNum = 1;
+  let blueMeteorNum = 1;
 
-	let blueTimer = startTime + 27
-  let respawnTimer = respawnLength
-  let blueDropTimer = -1
-  let goldenDropTimer = -1
-  let currentHp = startHp
-  let hasStarted = false
+  let blueTimer = startTime + 27;
+  let respawnTimer = respawnLength;
+  let blueDropTimer = -1;
+  let goldenDropTimer = -1;
+  let currentHp = startHp;
+  let hasStarted = false;
 
-  let showSuggestions = true
-  let isPlacingGoldenMeteor = false
-  let goldenMeteorTile = -1
+  let showSuggestions = false;
+  let isPlacingGoldenMeteor = false;
+  let goldenMeteorTile = -1;
 
-  let blueSpawnInterval: ReturnType<typeof setInterval>
-  let blueDropInterval: ReturnType<typeof setInterval>
-  let goldenDropInterval: ReturnType<typeof setInterval>
-  let respawnInterval: ReturnType<typeof setInterval>
+  let blueSpawnInterval: ReturnType<typeof setInterval>;
+  let blueDropInterval: ReturnType<typeof setInterval>;
+  let goldenDropInterval: ReturnType<typeof setInterval>;
+  let respawnInterval: ReturnType<typeof setInterval>;
 
-  $: currentHp = goldenMeteorHp[goldenMeteorNum]
-  $: nextMeteorsNum = getNumMeteors(blueMeteorNum)
+  $: currentHp = goldenMeteorHp[goldenMeteorNum];
+  $: nextMeteorsNum = getNumMeteors(blueMeteorNum);
   $: currentEventLog = (ev: Event) => {
     switch (ev) {
       case Event.DropBlueMeteors:
-        return "DROP BLUE METEORS" + ` (${blueDropTimer}s)`
+        return "DROP BLUE METEORS" + ` (${blueDropTimer}s)`;
       case Event.DropGoldenMeteor:
-        return "DROP GOLDEN METEOR" + ` (${goldenDropTimer}s)`
+        return "DROP GOLDEN METEOR" + ` (${goldenDropTimer}s)`;
       default:
-        return ""
+        return "";
     }
-  }
-  $: deadTiles = boardState.map(hp => hp === 0)
+  };
+  $: deadTiles = boardState.map((hp) => hp === 0);
 
   function handleClickStart() {
     hasStarted = true;
 
     blueSpawnInterval = setInterval(() => {
-      blueTimer--
+      blueTimer--;
 
       if (blueTimer === 0) {
-        blueTimer = startTime
-        events = [...events, Event.DropBlueMeteors]
-        blueDropTimer = meteorDropLength
+        blueTimer = startTime;
+        events = [...events, Event.DropBlueMeteors];
+        blueDropTimer = meteorDropLength;
 
         blueDropInterval = setInterval(() => {
-          blueDropTimer--
+          blueDropTimer--;
 
           if (blueDropTimer === 0) {
-            dropBlueMeteors()
-            meteorPlacements = initialMeteorPlacements
-            events = filter(events, ev => ev !== Event.DropBlueMeteors)
-            blueMeteorNum++
-            blueDropTimer = -1
+            dropBlueMeteors();
+            meteorPlacements = initialMeteorPlacements;
+            events = filter(events, (ev) => ev !== Event.DropBlueMeteors);
+            blueMeteorNum++;
+            blueDropTimer = -1;
           }
-        }, 1000)
+        }, 1000);
 
-        setTimeout(() => clearInterval(blueDropInterval), (meteorDropLength+1) * 1000)
+        setTimeout(
+          () => clearInterval(blueDropInterval),
+          (meteorDropLength + 1) * 1000
+        );
       }
     }, 1000);
-  
+
     respawnInterval = setInterval(() => {
-        respawnTimer--
+      respawnTimer--;
 
-        if (respawnTimer === 0) { 
-          respawnTimer = -1
-          let newBoard = [...boardState]
+      if (respawnTimer === 0) {
+        respawnTimer = -1;
+        let newBoard = [...boardState];
 
-          for (let i = 0; i < boardState.length; i++) {
-            if (newBoard[i] === 0) newBoard[i] = 3
-          }
-          boardState = newBoard
-        } 
-      }, 1000)
+        for (let i = 0; i < boardState.length; i++) {
+          if (newBoard[i] === 0) newBoard[i] = 3;
+        }
+        boardState = newBoard;
+      }
+    }, 1000);
 
-      setTimeout(() => clearInterval(respawnInterval), (respawnLength + 1) * 1000)
+    setTimeout(
+      () => clearInterval(respawnInterval),
+      (respawnLength + 1) * 1000
+    );
   }
 
   function addTime(time: number) {
-    blueTimer += time
+    blueTimer += time;
   }
 
   function placeGoldenMeteor(i: number) {
     addTime(20);
-    goldenDropTimer = goldenMeteorDropLength 
-    events = [...events, Event.DropGoldenMeteor]
-    isPlacingGoldenMeteor = false
+    goldenDropTimer = goldenMeteorDropLength;
+    events = [...events, Event.DropGoldenMeteor];
+    isPlacingGoldenMeteor = false;
 
     goldenDropInterval = setInterval(() => {
-      goldenDropTimer--
+      goldenDropTimer--;
 
       if (goldenDropTimer === 0) {
-        dropGoldenMeteor(i)
-        goldenMeteorTile = -1
-        events = filter(events, ev => ev !== Event.DropGoldenMeteor)
+        dropGoldenMeteor(i);
+        goldenMeteorTile = -1;
+        events = filter(events, (ev) => ev !== Event.DropGoldenMeteor);
 
-        respawnTimer = respawnLength
-        goldenDropTimer=-1
-        goldenMeteorNum++
+        respawnTimer = respawnLength;
+        goldenDropTimer = -1;
+        goldenMeteorNum++;
       }
-
-    }, 1000)
+    }, 1000);
 
     setTimeout(() => {
-      clearInterval(goldenDropInterval)
-      
-      clearInterval(respawnInterval)
-      respawnInterval = setInterval(() => {
-        respawnTimer--
+      clearInterval(goldenDropInterval);
 
-        if (respawnTimer === 0) { 
-          respawnTimer = -1
-          let newBoard = [...boardState]
+      clearInterval(respawnInterval);
+      respawnInterval = setInterval(() => {
+        respawnTimer--;
+
+        if (respawnTimer === 0) {
+          respawnTimer = -1;
+          let newBoard = [...boardState];
 
           for (let i = 0; i < boardState.length; i++) {
-            if (newBoard[i] === 0) newBoard[i] = 3
+            if (newBoard[i] === 0) newBoard[i] = 3;
           }
-          boardState = newBoard
-        } 
-      }, 1000)
+          boardState = newBoard;
+        }
+      }, 1000);
 
-      setTimeout(() => clearInterval(respawnInterval), (respawnLength + 1) * 1000)
-    }, (goldenMeteorDropLength+1) * 1000);
+      setTimeout(
+        () => clearInterval(respawnInterval),
+        (respawnLength + 1) * 1000
+      );
+    }, (goldenMeteorDropLength + 1) * 1000);
   }
 
-  function handleClickGoldenMeteor() {
-    isPlacingGoldenMeteor = true
+  function handleClickGoldenMeteor(tile: number) {
+    isPlacingGoldenMeteor = true;
+
+    if (tile === goldenMeteorTile) {
+      goldenMeteorTile = -1;
+    } else {
+      goldenMeteorTile = tile;
+    }
   }
 
   function handleClickTile(i: number) {
     if (isPlacingGoldenMeteor) {
-      placeGoldenMeteor(i)
-      goldenMeteorTile = i
+      placeGoldenMeteor(i);
     } else {
-      let currSum = sum(meteorPlacements)
-      let newPlacements = [...meteorPlacements]
+      let currSum = sum(meteorPlacements);
+      let newPlacements = [...meteorPlacements];
 
       if (currSum < nextMeteorsNum) {
-        newPlacements[i]++
+        newPlacements[i]++;
       } else {
-        newPlacements[i] = 0
+        newPlacements[i] = 0;
       }
 
       meteorPlacements = newPlacements;
@@ -212,94 +223,94 @@
   }
 
   function handleRightClickTile(i: number) {
-    let newBoard = [...boardState]
-    newBoard[i]--
+    let newBoard = [...boardState];
+    newBoard[i]--;
 
     if (newBoard[i] < 0) {
       if (i === 4) {
-        newBoard[i] = 14
+        newBoard[i] = 14;
       } else {
-        newBoard[i] = 3
+        newBoard[i] = 3;
       }
     }
 
-    boardState = newBoard    
+    boardState = newBoard;
   }
 
   function dropBlueMeteors() {
-    let newBoard = [...boardState]
+    let newBoard = [...boardState];
 
     for (let i = 0; i < boardState.length; i++) {
-      newBoard[i] = newBoard[i] - meteorPlacements[i]
+      newBoard[i] = newBoard[i] - meteorPlacements[i];
 
-      if (newBoard[i] < 0) newBoard[i] = 0
+      if (newBoard[i] < 0) newBoard[i] = 0;
     }
 
-    boardState = newBoard
+    boardState = newBoard;
   }
 
   function dropGoldenMeteor(tile: number) {
-    let newBoard = [...boardState]
+    let newBoard = [...boardState];
 
-    switch(tile) {
+    switch (tile) {
       case 0:
-        newBoard[0] = 0
-        newBoard[1] = 0
-        newBoard[3] = 0
+        newBoard[0] = 0;
+        newBoard[1] = 0;
+        newBoard[3] = 0;
         break;
       case 2:
-        newBoard[1] = 0
-        newBoard[2] = 0
-        newBoard[5] = 0
+        newBoard[1] = 0;
+        newBoard[2] = 0;
+        newBoard[5] = 0;
         break;
       case 6:
-        newBoard[3] = 0
-        newBoard[6] = 0
-        newBoard[7] = 0
+        newBoard[3] = 0;
+        newBoard[6] = 0;
+        newBoard[7] = 0;
         break;
       case 8:
-        newBoard[5] = 0
-        newBoard[7] = 0
-        newBoard[8] = 0
+        newBoard[5] = 0;
+        newBoard[7] = 0;
+        newBoard[8] = 0;
         break;
-      default: 
+      default:
         break;
     }
 
-    boardState = newBoard
+    boardState = newBoard;
   }
 
   function handleClickReset() {
-    hasStarted = false
-    blueTimer = startTime + 27
-    currentHp = startHp
-    blueMeteorNum = 1
-    goldenMeteorNum = 1
-    respawnTimer = respawnLength
-    blueDropTimer = -1
-    goldenDropTimer = -1
+    hasStarted = false;
+    blueTimer = startTime + 27;
+    currentHp = startHp;
+    blueMeteorNum = 1;
+    goldenMeteorNum = 1;
+    respawnTimer = respawnLength;
+    blueDropTimer = -1;
+    goldenDropTimer = -1;
 
-    events=[]
-    boardState=initialBoardState
-    meteorPlacements=initialMeteorPlacements
+    events = [];
+    boardState = initialBoardState;
+    meteorPlacements = initialMeteorPlacements;
 
-    clearInterval(blueSpawnInterval)
-    clearInterval(blueDropInterval)
-    clearInterval(goldenDropInterval)
-    clearInterval(respawnInterval)
+    clearInterval(blueSpawnInterval);
+    clearInterval(blueDropInterval);
+    clearInterval(goldenDropInterval);
+    clearInterval(respawnInterval);
   }
 
   function handleClickSkip() {
     if (blueTimer > 1) {
-      blueTimer = 1
+      blueTimer = 1;
     } else if (blueDropTimer > 1) {
-      blueDropTimer = 1
+      blueDropTimer = 1;
     }
 
     if (goldenDropTimer > 1) {
-      goldenDropTimer = 1
+      goldenDropTimer = 1;
     } else if (respawnTimer > 1) {
-      respawnTimer = 1
+      respawnTimer = 1;
     }
   }
 
@@ -310,36 +321,39 @@
   function getEventLog(ev: Event) {
     switch (ev) {
       case Event.DropBlueMeteors:
-        return "DROP BLUE METEORS" + ` (${blueDropTimer}s)`
+        return "DROP BLUE METEORS" + ` (${blueDropTimer}s)`;
       case Event.DropGoldenMeteor:
-        return "DROP GOLDEN METEOR" + ` (${goldenDropTimer}s)`
+        return "DROP GOLDEN METEOR" + ` (${goldenDropTimer}s)`;
       default:
-        return ""
+        return "";
     }
   }
 
   function getNumMeteors(num: number) {
     if (num > 3) {
-      return numMeteors[(num - 3) % 2 + 2]
+      return numMeteors[((num - 3) % 2) + 2];
     } else {
-      return numMeteors[num]
+      return numMeteors[num];
     }
   }
 
   function randomNumber(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min + 1)) + min
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  const STAR_COUNT = 100
-  let style = "box-shadow: "
-  for(let i = 0; i < STAR_COUNT; i++){
-      style += `${randomNumber(-50, 50)}vw ${randomNumber(-50, 50)}vh ${randomNumber(0, 3)}px ${randomNumber(0, 3)}px #fff`
+  const STAR_COUNT = 100;
+  let style = "box-shadow: ";
+  for (let i = 0; i < STAR_COUNT; i++) {
+    style += `${randomNumber(-50, 50)}vw ${randomNumber(
+      -50,
+      50
+    )}vh ${randomNumber(0, 3)}px ${randomNumber(0, 3)}px #fff`;
 
-      if (i+1 !== STAR_COUNT) {
-        style += ','
-      } else {
-        style += ';'
-      }
+    if (i + 1 !== STAR_COUNT) {
+      style += ",";
+    } else {
+      style += ";";
+    }
   }
 </script>
 
@@ -351,8 +365,8 @@
 {#if browser}
   <main>
     <div class="bg" />
-    <img class="planet" src="{base}/brelshaza/planet.webp" alt="planet"/>
-    <div class="stars" style={style} />
+    <img class="planet" src="{base}/brelshaza/planet.webp" alt="planet" />
+    <div class="stars" {style} />
 
     <div class="container">
       <div class="hud">
@@ -366,31 +380,39 @@
             </div>
             <div class="timer-button">
               {#if hasStarted}
-                <Button primary="Reset" onClick={handleClickReset}/>
+                <Button primary="Reset" onClick={handleClickReset} />
               {:else}
-                <Button primary="Start" onClick={handleClickStart}/>
+                <Button primary="Start" onClick={handleClickStart} />
               {/if}
             </div>
             <div class="skip">
-              <Button primary="Skip" onClick={handleClickSkip} disabled={!hasStarted} />
+              <Button
+                primary="Skip"
+                onClick={handleClickSkip}
+                disabled={!hasStarted}
+              />
             </div>
           </div>
           <div class="other-controls">
-            <div class="suggestions-checkbox">
-              <Checkbox label="Show suggestions" value={showSuggestions} onChange={handleToggleSuggestions} />
-            </div>
+            <!-- <div class="suggestions-checkbox">
+              <Checkbox
+                label="Show suggestions"
+                value={showSuggestions}
+                onChange={handleToggleSuggestions}
+              />
+            </div> -->
             <div class="respawn-timer">
               {#if respawnTimer > 0}
                 <div class="respawn-label">Platform respawn:</div>
                 <div class="respawn-value">
-                  <Timer time={respawnTimer} size={1.4} />
+                  <Timer time={respawnTimer} size={3} />
                 </div>
               {/if}
             </div>
           </div>
+        </div>
       </div>
-    </div>
-  
+
       <div class="board-container">
         <div class="events-log">
           {#each events as ev}
@@ -399,32 +421,63 @@
             </div>
           {/each}
         </div>
-        <div class="board"> 
+        <div class="board">
           {#each Array(9) as _, i}
-              <BoardTile 
-                i={i} 
-                hp={boardState[i]} 
-                meteors={meteorPlacements[i]}
-                suggested={showSuggestions && includes(recTiles[blueMeteorNum].map(tile => tile.idx), i)}
-                golden={i === goldenMeteorTile}
-                onClick={handleClickTile}
-                onRightClick={handleRightClickTile}
-                disabled={!hasStarted || ((isPlacingGoldenMeteor && i % 2 !== 0) || i == 4)}
-              />
+            <BoardTile
+              {i}
+              hp={boardState[i]}
+              meteors={meteorPlacements[i]}
+              suggested={showSuggestions &&
+                includes(
+                  recTiles[blueMeteorNum].map((tile) => tile.idx),
+                  i
+                )}
+              golden={i === goldenMeteorTile}
+              onClick={handleClickTile}
+              onRightClick={handleRightClickTile}
+              disabled={!hasStarted ||
+                (isPlacingGoldenMeteor && i % 2 !== 0) ||
+                i == 4}
+            />
           {/each}
         </div>
       </div>
-  
+
       <div class="toolbar">
-        <Button 
-          disabled={!hasStarted || goldenDropTimer > -1 || goldenMeteorNum >= 3} 
-          onClick={handleClickGoldenMeteor} 
-          primary={isPlacingGoldenMeteor ? "Select Tile" : "Golden Meteor"}
-          secondary={isPlacingGoldenMeteor ? "Golden Meteor" : "+20s"} 
-          active={isPlacingGoldenMeteor}
-        />
-        <Button disabled={!hasStarted} onClick={() => addTime(60*2 + 15)} primary="Worship" secondary="+2m 15s" />
-        <Button disabled={!hasStarted} onClick={() => addTime(20)} primary="Tornado" secondary="+20s" />
+        <div class="golden-meteor-btns">
+          <Button
+            disabled={!hasStarted ||
+              goldenDropTimer > -1 ||
+              goldenMeteorNum >= 3 ||
+              boardState[2] === 0}
+            onClick={() => handleClickGoldenMeteor(2)}
+            primary="Golden Meteor 12"
+            secondary="+20s"
+          />
+          <Button
+            disabled={!hasStarted ||
+              goldenDropTimer > -1 ||
+              goldenMeteorNum >= 3 ||
+              boardState[6] === 0}
+            onClick={() => handleClickGoldenMeteor(6)}
+            primary="Golden Meteor 6"
+            secondary="+20s"
+          />
+        </div>
+        <div class="mech-buttons">
+          <Button
+            disabled={!hasStarted}
+            onClick={() => addTime(60 * 2 + 15)}
+            primary="Worship"
+            secondary="+2m 15s"
+          />
+          <Button
+            disabled={!hasStarted}
+            onClick={() => addTime(20)}
+            primary="Tornado"
+            secondary="+20s"
+          />
+        </div>
       </div>
     </div>
   </main>
@@ -446,7 +499,7 @@
     width: 100%;
     top: 0;
     left: 0;
-    background: linear-gradient(230deg,#1f0636,#000e2c); 
+    background: linear-gradient(230deg, #1f0636, #000e2c);
     background-color: #140032;
     z-index: -3;
   }
@@ -477,7 +530,7 @@
     width: 100%;
     height: 100%;
     display: flex;
-    flex-flow: column;  
+    flex-flow: column;
     align-items: center;
   }
 
@@ -489,15 +542,15 @@
     align-items: center;
     width: 100%;
     flex: 5;
-  } 
+  }
 
-  .toolbar{
+  .toolbar {
     display: flex;
     align-items: flex-end;
     padding-bottom: 2rem;
     flex: 1;
   }
-  
+
   .hud {
     position: relative;
     width: 600px;
@@ -574,7 +627,7 @@
     outline: 2px solid black;
     display: grid;
     grid-gap: 2px;
-    
+
     grid-template-columns: repeat(3, 135px);
     grid-template-columns: repeat(3, 135px);
 
