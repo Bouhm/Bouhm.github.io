@@ -450,7 +450,7 @@
               boardState[2] === 0}
             onClick={() => handleClickGoldenMeteor(2)}
             primary="Golden Meteor 12"
-            secondary="+20s"
+            secondary="+18s"
           />
           <Button
             disabled={!hasStarted ||
@@ -459,7 +459,7 @@
               boardState[6] === 0}
             onClick={() => handleClickGoldenMeteor(6)}
             primary="Golden Meteor 6"
-            secondary="+20s"
+            secondary="+18s"
           />
         </div>
         <div class="mech-btns">
@@ -467,13 +467,13 @@
             disabled={!hasStarted}
             onClick={() => addTime(60 * 2 + 13)}
             primary="Worship"
-            secondary="+2m 15s"
+            secondary="+2m 13s"
           />
           <Button
             disabled={!hasStarted}
             onClick={() => addTime(18)}
             primary="Tornado"
-            secondary="+20s"
+            secondary="+18s"
           />
         </div>
       </div>
