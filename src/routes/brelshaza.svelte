@@ -196,32 +196,28 @@
   }
 
   function handleClickGoldenMeteor(tile: number) {
-    isPlacingGoldenMeteor = true;
-
     if (tile === goldenMeteorTile) {
       goldenMeteorTile = -1;
     } else {
       goldenMeteorTile = tile;
+      isPlacingGoldenMeteor = true;
+      placeGoldenMeteor(tile);
     }
   }
 
   function handleClickTile(i: number) {
-    if (isPlacingGoldenMeteor) {
-      placeGoldenMeteor(i);
+    let currSum = sum(meteorPlacements);
+    let newPlacements = [...meteorPlacements];
+
+    if (boardState[i] === 0) return;
+
+    if (currSum < nextMeteorsNum) {
+      newPlacements[i]++;
     } else {
-      let currSum = sum(meteorPlacements);
-      let newPlacements = [...meteorPlacements];
-
-      if (boardState[i] === 0) return;
-
-      if (currSum < nextMeteorsNum) {
-        newPlacements[i]++;
-      } else {
-        newPlacements[i] = 0;
-      }
-
-      meteorPlacements = newPlacements;
+      newPlacements[i] = 0;
     }
+
+    meteorPlacements = newPlacements;
   }
 
   function handleRightClickTile(i: number) {
@@ -404,13 +400,11 @@
                 onChange={handleToggleSuggestions}
               />
             </div> -->
-            <div class="respawn-timer">
-              {#if respawnTimer > 0}
-                <div class="timer-label">Platform respawn:</div>
-                <div class="respawn-value">
-                  <Timer time={respawnTimer} />
-                </div>
-              {/if}
+            <div class="respawn-timer" class:hidden={respawnTimer < 0}>
+              <div class="timer-label">Platform respawn:</div>
+              <div class="respawn-value">
+                <Timer time={respawnTimer} />
+              </div>
             </div>
           </div>
         </div>
@@ -545,6 +539,7 @@
     align-items: center;
     width: 100%;
     flex: 5;
+    padding-top: 4.5rem;
   }
 
   .toolbar {
@@ -660,6 +655,9 @@
   }
 
   .events-log {
+    position: absolute;
+    top: 6%;
+    z-index: 2;
     margin-bottom: 1rem;
   }
 
@@ -667,7 +665,15 @@
     text-transform: uppercase;
   }
 
+  .respawn-timer.hidden {
+    visibility: hidden;
+  }
+
   @media only screen and (max-device-width: 912px) {
+    .events-log {
+      font-size: 2rem;
+    }
+
     .board {
       grid-template-columns: repeat(3, 210px);
       grid-template-columns: repeat(3, 210px);
