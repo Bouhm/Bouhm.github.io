@@ -151,7 +151,7 @@
   }
 
   function placeGoldenMeteor(i: number) {
-    addTime(20);
+    addTime(18);
     goldenDropTimer = goldenMeteorDropLength;
     events = [...events, Event.DropGoldenMeteor];
     isPlacingGoldenMeteor = false;
@@ -464,13 +464,13 @@
         <div class="mech-btns">
           <Button
             disabled={!hasStarted}
-            onClick={() => addTime(60 * 2 + 15)}
+            onClick={() => addTime(60 * 2 + 13)}
             primary="Worship"
             secondary="+2m 15s"
           />
           <Button
             disabled={!hasStarted}
-            onClick={() => addTime(20)}
+            onClick={() => addTime(18)}
             primary="Tornado"
             secondary="+20s"
           />
