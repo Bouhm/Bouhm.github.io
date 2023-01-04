@@ -212,6 +212,8 @@
       let currSum = sum(meteorPlacements);
       let newPlacements = [...meteorPlacements];
 
+      if (boardState[i] === 0) return;
+
       if (currSum < nextMeteorsNum) {
         newPlacements[i]++;
       } else {
@@ -464,7 +466,7 @@
             secondary="+20s"
           />
         </div>
-        <div class="mech-buttons">
+        <div class="mech-btns">
           <Button
             disabled={!hasStarted}
             onClick={() => addTime(60 * 2 + 15)}
@@ -551,6 +553,12 @@
     flex: 1;
   }
 
+  .golden-meteor-btns,
+  .mech-btns {
+    display: flex;
+    flex-flow: column;
+  }
+
   .hud {
     position: relative;
     width: 600px;
@@ -628,8 +636,8 @@
     display: grid;
     grid-gap: 2px;
 
-    grid-template-columns: repeat(3, 135px);
-    grid-template-columns: repeat(3, 135px);
+    grid-template-columns: repeat(3, 150px);
+    grid-template-columns: repeat(3, 150px);
 
     transform-origin: center;
     transform: rotateX(45deg) rotateY(0deg) rotateZ(-45deg);
@@ -644,16 +652,10 @@
     text-transform: uppercase;
   }
 
-  @media (max-width: 680px) {
+  @media (max-width: 430px) {
     .board {
-      grid-template-columns: repeat(3, 100px);
-      grid-template-columns: repeat(3, 100px);
-    }
-
-    .toolbar {
-      flex-flow: column;
-      align-items: center;
-      justify-content: center;
+      grid-template-columns: repeat(3, 210px);
+      grid-template-columns: repeat(3, 210px);
     }
   }
 </style>

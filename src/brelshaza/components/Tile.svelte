@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { base } from '$app/paths';
+  import { base } from "$app/paths";
   export let i: number;
   export let onClick: (i: number) => void;
   export let onRightClick: (i: number) => void;
@@ -14,7 +14,7 @@
   // }
 
   function handleClick(e: Event) {
-    if (hp > 0) onClick(i)
+    if (hp > 0) onClick(i);
   }
 
   function handleRightClick(e: Event) {
@@ -23,14 +23,14 @@
   }
 </script>
 
-<div 
-  class:suggested={suggested} 
+<div
+  class:suggested
   class="board-tile clickable hp-{hp}"
-  class:disabled={disabled}
-  style="--bg: url({base}/brelshaza/pattern{i+1}.webp)"
+  class:disabled
+  style="--bg: url({base}/brelshaza/pattern{i + 1}.webp)"
   on:click={handleClick}
   on:contextmenu={handleRightClick}
-> 
+>
   <div class="tile-meteors">
     {#each Array(meteors) as meteor}
       <div class="tile-meteor" />
@@ -41,16 +41,15 @@
   </div>
 </div>
 
-
 <style>
   .board-tile {
-    background-color: #354BA5;
+    background-color: #354ba5;
     outline: 1px solid black;
-    width: 135px;
-    height: 135px;
+    width: 150px;
+    height: 150px;
     background-image: var(--bg);
     background-blend-mode: soft-light;
-    background-size: 135px;
+    background-size: 150px;
     z-index: 1;
 
     display: flex;
@@ -85,18 +84,18 @@
     background-color: gold;
   }
 
-  .suggested { 
-    background-color: #15A30B;
+  .suggested {
+    background-color: #15a30b;
   }
 
   .hp-2 {
     background-blend-mode: normal;
     z-index: 1;
   }
-  
+
   .hp-1 {
     outline: 1px solid #ccaea4;
-    box-shadow: inset 0px 0px 30px #C6A195;
+    box-shadow: inset 0px 0px 30px #c6a195;
     background-blend-mode: normal;
     z-index: 2;
   }
@@ -107,11 +106,11 @@
     background-image: none;
   }
 
-  @media (max-width: 680px) {
+  @media (max-width: 430px) {
     .board-tile {
-      width: 100px;
-      height: 100px;
-      background-size: 100px;
+      width: 210px;
+      height: 210px;
+      background-size: 210px;
     }
   }
 </style>

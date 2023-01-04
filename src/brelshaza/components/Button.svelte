@@ -24,13 +24,13 @@
 <style>
   .button {
     border-radius: 4px;
-    width: 9rem;
+    width: 10rem;
     border: 2px solid white;
     padding: 0.5rem;
     text-align: center;
     margin: 1rem 0.5rem 0 0.5rem;
     color: white;
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 
   .button.disabled {
@@ -40,7 +40,7 @@
 
   .secondary {
     margin-top: 0.2rem;
-    font-size: 0.8rem;
+    font-size: 1rem;
     color: greenyellow;
     opacity: 0.8;
   }
@@ -54,19 +54,19 @@
     color: darkolivegreen;
   }
 
-  @media (max-width: 680px) {
+  @media (max-width: 430px) {
     .button {
-      width: 12rem;
-      border: 2px solid white;
-      margin: 1rem 0.3rem 0 0.3rem;
+      width: 26rem;
+      border: 4px solid white;
+      border-radius: 8px;
     }
 
     .primary {
-      font-size: 1.2rem;
+      font-size: 3rem;
     }
 
     .secondary {
-      font-size: 1rem;
+      font-size: 2rem;
     }
   }
 </style>
