@@ -26,11 +26,10 @@
 
   function handleClickTile(i: number) {
     if (mode == "Blue") {
-      let currSum = sum(meteorPlacements);
       let newPlacements = [...meteorPlacements];
 
       if (boardState[i] === 0) return;
-      if (currSum < 8) {
+      if (meteorPlacements[i] < 4) {
         newPlacements[i]++;
       } else {
         newPlacements[i] = 0;
