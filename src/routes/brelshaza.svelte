@@ -30,7 +30,7 @@
       let newPlacements = [...meteorPlacements];
 
       if (boardState[i] === 0) return;
-      if (currSum < 3) {
+      if (currSum < 8) {
         newPlacements[i]++;
       } else {
         newPlacements[i] = 0;
@@ -92,6 +92,15 @@
       style += ";";
     }
   }
+
+  function handleClickReset() {
+    currentHp = startHp;
+    goldenMeteorNum = 1;
+    goldenMeteorTile = -1;
+
+    boardState = initialBoardState;
+    meteorPlacements = initialMeteorPlacements;
+  }
 </script>
 
 <svelte:head>
@@ -113,6 +122,7 @@
           <li>Click repeatedly to place multiple</li>
           <li>For timer go to /brelshaza-timer</li>
         </ul>
+        <Button primary="Reset" onClick={handleClickReset} size="s" />
       </div>
 
       <div class="board-container">
@@ -240,14 +250,15 @@
     height: auto;
     flex: 1;
     z-index: 2;
+    display: flex;
+    align-items: center;
+    flex-flow: column;
   }
 
   .hud ul {
     margin-top: 2rem;
-    display: flex;
-    align-items: center;
+
     text-align: left;
-    flex-flow: column;
   }
 
   .hud ul li {
