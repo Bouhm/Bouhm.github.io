@@ -38,7 +38,7 @@
 
   .button.disabled {
     opacity: 0.5;
-    pointer-events: none;
+    /* pointer-events: none; */
   }
 
   .secondary {
